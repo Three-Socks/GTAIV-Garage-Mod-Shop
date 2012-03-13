@@ -560,16 +560,26 @@ void Init(void)
 	vStartCoords.y = -121.03340000;
 	vStartCoords.z = 6.00050000;
 
-	CLEAR_PRINTS();
+	/*CLEAR_PRINTS();
 	CLEAR_HELP();
-	CLEAR_WANTED_LEVEL(GetPlayerIndex());
+	CLEAR_WANTED_LEVEL(GetPlayerIndex());*/
 
-	SET_PED_DENSITY_MULTIPLIER(1.0);
-	SET_CAR_DENSITY_MULTIPLIER(1.0);
+	Blip blipgarage;
+	ADD_BLIP_FOR_COORD(vStartCoords.x, vStartCoords.y, vStartCoords.z, &blipgarage);
+	CHANGE_BLIP_DISPLAY(blipgarage, 2);
+	CHANGE_BLIP_SPRITE(blipgarage, 79);
+	FLASH_BLIP(blipgarage, true);
+	WAIT(7500);
+	CHANGE_BLIP_DISPLAY(blipgarage, 5);
+	FLASH_BLIP(blipgarage, false);
+	//CHANGE_BLIP_PRIORITY(blipgarage, 0 );
 
-	PlayAsBrucie();
+	//SET_PED_DENSITY_MULTIPLIER(1.0);
+	//SET_CAR_DENSITY_MULTIPLIER(1.0);
 
-	REQUEST_MODEL(MODEL_BANSHEE);
+	//PlayAsBrucie();
+
+	/*REQUEST_MODEL(MODEL_BANSHEE);
 	while (!HAS_MODEL_LOADED(MODEL_BANSHEE)) WAIT(0);
 	SUPPRESS_CAR_MODEL(MODEL_BANSHEE);
 	Vehicle v_banshee;
@@ -578,24 +588,24 @@ void Init(void)
 	SET_HAS_BEEN_OWNED_BY_PLAYER(v_banshee, TRUE);
 	SET_NEEDS_TO_BE_HOTWIRED(v_banshee, FALSE);
 	SET_VEH_HAS_STRONG_AXLES(v_banshee, 1);
-	FREEZE_CAR_POSITION(v_banshee, 0);
+	FREEZE_CAR_POSITION(v_banshee, 0);*/
 
 	// This must be set before set_char_coords or brucies garage interior will not load.
-	SET_PLAYER_CONTROL(GetPlayerIndex(), true);
+	//SET_PLAYER_CONTROL(GetPlayerIndex(), true);
 
-	SET_CHAR_COORDINATES_NO_OFFSET(GetPlayerPed(), vStartCoords.x, vStartCoords.y, vStartCoords.z);
-	CLEAR_CHAR_TASKS(GetPlayerPed());
+	//SET_CHAR_COORDINATES_NO_OFFSET(GetPlayerPed(), vStartCoords.x, vStartCoords.y, vStartCoords.z);
+	//CLEAR_CHAR_TASKS(GetPlayerPed());
 
 	// Load brucie's garage
   //CLEAR_AREA(870.37810000, -121.81840000, 5.00001000, 50.00000000, 1);
-	LOAD_SCENE(vStartCoords.x, vStartCoords.y, vStartCoords.z);
-	SET_CHAR_HEADING(GetPlayerPed(), 312.0);
+	//LOAD_SCENE(vStartCoords.x, vStartCoords.y, vStartCoords.z);
+	//SET_CHAR_HEADING(GetPlayerPed(), 312.0);
 	/*Interior bruInterior;
 	GET_INTERIOR_AT_COORDS(869.58590000, -121.03340000, 5.00050000, &bruInterior);
   uint bruhash = GET_HASH_KEY("BrucieMain");
   LOAD_SCENE_FOR_ROOM_BY_KEY(bruInterior, bruhash);*/
 
-	SET_LOAD_COLLISION_FOR_CAR_FLAG(v_banshee, 1);
+	/*SET_LOAD_COLLISION_FOR_CAR_FLAG(v_banshee, 1);
 	SET_ROOM_FOR_CAR_BY_NAME(v_banshee, "GtaMloRoom08");
 
 	SET_CAR_HEADING(v_banshee, 180.0);
@@ -607,14 +617,18 @@ void Init(void)
   SET_EXTRA_CAR_COLOURS(v_banshee, 0, 0);
   SET_VEHICLE_DIRT_LEVEL(v_banshee, 0);
   WASH_VEHICLE_TEXTURES(v_banshee, 255);
-	MARK_MODEL_AS_NO_LONGER_NEEDED(MODEL_BANSHEE);
+	MARK_MODEL_AS_NO_LONGER_NEEDED(MODEL_BANSHEE);*/
 
-	ENABLE_MAX_AMMO_CAP(FALSE);
+	/*ENABLE_MAX_AMMO_CAP(FALSE);
 	UpdateWeaponOfPed(GetPlayerPed(), WEAPON_BASEBALLBAT);
 	UpdateWeaponOfPed(GetPlayerPed(), WEAPON_AK47);
-	UpdateWeaponOfPed(GetPlayerPed(), WEAPON_PISTOL);
+	UpdateWeaponOfPed(GetPlayerPed(), WEAPON_PISTOL);*/
 
-	SET_GAME_CAM_HEADING(0.0);
+	//SET_GAME_CAM_HEADING(0.0);
+	spawn_x = 874.81200000; spawn_y = -114.20310000; spawn_z = 5.61220000; spawn_h = 180.0;
+	exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
+	quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
+
 
 }
 
@@ -715,24 +729,42 @@ void DoActivators(void)
 
 void main(void)
 {
-	SET_MISSION_FLAG(1);
+	/*SET_MISSION_FLAG(1);
 	SET_PLAYER_CONTROL(GetPlayerIndex(), false);
 	DO_SCREEN_FADE_OUT(500);
 	while (!IS_SCREEN_FADED_OUT())
 	{
 		WAIT(0);
-	}
+	}*/
 	Init();
+	/*
 	WAIT(1000);
 	DO_SCREEN_FADE_IN(500);
 	while (!IS_SCREEN_FADED_IN())
 	{
-		WAIT( 0 );
-	}
-
+		WAIT(0);
+	}*/
+	
+	//float c_x, c_y, c_w, c_h, c_spacing1, c_spacing2;
+	//GET_FRONTEND_DESIGN_VALUE(2, &c_x, &c_y);
+	//GET_FRONTEND_DESIGN_VALUE(3, &c_w, &c_h);
+	//GET_FRONTEND_DESIGN_VALUE(4, &c_spacing1, &c_spacing2);
+	char *c_T = GET_STRING_FROM_STRING(GET_STRING_FROM_TEXT_FILE("THXCH"), 0, 1);
+	char *c_H = GET_STRING_FROM_STRING(GET_STRING_FROM_TEXT_FILE("THXCH"), 0, 2);
+	
+	int displaycredit = 0;
+	
 	while(true)
 	{
-		WAIT(0);
+		WAIT(0);		
+		if (displaycredit < 60)
+		{
+			set_up_draw(2, 0.55800, 1.12000, 255, 255, 255, 255);
+			SET_TEXT_CENTRE(1);
+			draw_text("STRING", 0.80800000, 0.77800000, c_T);
+			draw_text("STRING", 0.80800000 + 0.02800000, 0.77800000, c_H);
+			displaycredit++;
+		}
 		if (activateMenu)
 		{
 			DoMenu();
