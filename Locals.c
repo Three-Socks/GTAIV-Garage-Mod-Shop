@@ -25,11 +25,16 @@ bool draw_menu_set = true;
 int menu_level = 2;
 int item_highlighted = 1;
 int item_selected = 0;
+int item_vehcat_selected = 0;
+int item_vehspawn_selected = 0;
 int item_up_selected = 0;
 int item_colnum_selected = 0;
 int item_col_selected = 0;
 
+Vehicle v_spawn;
 Vehicle v_modding;
+bool inVehSpawn = false;
+bool inVehMenu = false;
 bool inVehUpgrade = false;
 bool inVehCol = false;
 bool inModVeh = false;
@@ -37,6 +42,7 @@ bool veh_change_set = false;
 
 char *menu_items[12];
 int menu_len;
+uint spawn_cars[29];
 
 typedef struct _rgbcolours
 {
