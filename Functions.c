@@ -1,7 +1,15 @@
 void FixWashCar(void)
 {
 
-	v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6, 0, 71);
+	v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6.00000000, 0, 70);
+	if (!DOES_VEHICLE_EXIST(v_modding))
+	{
+		v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6.00000000, 0, 69);
+	}
+	if (!DOES_VEHICLE_EXIST(v_modding))
+	{
+		v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6.00000000, 0, 71);
+	}
 
 	if (DOES_VEHICLE_EXIST(v_modding))
 	{
@@ -21,7 +29,7 @@ void FixWashCar(void)
 		item_highlighted = 1;
 		item_selected = 0;
 		menu_level = 2;
-		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle in the garage.", 7500, 1);
+		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle in the garage. Place it in the metal strip near the window.", 7500, 1);
 	}
 
 }
@@ -30,7 +38,15 @@ bool JumpToVehicle(void)
 {
 	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
 
-	v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6, 0, 71);
+	v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6.00000000, 0, 70);
+	if (!DOES_VEHICLE_EXIST(v_modding))
+	{
+		v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6.00000000, 0, 69);
+	}
+	if (!DOES_VEHICLE_EXIST(v_modding))
+	{
+		v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6.00000000, 0, 71);
+	}
 
 	if (DOES_VEHICLE_EXIST(v_modding))
 	{
@@ -49,7 +65,7 @@ bool JumpToVehicle(void)
 		item_highlighted = 1;
 		item_selected = 0;
 		menu_level = 2;
-		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle in the garage.", 7500, 1);
+		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle in the garage. Place it in the metal strip near the window.", 7500, 1);
 		return false;
 	}
 }
