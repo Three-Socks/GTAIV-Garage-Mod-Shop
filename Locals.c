@@ -31,6 +31,10 @@ int item_up_selected = 0;
 int item_colnum_selected = 0;
 int item_col_selected = 0;
 
+float spawn_x, spawn_y, spawn_z, spawn_h;
+float exit_x, exit_y, exit_z, exit_h;
+float quit_x, quit_y, quit_z, quit_h;
+
 Vehicle v_spawn;
 Vehicle v_modding;
 bool inVehSpawn = false;
@@ -40,9 +44,9 @@ bool inVehCol = false;
 bool inModVeh = false;
 bool veh_change_set = false;
 
-char *menu_items[12];
+char *menu_items[14];
 int menu_len;
-uint spawn_cars[29];
+uint spawn_cars[15];
 
 typedef struct _rgbcolours
 {

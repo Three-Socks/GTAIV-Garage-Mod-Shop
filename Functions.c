@@ -1,21 +1,21 @@
-void FixWashCar(void)
+void FixWashCar(float warp_x, float warp_y, float warp_z, float warp_h)
 {
 
-	v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6.00000000, 0, 70);
+	v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 70);
 	if (!DOES_VEHICLE_EXIST(v_modding))
 	{
-		v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6.00000000, 0, 69);
+		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 69);
 	}
 	if (!DOES_VEHICLE_EXIST(v_modding))
 	{
-		v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6.00000000, 0, 71);
+		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 71);
 	}
 
 	if (DOES_VEHICLE_EXIST(v_modding))
 	{
 		FIX_CAR(v_modding);
-		SET_CAR_HEADING(v_modding, 179.56390000);
-		SET_CAR_COORDINATES(v_modding, 874.81200000, -114.20310000, 5.61220000);
+		SET_CAR_HEADING(v_modding, warp_h);
+		SET_CAR_COORDINATES(v_modding, warp_x, warp_y, warp_z);
 		SET_CAR_ON_GROUND_PROPERLY(v_modding);
 
 		SET_VEHICLE_DIRT_LEVEL(v_modding, 0);
@@ -34,30 +34,56 @@ void FixWashCar(void)
 
 }
 
-bool JumpToVehicle(void)
+bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h)
 {
 	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
 
-	v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6.00000000, 0, 70);
+	v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 70);
 	if (!DOES_VEHICLE_EXIST(v_modding))
 	{
-		v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6.00000000, 0, 69);
+		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 69);
 	}
 	if (!DOES_VEHICLE_EXIST(v_modding))
 	{
-		v_modding = GET_CLOSEST_CAR(874.81200000, -114.20310000, 5.61220000, 6.00000000, 0, 71);
+		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 71);
 	}
 
 	if (DOES_VEHICLE_EXIST(v_modding))
 	{
 		inModVeh = true;
-		SET_CAR_HEADING(v_modding, 179.56390000);
-		SET_CAR_COORDINATES(v_modding, 874.81200000, -114.20310000, 5.61220000);
+		SET_CAR_HEADING(v_modding, warp_h);
+		SET_CAR_COORDINATES(v_modding, warp_x, warp_y, warp_z);
 		SET_CAR_ON_GROUND_PROPERLY(v_modding);
 		FREEZE_CAR_POSITION(v_modding, 1);
 
 		WARP_CHAR_INTO_CAR(GetPlayerPed(), v_modding);
 		LOCK_CAR_DOORS(v_modding, 4);
+		return true;
+	}
+	else
+	{
+		item_highlighted = 1;
+		item_selected = 0;
+		menu_level = 2;
+		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle in the garage. Place it in the metal strip near the window.", 7500, 1);
+		return false;
+	}
+}
+
+bool JumpToVehicleSpawn(float warp_x, float warp_y, float warp_z, float warp_h)
+{
+	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
+
+	if (DOES_VEHICLE_EXIST(v_spawn))
+	{
+		inModVeh = true;
+		SET_CAR_HEADING(v_spawn, warp_h);
+		SET_CAR_COORDINATES(v_spawn, warp_x, warp_y, warp_z);
+		SET_CAR_ON_GROUND_PROPERLY(v_spawn);
+		FREEZE_CAR_POSITION(v_spawn, 1);
+
+		WARP_CHAR_INTO_CAR(GetPlayerPed(), v_spawn);
+		LOCK_CAR_DOORS(v_spawn, 4);
 		return true;
 	}
 	else
