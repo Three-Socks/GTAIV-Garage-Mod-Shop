@@ -71,34 +71,9 @@ bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h)
 		FREEZE_CAR_POSITION(v_modding, 1);
 
 		WARP_CHAR_INTO_CAR(GetPlayerPed(), v_modding);
-		LOCK_CAR_DOORS(v_modding, 4);
+		// Disabled for bug fix test - can't open door after selecting upgrade.
+		//LOCK_CAR_DOORS(v_modding, 4);
 		SET_GAME_CAM_HEADING(217.0000);
-		return true;
-	}
-	else
-	{
-		item_highlighted = 1;
-		item_selected = 0;
-		menu_level = 2;
-		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 7500, 1);
-		return false;
-	}
-}
-
-bool JumpToVehicleSpawn(float warp_x, float warp_y, float warp_z, float warp_h)
-{
-	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
-
-	if (DOES_VEHICLE_EXIST(v_spawn))
-	{
-		inModVeh = true;
-		SET_CAR_HEADING(v_spawn, warp_h);
-		SET_CAR_COORDINATES(v_spawn, warp_x, warp_y, warp_z);
-		SET_CAR_ON_GROUND_PROPERLY(v_spawn);
-		FREEZE_CAR_POSITION(v_spawn, 1);
-
-		WARP_CHAR_INTO_CAR(GetPlayerPed(), v_spawn);
-		LOCK_CAR_DOORS(v_spawn, 4);
 		return true;
 	}
 	else
