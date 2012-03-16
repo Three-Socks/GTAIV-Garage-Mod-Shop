@@ -1,14 +1,21 @@
 void FixWashCar(float warp_x, float warp_y, float warp_z, float warp_h)
 {
 
-	v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 70);
-	if (!DOES_VEHICLE_EXIST(v_modding))
+	if (DOES_VEHICLE_EXIST(v_spawn))
 	{
-		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 69);
+		v_modding = v_spawn;
 	}
-	if (!DOES_VEHICLE_EXIST(v_modding))
+	else
 	{
-		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 71);
+		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 70);
+		if (!DOES_VEHICLE_EXIST(v_modding))
+		{
+			v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 69);
+		}
+		if (!DOES_VEHICLE_EXIST(v_modding))
+		{
+			v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 71);
+		}
 	}
 
 	if (DOES_VEHICLE_EXIST(v_modding))
@@ -22,14 +29,14 @@ void FixWashCar(float warp_x, float warp_y, float warp_z, float warp_h)
 		WASH_VEHICLE_TEXTURES(v_modding, 255);
 		menu_level = 2;
 		item_selected = 0;
-		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Your Vehicle has been fixed and cleaned.", 7500, 1);
+		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Your vehicle has been fixed and cleaned.", 7500, 1);
 	}
 	else
 	{
 		item_highlighted = 1;
 		item_selected = 0;
 		menu_level = 2;
-		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle in the garage. Place it in the metal strip near the window.", 7500, 1);
+		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 7500, 1);
 	}
 
 }
@@ -37,15 +44,22 @@ void FixWashCar(float warp_x, float warp_y, float warp_z, float warp_h)
 bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h)
 {
 	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
-
-	v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 70);
-	if (!DOES_VEHICLE_EXIST(v_modding))
+	
+	if (DOES_VEHICLE_EXIST(v_spawn))
 	{
-		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 69);
+		v_modding = v_spawn;
 	}
-	if (!DOES_VEHICLE_EXIST(v_modding))
+	else
 	{
-		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 71);
+		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 70);
+		if (!DOES_VEHICLE_EXIST(v_modding))
+		{
+			v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 69);
+		}
+		if (!DOES_VEHICLE_EXIST(v_modding))
+		{
+			v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 71);
+		}
 	}
 
 	if (DOES_VEHICLE_EXIST(v_modding))
@@ -58,6 +72,7 @@ bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h)
 
 		WARP_CHAR_INTO_CAR(GetPlayerPed(), v_modding);
 		LOCK_CAR_DOORS(v_modding, 4);
+		SET_GAME_CAM_HEADING(217.0000);
 		return true;
 	}
 	else
@@ -65,7 +80,7 @@ bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h)
 		item_highlighted = 1;
 		item_selected = 0;
 		menu_level = 2;
-		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle in the garage. Place it in the metal strip near the window.", 7500, 1);
+		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 7500, 1);
 		return false;
 	}
 }
@@ -91,7 +106,7 @@ bool JumpToVehicleSpawn(float warp_x, float warp_y, float warp_z, float warp_h)
 		item_highlighted = 1;
 		item_selected = 0;
 		menu_level = 2;
-		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle in the garage. Place it in the metal strip near the window.", 7500, 1);
+		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 7500, 1);
 		return false;
 	}
 }

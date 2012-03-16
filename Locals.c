@@ -17,7 +17,7 @@
 
 uint soundID = 2;
 
-bool activateMenu = false;
+//bool activateMenu = false;
 
 bool menu_cam_set = false;
 bool draw_menu_set = true;
@@ -44,7 +44,7 @@ bool inVehCol = false;
 bool inModVeh = false;
 bool veh_change_set = false;
 
-char *menu_items[14];
+char *menu_items[16];
 int menu_len;
 uint spawn_cars[15];
 

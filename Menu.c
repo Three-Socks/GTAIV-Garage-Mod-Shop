@@ -3,7 +3,7 @@ void DrawPalette(void)
 	int I;
 	int rows = 0;
 	float Ipos_x = 0.05400000;
-	float Ipos_y = 0.06800000;
+	float Ipos_y = 0.06350000;
 	uint r, g, b, a;
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT) && item_highlighted != 1)
@@ -84,11 +84,11 @@ void DrawMenu(int array_len)
 
 	if (inVehUpgrade)
 	{
-		float pos_x = 0.05700000, num_pos_x = 0.13500000, onoff_pos_x = 0.20000000, width = 0.30000000, height = 0.30000000;
+		float pos_x = 0.05700000, num_pos_x = 0.12800000, onoff_pos_x = 0.20000000, width = 0.30000000, height = 0.30000000;
 		uint r, g, b, a = 255;
 
 		int I;
-		float Ipos_y = 0.04800000;
+		float Ipos_y = 0.02000000;
 
 		for (I = 0; I < 10; I++)
 		{
@@ -126,13 +126,52 @@ void DrawMenu(int array_len)
 				}
 			}
 		}
+	
+		char *veh_doors[16];
+		veh_doors[10] = "Left Front Door";
+		veh_doors[11] = "Right Front Door";
+		veh_doors[12] = "Left Rear Door";
+		veh_doors[13] = "Right Rear Door";
+		veh_doors[14] = "Hood";
+		veh_doors[15] = "Trunk";
+
+		Ipos_y = 0.38000000;
+
+		for (I = 10; I < 16; I++)
+		{
+			r = 255;
+			g = 255;
+			b = 255;
+			Ipos_y = Ipos_y + 0.04000000;
+
+			if (item_highlighted == I)
+			{
+				r = 253;
+				g = 160;
+				b = 35;
+			}
+
+			set_up_draw(0, width, height, r, g, b, a);
+			draw_text("STRING", pos_x, Ipos_y, veh_doors[I]);
+			if (IS_CAR_DOOR_FULLY_OPEN(v_modding, I - 10))
+			{
+				set_up_draw(0, width, height, 233, 162, 0, a);
+				draw_text("STRING", onoff_pos_x, Ipos_y, "Open");
+			}
+			else
+			{
+				set_up_draw(0, width, height, 255, 255, 255, a);
+				draw_text("STRING", onoff_pos_x, Ipos_y, "Closed");
+			}
+		}
+	
 	}
 	else
 	{
 		float pos_x = 0.05700000, width = 0.30000000, height = 0.30000000;
 		uint r, g, b, a = 255;
 		int I;
-		float Ipos_y = 0.04800000;
+		float Ipos_y = 0.02000000;
 
 		for (I = 1; I < (array_len + 1); I++)
 		{
@@ -165,20 +204,20 @@ void ExitMenu(void)
 {
 	spawn_x = 874.81200000; spawn_y = -114.20310000; spawn_z = 5.61220000; spawn_h = 180.0;
 	exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
-	quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
 	item_highlighted = 1;
 	item_selected = 0;
 	menu_level = 2;
 	menu_cam_set = false;
-	activateMenu = false;
-
-	//PlayAsBrucie();
+	G_activateMenu = false;
+	G_scriptloaded = false;
 
 	SET_PLAYER_CONTROL(GetPlayerIndex(), true);
 	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
 
 	SET_CHAR_COORDINATES_NO_OFFSET(GetPlayerPed(), quit_x, quit_y, quit_z);
 	SET_CHAR_HEADING(GetPlayerPed(), quit_h);
+
+	TERMINATE_THIS_SCRIPT();
 
 }
 
@@ -188,8 +227,8 @@ void EnterMenu(int item_selected)
 	{
 		menu_items[1] = "Spawn a Vehicle";
 		menu_items[2] = "Upgrade Vehicle";
-		menu_items[3] = "Fix & Wash Car";
-		menu_items[4] = "Change Vehicle Colour";
+		menu_items[3] = "Fix & Wash vehicle";
+		menu_items[4] = "Change Vehicle Color";
 		menu_items[5] = "Exit";
 		menu_len = 5;
 		return;
@@ -220,7 +259,7 @@ void EnterMenu(int item_selected)
 		{
 			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h))
 			{
-				menu_len = 9;
+				menu_len = 15;
 				inVehUpgrade = true;
 				item_highlighted = 1;
 				menu_level = 5;
@@ -237,10 +276,10 @@ void EnterMenu(int item_selected)
 		{
 			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h))
 			{
-				menu_items[1] = "Colour 1";
-				menu_items[2] = "Colour 2";
-				menu_items[3] = "Specular Colour 1";
-				menu_items[4] = "Specular Colour 2";
+				menu_items[1] = "Color 1";
+				menu_items[2] = "Color 2";
+				menu_items[3] = "Specular Color 1";
+				menu_items[4] = "Specular Color 2";
 				menu_len = 4;
 				menu_level = 4;
 				item_highlighted = 1;
@@ -275,8 +314,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[8] = MODEL_SUPERGT;
 				spawn_cars[9] = MODEL_TURISMO;
 				menu_len = 9;
-				exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
-				quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
 			}
 			else if(item_vehcat_selected == 2)
 			{
@@ -293,8 +330,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[11] = MODEL_VIRGO;
 				spawn_cars[12] = MODEL_VOODOO;
 				menu_len = 12;
-				exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
-				quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
 			}
 			else if(item_vehcat_selected == 3)
 			{
@@ -304,8 +339,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[4] = MODEL_SENTINEL;
 				spawn_cars[5] = MODEL_URANUS;
 				menu_len = 5;
-				exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
-				quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
 			}
 			else if(item_vehcat_selected == 4)
 			{
@@ -324,8 +357,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[13] = MODEL_MARBELLA;
 				spawn_cars[14] = MODEL_MERIT;
 				menu_len = 14;
-				exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
-				quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
 			}
 			else if(item_vehcat_selected == 5)
 			{
@@ -344,8 +375,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[13] = MODEL_WASHINGTON;
 				spawn_cars[14] = MODEL_WILLARD;
 				menu_len = 14;
-				exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
-				quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
 			}
 			else if(item_vehcat_selected == 6)
 			{
@@ -363,8 +392,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[12] = MODEL_RANCHER;
 				spawn_cars[13] = MODEL_REBLA;
 				menu_len = 13;
-				exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
-				quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
 			}
 			else if(item_vehcat_selected == 7)
 			{
@@ -381,8 +408,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[11] = MODEL_PERENNIAL2;
 				spawn_cars[12] = MODEL_FORKLIFT;
 				menu_len = 12;
-				exit_x = 799.87080000; exit_y = -161.98190000; exit_z = 6.12140000; exit_h = 291.45250000;
-				quit_x = 799.87080000; quit_y = -161.98190000; quit_z = 6.12140000; quit_h = 291.45250000;
 			}
 			else if(item_vehcat_selected == 8)
 			{
@@ -398,8 +423,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[10] = MODEL_STEED;
 				spawn_cars[11] = MODEL_YANKEE;
 				menu_len = 11;
-				exit_x = 799.87080000; exit_y = -161.98190000; exit_z = 6.12140000; exit_h = 291.45250000;
-				quit_x = 799.87080000; quit_y = -161.98190000; quit_z = 6.12140000; quit_h = 291.45250000;
 			}
 			else if(item_vehcat_selected == 9)
 			{
@@ -413,8 +436,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[8] = MODEL_POLICE2;
 				spawn_cars[9] = MODEL_PSTOCKADE;
 				menu_len = 9;
-				exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
-				quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
 			}
 			else if(item_vehcat_selected == 10)
 			{
@@ -425,8 +446,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[5] = MODEL_TAXI2;
 				spawn_cars[6] = MODEL_TRASH;
 				menu_len = 6;
-				exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
-				quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
 			}
 			else if(item_vehcat_selected == 11)
 			{
@@ -438,8 +457,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[6] = MODEL_SANCHEZ;
 				spawn_cars[7] = MODEL_ZOMBIEB;
 				menu_len = 7;
-				exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
-				quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
 			}
 			else if(item_vehcat_selected == 12)
 			{
@@ -452,8 +469,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[7] = MODEL_TROPIC;
 				spawn_cars[8] = MODEL_TUGA;
 				menu_len = 8;
-				exit_x = 696.34010000; exit_y = -147.73820000; exit_z = 1.48330000; exit_h = 154.97670000;
-				quit_x = 696.34010000; quit_y = -147.73820000; quit_z = 1.48330000; quit_h = 154.97670000;
 			}
 			else if(item_vehcat_selected == 13)
 			{
@@ -461,8 +476,6 @@ void EnterMenu(int item_selected)
 				spawn_cars[2] = MODEL_TOURMAV;
 				spawn_cars[3] = MODEL_MAVERICK;
 				spawn_cars[4] = MODEL_POLMAV;
-				exit_x = 778.40660000, exit_y = 152.24480000, exit_z = 27.83940000, exit_h = 268.0;
-				quit_x = 778.40660000, quit_y = 152.24480000, quit_z = 27.83940000, quit_h = 268.0;
 				menu_len = 4;
 			}
 			inVehMenu = true;
@@ -481,22 +494,30 @@ void EnterMenu(int item_selected)
 				SUPPRESS_CAR_MODEL(spawn_cars[item_vehspawn_selected]);
 
 				// Garage
+				exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
+				quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
 				spawn_x = 874.81200000; spawn_y = -114.20310000; spawn_z = 5.61220000; spawn_h = 180.0;
 				bool placeauto = false;
 
 				if (item_vehcat_selected == 7 || item_vehcat_selected == 8)
 				{
 					// Warehouse
+					exit_x = 799.87080000; exit_y = -161.98190000; exit_z = 6.12140000; exit_h = 291.45250000;
+					quit_x = 799.87080000; quit_y = -161.98190000; quit_z = 6.12140000; quit_h = 291.45250000;
 					spawn_x = 807.7111; spawn_y = -161.0524; spawn_z = 6.4449; spawn_h = 335.8888, placeauto = false;
 				}
 				else if (item_vehcat_selected == 12)
 				{
 					// Jetty
+					exit_x = 696.34010000; exit_y = -147.73820000; exit_z = 1.48330000; exit_h = 154.97670000;
+					quit_x = 696.34010000; quit_y = -147.73820000; quit_z = 1.48330000; quit_h = 154.97670000;
 					spawn_x = 698.8500; spawn_y = -153.6000; spawn_z = 0.0000; spawn_h = 61.3000, placeauto = false;
 				}
 				else if(item_vehcat_selected == 13)
 				{
 					// Helipad
+					exit_x = 778.40660000, exit_y = 152.24480000, exit_z = 27.83940000, exit_h = 268.0;
+					quit_x = 778.40660000, quit_y = 152.24480000, quit_z = 27.83940000, quit_h = 268.0;
 					spawn_x = 786.53470000; spawn_y = 150.74470000; spawn_z = 27.74790000; spawn_h = 180.0000, placeauto = true;
 				}
 
@@ -507,17 +528,31 @@ void EnterMenu(int item_selected)
 				SET_CAR_COORDINATES(v_spawn, spawn_x, spawn_y, spawn_z);
 				SET_CAR_ON_GROUND_PROPERLY(v_spawn);
 				MARK_MODEL_AS_NO_LONGER_NEEDED(spawn_cars[item_vehspawn_selected]);
-				JumpToVehicleSpawn(spawn_x, spawn_y, spawn_z, spawn_h);
+				JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h);
 			}
 			else if (inVehUpgrade && item_up_selected != 0)
 			{
-				if (IS_VEHICLE_EXTRA_TURNED_ON(v_modding, item_up_selected))
+				if (item_up_selected <= 9)
 				{
-					TURN_OFF_VEHICLE_EXTRA(v_modding, item_up_selected, true);
+					if (IS_VEHICLE_EXTRA_TURNED_ON(v_modding, item_up_selected))
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, item_up_selected, true);
+					}
+					else
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, item_up_selected, false);
+					}
 				}
 				else
 				{
-					TURN_OFF_VEHICLE_EXTRA(v_modding, item_up_selected, false);
+					if (IS_CAR_DOOR_FULLY_OPEN(v_modding, item_up_selected - 10))
+					{
+						SHUT_CAR_DOOR(v_modding, item_up_selected - 10);
+					}
+					else
+					{
+						OPEN_CAR_DOOR(v_modding, item_up_selected - 10);
+					}
 				}
 			}
 			else if (inVehCol)
