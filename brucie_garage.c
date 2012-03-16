@@ -161,5 +161,10 @@ void main(void)
 			}
 		}
 		DoActivators();
+
+		if (HAS_DEATHARREST_EXECUTED())
+		{
+			G_activateMenu = false;
+		}
 	}
 }

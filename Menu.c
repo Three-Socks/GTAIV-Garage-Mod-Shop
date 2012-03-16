@@ -499,19 +499,29 @@ void EnterMenu(int item_selected)
 				spawn_x = 874.81200000; spawn_y = -114.20310000; spawn_z = 5.61220000; spawn_h = 180.0;
 				bool placeauto = false;
 
-				if (item_vehcat_selected == 7 || item_vehcat_selected == 8)
+				// Test for bug fix - Some vehicles still too big for garage.
+				//if (item_vehcat_selected == 7 || item_vehcat_selected == 8)
+				if (IS_BIG_VEHICLE(v_spawn))
 				{
 					// Warehouse
 					exit_x = 799.87080000; exit_y = -161.98190000; exit_z = 6.12140000; exit_h = 291.45250000;
 					quit_x = 799.87080000; quit_y = -161.98190000; quit_z = 6.12140000; quit_h = 291.45250000;
 					spawn_x = 807.7111; spawn_y = -161.0524; spawn_z = 6.4449; spawn_h = 335.8888, placeauto = false;
+					// Test for bug fix - Forklift path
+					// Possible fix 1
+					// CLEAR_AREA()
+					//END
+					// Possible fix 2
+					LOAD_PATH_NODES_IN_AREA(807.7111, -161.0524, 6.4449, 20.00000000);
+					RELEASE_PATH_NODES();
+					//END
 				}
 				else if (item_vehcat_selected == 12)
 				{
 					// Jetty
 					exit_x = 696.34010000; exit_y = -147.73820000; exit_z = 1.48330000; exit_h = 154.97670000;
 					quit_x = 696.34010000; quit_y = -147.73820000; quit_z = 1.48330000; quit_h = 154.97670000;
-					spawn_x = 698.8500; spawn_y = -153.6000; spawn_z = 0.0000; spawn_h = 61.3000, placeauto = false;
+					spawn_x = 698.8500; spawn_y = -153.6000; spawn_z = 0.0000; spawn_h = 61.3000, placeauto = true;
 				}
 				else if(item_vehcat_selected == 13)
 				{
