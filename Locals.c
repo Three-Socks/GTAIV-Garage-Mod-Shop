@@ -40,9 +40,12 @@ Vehicle v_modding;
 bool inVehSpawn = false;
 bool inVehMenu = false;
 bool inVehUpgrade = false;
+bool inVehModify = false;
 bool inVehCol = false;
 bool inModVeh = false;
 bool veh_change_set = false;
+
+bool inFarSpawn = false;
 
 char *menu_items[16];
 int menu_len;
@@ -56,3 +59,28 @@ typedef struct _rgbcolours
 } rgbcolours;
 
 rgbcolours car_colours[134];
+
+typedef struct _Vector4
+{
+	float x;
+	float y;
+	float z;
+	float h;
+} Vector4;
+
+typedef struct _GarageCoord
+{
+	Vector4 exit;
+	Vector4 quit;
+	Vector4 spawn;
+	bool placeauto;
+} GarageCoord;
+
+typedef struct _GarageArea
+{
+	GarageCoord main;
+	GarageCoord big;
+	GarageCoord heli;
+} GarageArea;
+
+GarageArea garage;

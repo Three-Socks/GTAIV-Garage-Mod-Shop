@@ -41,10 +41,9 @@ void FixWashCar(float warp_x, float warp_y, float warp_z, float warp_h)
 
 }
 
-bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h)
+void LocateVehicle(float warp_x, float warp_y, float warp_z)
 {
-	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
-	
+
 	if (DOES_VEHICLE_EXIST(v_spawn))
 	{
 		v_modding = v_spawn;
@@ -62,18 +61,35 @@ bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h)
 		}
 	}
 
+}
+
+bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h)
+{
+	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
+
+	LocateVehicle(warp_x, warp_y, warp_z);
+	
 	if (DOES_VEHICLE_EXIST(v_modding))
 	{
 		inModVeh = true;
+		SET_HAS_BEEN_OWNED_BY_PLAYER(v_modding, true);
+		SET_NEEDS_TO_BE_HOTWIRED(v_modding, false);
+		
 		SET_CAR_HEADING(v_modding, warp_h);
 		SET_CAR_COORDINATES(v_modding, warp_x, warp_y, warp_z);
-		SET_CAR_ON_GROUND_PROPERLY(v_modding);
-		FREEZE_CAR_POSITION(v_modding, 1);
-
 		WARP_CHAR_INTO_CAR(GetPlayerPed(), v_modding);
-		// Disabled for bug fix test - can't open door after selecting upgrade.
-		//LOCK_CAR_DOORS(v_modding, 4);
+
+		FREEZE_CAR_POSITION(v_modding, 1);
+		LOCK_CAR_DOORS(v_modding, 4);
+		
 		SET_GAME_CAM_HEADING(217.0000);
+		Camera game_cam;
+		GET_GAME_CAM(&game_cam);
+		SET_CAM_POS(game_cam, 879.2956, -129.3145, 7.0849);
+
+		// Test fix
+		WAIT(400);
+		SET_CAR_ON_GROUND_PROPERLY(v_modding);
 		return true;
 	}
 	else
