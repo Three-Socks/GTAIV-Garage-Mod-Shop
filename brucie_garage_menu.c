@@ -549,9 +549,58 @@ void Init(void)
 	car_colours[134].g = 255;
 	car_colours[134].b = 255;*/
 
-	spawn_x = 874.81200000; spawn_y = -114.20310000; spawn_z = 5.61220000; spawn_h = 180.0;
 	exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
 	quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
+	spawn_x = 874.81200000; spawn_y = -114.20310000; spawn_z = 5.61220000; spawn_h = 180.0;
+
+	/*// MAIN
+	garage.main.exit.x = 869.0119;
+	garage.main.exit.y = -114.6501;
+	garage.main.exit.z = 5.5054;
+	garage.main.exit.h = 270.0000;
+
+	garage.main.quit.x = 866.3309;
+	garage.main.quit.y = -116.7025;
+	garage.main.quit.z = 6.0054;
+	garage.main.quit.h = 181.0000;
+
+	garage.main.spawn.x = 874.8120;
+	garage.main.spawn.y = -114.2031;
+	garage.main.spawn.z = 5.6122;
+	garage.main.spawn.h = 180.0000;
+
+	// BIG
+	garage.big.exit.x = 799.8708;
+	garage.big.exit.y = -161.9819;
+	garage.big.exit.z = 6.1214;
+	garage.big.exit.h = 291.4525;
+
+	garage.big.quit.x = 799.8708;
+	garage.big.quit.y = -161.9819;
+	garage.big.quit.z = 6.1214;
+	garage.big.quit.h = 291.4525;
+
+	garage.big.spawn.x = 807.7111;
+	garage.big.spawn.y = -161.0524;
+	garage.big.spawn.z = 6.4449;
+	garage.big.spawn.h = 335.8888;
+
+	// HELI
+	garage.heli.exit.x = 869.0119;
+	garage.heli.exit.y = -114.6501;
+	garage.heli.exit.z = 5.5054;
+	garage.heli.exit.h = 270.0000;
+
+	garage.heli.quit.x = 866.3309;
+	garage.heli.quit.y = -116.7025;
+	garage.heli.quit.z = 6.0054;
+	garage.heli.quit.h = 181.0000;
+
+	garage.heli.spawn.x = 874.8120;
+	garage.heli.spawn.y = -114.2031;
+	garage.heli.spawn.z = 5.6122;
+	garage.heli.spawn.h = 180.0000;*/
+
 }
 
 void main(void)
@@ -561,5 +610,17 @@ void main(void)
 	{
 		WAIT(0);
 		DoMenu();
+		if (HAS_DEATHARREST_EXECUTED() || 
+		(
+		!LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), 874.81200000, -114.20310000, 5.61220000, 50.00000000, 50.00000000, 50.00000000, 0) && 
+		!LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), 807.7111, -161.0524, 6.4449, 50.00000000, 50.00000000, 50.00000000, 0) && 
+		!LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), 698.8500, -153.6000, 0.0000, 50.00000000, 50.00000000, 50.00000000, 0) && 
+		!LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), 786.53470000, 150.74470000, 27.74790000, 50.00000000, 50.00000000, 50.00000000, 0)
+		))
+		{
+			G_activateMenu = false;
+			TERMINATE_THIS_SCRIPT();
+			G_scriptloaded = false;
+		}
 	}
 }

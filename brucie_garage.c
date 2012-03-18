@@ -33,7 +33,6 @@ void Init(void)
 	FLASH_BLIP(blipgarage, false);
 	CHANGE_BLIP_PRIORITY(blipgarage, 0);
 	SET_BLIP_AS_SHORT_RANGE(blipgarage, true);
-	//CHANGE_BLIP_DISPLAY(blipgarage, 1);
 }
 
 void DoActivators(void)
@@ -161,10 +160,5 @@ void main(void)
 			}
 		}
 		DoActivators();
-
-		if (HAS_DEATHARREST_EXECUTED())
-		{
-			G_activateMenu = false;
-		}
 	}
 }

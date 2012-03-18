@@ -202,12 +202,14 @@ void DrawMenu(int array_len)
 
 void ExitMenu(void)
 {
-	spawn_x = 874.81200000; spawn_y = -114.20310000; spawn_z = 5.61220000; spawn_h = 180.0;
+	// Don't think this is needed no more.
+	/*spawn_x = 874.81200000; spawn_y = -114.20310000; spawn_z = 5.61220000; spawn_h = 180.0;
 	exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
 	item_highlighted = 1;
 	item_selected = 0;
 	menu_level = 2;
 	menu_cam_set = false;
+	*/
 	G_activateMenu = false;
 	G_scriptloaded = false;
 
@@ -227,10 +229,11 @@ void EnterMenu(int item_selected)
 	{
 		menu_items[1] = "Spawn a Vehicle";
 		menu_items[2] = "Upgrade Vehicle";
-		menu_items[3] = "Fix & Wash vehicle";
-		menu_items[4] = "Change Vehicle Color";
-		menu_items[5] = "Exit";
-		menu_len = 5;
+		menu_items[3] = "Modify Vehicle";
+		menu_items[4] = "Fix & Wash Vehicle";
+		menu_items[5] = "Change Vehicle Color";
+		menu_items[6] = "Exit";
+		menu_len = 6;
 		return;
 	}
 	else if (menu_level == 3)
@@ -268,11 +271,24 @@ void EnterMenu(int item_selected)
 		}
 		else if (item_selected == 3)
 		{
+			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h))
+			{
+				menu_items[1] = "Doors";
+				menu_items[2] = "Handling";
+				menu_len = 2;
+				inVehModify = true;
+				item_highlighted = 1;
+				menu_level = 4;
+			}
+			return;
+		}
+		else if (item_selected == 4)
+		{
 			FixWashCar(spawn_x, spawn_y, spawn_z, spawn_h);
 			menu_level = 2;
 			return;
 		}
-		else if (item_selected == 4)
+		else if (item_selected == 5)
 		{
 			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h))
 			{
@@ -287,7 +303,7 @@ void EnterMenu(int item_selected)
 			}
 			return;
 		}
-		else if (item_selected == 5)
+		else if (item_selected == 6)
 		{
 			ExitMenu();
 			return;
@@ -485,6 +501,11 @@ void EnterMenu(int item_selected)
 		{
 			if (inVehMenu && item_vehspawn_selected != 0)
 			{
+				//if (inFarSpawn)
+				//{
+				//	DO_SCREEN_FADE_OUT_UNHACKED(10);
+				//}
+				SET_CHAR_VISIBLE(GetPlayerPed(), false);
 				if (DOES_VEHICLE_EXIST(v_spawn))
 				{
 					DELETE_CAR(&v_spawn);
@@ -498,23 +519,27 @@ void EnterMenu(int item_selected)
 				quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
 				spawn_x = 874.81200000; spawn_y = -114.20310000; spawn_z = 5.61220000; spawn_h = 180.0;
 				bool placeauto = false;
+				//inFarSpawn = false;
 
-				// Test for bug fix - Some vehicles still too big for garage.
-				//if (item_vehcat_selected == 7 || item_vehcat_selected == 8)
-				if (IS_BIG_VEHICLE(v_spawn))
+				CREATE_CAR(spawn_cars[item_vehspawn_selected], 0, 0, 0, &v_spawn, placeauto);
+				MARK_MODEL_AS_NO_LONGER_NEEDED(spawn_cars[item_vehspawn_selected]);
+
+				if (IS_BIG_VEHICLE(v_spawn) 
+					&& item_vehspawn_selected != MODEL_MERIT 
+					&& item_vehspawn_selected != MODEL_PRES 
+					&& item_vehspawn_selected != MODEL_WASHINGTON
+					&& item_vehspawn_selected != MODEL_MINIVAN
+					&& item_vehspawn_selected != MODEL_MOONBEAM
+					&& item_vehspawn_selected != MODEL_PERENNIAL
+					&& item_vehspawn_selected != MODEL_PERENNIAL2
+				)
 				{
 					// Warehouse
 					exit_x = 799.87080000; exit_y = -161.98190000; exit_z = 6.12140000; exit_h = 291.45250000;
 					quit_x = 799.87080000; quit_y = -161.98190000; quit_z = 6.12140000; quit_h = 291.45250000;
 					spawn_x = 807.7111; spawn_y = -161.0524; spawn_z = 6.4449; spawn_h = 335.8888, placeauto = false;
-					// Test for bug fix - Forklift path
-					// Possible fix 1
-					// CLEAR_AREA()
-					//END
-					// Possible fix 2
 					LOAD_PATH_NODES_IN_AREA(807.7111, -161.0524, 6.4449, 20.00000000);
 					RELEASE_PATH_NODES();
-					//END
 				}
 				else if (item_vehcat_selected == 12)
 				{
@@ -531,14 +556,11 @@ void EnterMenu(int item_selected)
 					spawn_x = 786.53470000; spawn_y = 150.74470000; spawn_z = 27.74790000; spawn_h = 180.0000, placeauto = true;
 				}
 
-				CREATE_CAR(spawn_cars[item_vehspawn_selected], spawn_x, spawn_y, spawn_z, &v_spawn, placeauto);
-				SET_HAS_BEEN_OWNED_BY_PLAYER(v_spawn, TRUE);
-				SET_NEEDS_TO_BE_HOTWIRED(v_spawn, FALSE);
-				SET_CAR_HEADING(v_spawn, spawn_h);
-				SET_CAR_COORDINATES(v_spawn, spawn_x, spawn_y, spawn_z);
-				SET_CAR_ON_GROUND_PROPERLY(v_spawn);
-				MARK_MODEL_AS_NO_LONGER_NEEDED(spawn_cars[item_vehspawn_selected]);
+				//LOAD_SCENE(spawn_x, spawn_y, spawn_z);
+				//WAIT(4000);
+				SET_CHAR_VISIBLE(GetPlayerPed(), true);
 				JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h);
+        //DO_SCREEN_FADE_IN_UNHACKED(10);
 			}
 			else if (inVehUpgrade && item_up_selected != 0)
 			{
@@ -621,6 +643,20 @@ void EnterMenu(int item_selected)
 void DoMenu(void)
 {
 	// Debug
+	/*Camera game_cam;
+	GET_GAME_CAM(&game_cam);
+	float game_cam_x, game_cam_y, game_cam_z, pos_x = 0.05000000, width = 0.30000000, height = 0.30000000;
+	uint r = 255, g = 255, b = 255, a = 110;
+	if (IS_CAM_ACTIVE(game_cam))
+	{
+		GET_CAM_POS(game_cam, &game_cam_x, &game_cam_y, &game_cam_z);
+		set_up_draw(2, width, height, r, g, b, a);
+		draw_float("NUMBR", pos_x, 0.10000000, game_cam_x);
+		set_up_draw(2, width, height, r, g, b, a);
+		draw_float("NUMBR", pos_x, 0.13000000, game_cam_y);
+		set_up_draw(2, width, height, r, g, b, a);
+		draw_float("NUMBR", pos_x, 0.16000000, game_cam_z);
+	}*/
 	/*
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.08800000, menu_level);
