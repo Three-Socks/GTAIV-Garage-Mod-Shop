@@ -36,19 +36,19 @@ void FixWashCar(float warp_x, float warp_y, float warp_z, float warp_h)
 		WASH_VEHICLE_TEXTURES(v_modding, 255);
 		menu_level = 2;
 		item_selected = 0;
-		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Your vehicle has been fixed and cleaned.", 7500, 1);
+		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Your vehicle has been fixed and cleaned.", 2500, 1);
 	}
 	else
 	{
 		item_highlighted = 1;
 		item_selected = 0;
 		menu_level = 2;
-		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 7500, 1);
+		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 2500, 1);
 	}
 
 }
 
-bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h, bool delaysetground)
+bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h, bool delaysetground, bool setheading)
 {
 	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
 
@@ -56,10 +56,9 @@ bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h, bool 
 	
 	if (DOES_VEHICLE_EXIST(v_modding))
 	{
-		inModVeh = true;
 		SET_HAS_BEEN_OWNED_BY_PLAYER(v_modding, true);
 		SET_NEEDS_TO_BE_HOTWIRED(v_modding, false);
-		
+
 		SET_CAR_HEADING(v_modding, warp_h);
 		SET_CAR_COORDINATES(v_modding, warp_x, warp_y, warp_z);
 		WARP_CHAR_INTO_CAR(GetPlayerPed(), v_modding);
@@ -67,9 +66,10 @@ bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h, bool 
 		FREEZE_CAR_POSITION(v_modding, 1);
 		LOCK_CAR_DOORS(v_modding, 4);
 
-		if (!menu_cam_set)
+		if (!veh_cam_set && setheading)
 		{
 			SET_GAME_CAM_HEADING(217.0000);
+			veh_cam_set = true;
 		}
 
 		if (delaysetground)
@@ -84,30 +84,21 @@ bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h, bool 
 		item_highlighted = 1;
 		item_selected = 0;
 		menu_level = 2;
-		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 7500, 1);
+		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 2500, 1);
 		return false;
 	}
 }
 
-void PlayAsBrucie(void)
+void JumpOutVehicle(float warp_x, float warp_y, float warp_z)
 {
-	REQUEST_MODEL(MODEL_IG_BRUCIE);
-	while (!HAS_MODEL_LOADED(MODEL_IG_BRUCIE)) WAIT(0);
-	CHANGE_PLAYER_MODEL(GetPlayerIndex(), MODEL_IG_BRUCIE);
-	MARK_MODEL_AS_NO_LONGER_NEEDED(MODEL_IG_BRUCIE);
-	SET_CHAR_COMPONENT_VARIATION(GetPlayerPed(), 0, 0, 0 );
-	SET_CHAR_COMPONENT_VARIATION(GetPlayerPed(), 1, 1, 0 );
-	SET_CHAR_COMPONENT_VARIATION(GetPlayerPed(), 2, 0, 0 );
-	SET_CHAR_COMPONENT_VARIATION(GetPlayerPed(), 5, 0, 0 );
-	SET_CHAR_COMPONENT_VARIATION(GetPlayerPed(), 4, 0, 0 );
-	SET_CHAR_COMPONENT_VARIATION(GetPlayerPed(), 3, 0, 0 );
-	SET_CHAR_COMPONENT_VARIATION(GetPlayerPed(), 7, 0, 0 );
-
-	SET_LOCAL_PLAYER_VOICE("BRUCIE");
-	SET_LOCAL_PLAYER_PAIN_VOICE("BRUCIE");
-	FORCE_FULL_VOICE(GetPlayerPed());
-
-	return;
+	if (DOES_VEHICLE_EXIST(v_modding))
+	{
+		FREEZE_CAR_POSITION(v_modding, 0);
+		LOCK_CAR_DOORS(v_modding, 1);
+		WARP_CHAR_FROM_CAR_TO_COORD(GetPlayerPed(), warp_x, warp_y, warp_z);
+		menu_cam_set = false;
+		veh_cam_set = false;
+	}
 }
 
 void set_up_draw(int type, float width, float height, uint r, uint g, uint b, uint a)

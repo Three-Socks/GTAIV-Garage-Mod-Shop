@@ -129,7 +129,7 @@ void DrawMenu(int array_len)
 	}
 	else if (inVModifyDoors)
 	{
-		float pos_x = 0.05700000, num_pos_x = 0.12800000, onoff_pos_x = 0.20000000, width = 0.30000000, height = 0.30000000;
+		float pos_x = 0.05700000, num_pos_x = 0.12800000, onoff_pos_x = 0.160000000, width = 0.30000000, height = 0.30000000;
 		uint r, g, b, a = 255;
 
 		int I;
@@ -137,10 +137,10 @@ void DrawMenu(int array_len)
 	
 		char *veh_doors[8];
 		veh_doors[1] = "Mode:";
-		veh_doors[2] = "Left Front Door";
-		veh_doors[3] = "Right Front Door";
-		veh_doors[4] = "Left Rear Door";
-		veh_doors[5] = "Right Rear Door";
+		veh_doors[2] = "Left Front";
+		veh_doors[3] = "Right Front";
+		veh_doors[4] = "Left Rear";
+		veh_doors[5] = "Right Rear";
 		veh_doors[6] = "Hood";
 		veh_doors[7] = "Trunk";
 
@@ -178,7 +178,7 @@ void DrawMenu(int array_len)
 			{
 				if (VehModifyMode == 2)
 				{
-					if (IS_CAR_DOOR_DAMAGED(v_modding, I - 1))
+					if (IS_CAR_DOOR_DAMAGED(v_modding, I - 2))
 					{
 						set_up_draw(0, width, height, 233, 162, 0, a);
 						draw_text("STRING", onoff_pos_x, Ipos_y, "Removed");
@@ -186,7 +186,9 @@ void DrawMenu(int array_len)
 				}
 				else
 				{
-					if (IS_CAR_DOOR_FULLY_OPEN(v_modding, I - 1))
+					float doorangle2;
+					GET_DOOR_ANGLE_RATIO(v_modding, I - 2, &doorangle2);
+					if (!IS_CAR_DOOR_DAMAGED(v_modding, I - 2) && doorangle2 >= 0.5000)
 					{
 						set_up_draw(0, width, height, 233, 162, 0, a);
 						draw_text("STRING", onoff_pos_x, Ipos_y, "Open");
@@ -296,7 +298,7 @@ void EnterMenu(int item_selected)
 		}
 		else if (item_selected == 2)
 		{
-			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false))
+			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false, true))
 			{
 				menu_len = 9;
 				inVehUpgrade = true;
@@ -307,11 +309,10 @@ void EnterMenu(int item_selected)
 		}
 		else if (item_selected == 3)
 		{
-			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false))
+			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false, true))
 			{
 				menu_items[1] = "Doors";
-				menu_items[2] = "Handling";
-				menu_len = 2;
+				menu_len = 1;
 				inVehModify = true;
 				item_highlighted = 1;
 				menu_level = 4;
@@ -326,7 +327,7 @@ void EnterMenu(int item_selected)
 		}
 		else if (item_selected == 5)
 		{
-			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false))
+			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false, true))
 			{
 				menu_items[1] = "Color 1";
 				menu_items[2] = "Color 2";
@@ -536,9 +537,8 @@ void EnterMenu(int item_selected)
 		{
 			if (item_modifytype_selected == 1)
 			{
-				menu_len = 6;
+				menu_len = 7;
 				inVModifyDoors = true;
-				item_highlighted = 1;
 			}
 			//else if (item_modifytype_selected == 2)
 			//{
@@ -549,9 +549,12 @@ void EnterMenu(int item_selected)
 		{
 			if (inVehMenu && item_vehspawn_selected != 0)
 			{
+				SET_RANDOM_CAR_DENSITY_MULTIPLIER(0.0000);
 				SET_CHAR_VISIBLE(GetPlayerPed(), false);
+				bool headingset = true;
 				if (DOES_VEHICLE_EXIST(v_spawn))
 				{
+					headingset = false;
 					DELETE_CAR(&v_spawn);
 				}
 				REQUEST_MODEL(spawn_cars[item_vehspawn_selected]);
@@ -563,7 +566,7 @@ void EnterMenu(int item_selected)
 
 				float last_spawn_x = spawn_x;
 
-				if (IS_BIG_VEHICLE(v_spawn) 
+				if ((IS_BIG_VEHICLE(v_spawn) || spawn_cars[item_vehspawn_selected] == MODEL_RIPLEY)
 					&& spawn_cars[item_vehspawn_selected] != MODEL_MERIT 
 					&& spawn_cars[item_vehspawn_selected] != MODEL_PRES 
 					&& spawn_cars[item_vehspawn_selected] != MODEL_WASHINGTON
@@ -577,8 +580,8 @@ void EnterMenu(int item_selected)
 					exit_x = 799.87080000; exit_y = -161.98190000; exit_z = 6.12140000; exit_h = 291.45250000;
 					quit_x = 799.87080000; quit_y = -161.98190000; quit_z = 6.12140000; quit_h = 291.45250000;
 					spawn_x = 807.7111; spawn_y = -161.0524; spawn_z = 6.4449; spawn_h = 335.8888;
-					LOAD_PATH_NODES_IN_AREA(807.7111, -161.0524, 6.4449, 20.00000000);
-					RELEASE_PATH_NODES();
+					//LOAD_PATH_NODES_IN_AREA(807.7111, -161.0524, 6.4449, 20.00000000);
+					//RELEASE_PATH_NODES();
 				}
 				else if (item_vehcat_selected == 12)
 				{
@@ -615,7 +618,7 @@ void EnterMenu(int item_selected)
 						}
 						LOAD_SCENE(spawn_x, spawn_y, spawn_z);
 						//WAIT(4000);
-						JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, true);
+						JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, true, headingset);
 						while (IS_SCREEN_FADING())
 						{
 							WAIT(0);
@@ -628,7 +631,7 @@ void EnterMenu(int item_selected)
 				}
 				else
 				{
-					JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false);
+					JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false, headingset);
 				}
 				SET_CHAR_VISIBLE(GetPlayerPed(), true);
 			}
@@ -643,33 +646,62 @@ void EnterMenu(int item_selected)
 					TURN_OFF_VEHICLE_EXTRA(v_modding, item_up_selected, false);
 				}
 			}
-			else if (inVehModify && item_modify_selected != 0 && item_modifytype_selected != 0)
+			else if (inVModifyDoors && item_modify_selected > 1 && item_modifytype_selected != 0)
 			{
 				if (VehModifyMode == 2)
 				{
-					if (IS_CAR_DOOR_DAMAGED(v_modding, item_modify_selected - 1))
+					if (IS_CAR_DOOR_DAMAGED(v_modding, item_modify_selected - 2))
 					{
-						BREAK_CAR_DOOR(v_modding, item_modify_selected - 1, true);
+						int door_I, door_damaged[7];
+						for (door_I = 0; door_I < 6; door_I++)
+						{
+							if (IS_CAR_DOOR_DAMAGED(v_modding, door_I) && door_I != item_modify_selected - 2)
+							{
+								door_damaged[door_I] = 1;
+							}
+						}
+						FIX_CAR(v_modding);
+						for (door_I = 0; door_I < 6; door_I++)
+						{
+							if (door_damaged[door_I] == 1)
+							{
+								BREAK_CAR_DOOR(v_modding, door_I, false);
+							}
+						}
 					}
 					else
 					{
-						BREAK_CAR_DOOR(v_modding, item_modify_selected - 1, false);
+						BREAK_CAR_DOOR(v_modding, item_modify_selected - 2, false);
 					}
+					CLEAR_AREA_OF_OBJECTS(spawn_x, spawn_y, spawn_z, 5.0000);
 				}
 				else
 				{
-					if (IS_CAR_DOOR_FULLY_OPEN(v_modding, item_up_selected - 1))
+					FREEZE_CAR_POSITION(v_modding, 0);
+					LOCK_CAR_DOORS(v_modding, 1);
+					float doorangle;
+					GET_DOOR_ANGLE_RATIO(v_modding, item_modify_selected - 2, &doorangle);
+					/*if (doorangle >= 0.5000)
 					{
-						SHUT_CAR_DOOR(v_modding, item_up_selected - 1);
+						CONTROL_CAR_DOOR(v_modding, item_modify_selected - 2, 1, 0.0000);
 					}
-					else
+					else if (doorangle <= 0.5000)
 					{
-						OPEN_CAR_DOOR(v_modding, item_up_selected - 1);
+						CONTROL_CAR_DOOR(v_modding, item_modify_selected - 2, 1, 1.0000);
+					}*/
+
+					if (!IS_CAR_DOOR_DAMAGED(v_modding, item_modify_selected - 2) && doorangle >= 0.5000)
+					{
+						SHUT_CAR_DOOR(v_modding, item_modify_selected - 2);
 					}
+					else if (!IS_CAR_DOOR_DAMAGED(v_modding, item_modify_selected - 2) && doorangle <= 0.5000)
+					{
+						OPEN_CAR_DOOR(v_modding, item_modify_selected - 2);
+					}
+					//WAIT(20);
+					//FREEZE_CAR_POSITION(v_modding, 1);
+					//LOCK_CAR_DOORS(v_modding, 4);
 				}
-					//else if (item_modifytype_selected == 2)
-					//{
-					//}
 			}
 			else if (inVehCol)
 			{
@@ -749,16 +781,16 @@ void DoMenu(void)
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.16800000, item_selected);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.20800000, item_col_selected);
-	if (inVehUpgrade)
+	draw_number("NUMBR", 0.58700000, 0.20800000, VehModifyMode);
+	if (inVehModify)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-		draw_text("STRING", 0.58700000, 0.24800000, "inVehUpgrade");
+		draw_text("STRING", 0.58700000, 0.24800000, "inVehModify");
 	}
-	if (inVehCol)
+	if (inVModifyDoors)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-		draw_text("STRING", 0.58700000, 0.28800000, "inVehCol");
+		draw_text("STRING", 0.58700000, 0.28800000, "inVModifyDoors");
 	}
 	if (inModVeh)
 	{
@@ -781,12 +813,11 @@ void DoMenu(void)
 		draw_text("STRING", 0.58700000, 0.44800000, "inVehMenu");
 	}
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.48800000, item_vehcat_selected);
+	draw_number("NUMBR", 0.58700000, 0.48800000, item_modify_selected);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.51800000, item_vehspawn_selected);
+	draw_number("NUMBR", 0.58700000, 0.51800000, item_modifytype_selected);
 	*/
 	
-	HIDE_HUD_AND_RADAR_THIS_FRAME();
 	DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
 
 	if (!menu_cam_set)
@@ -808,14 +839,7 @@ void DoMenu(void)
 		if (menu_level == 3)
 		{
 			menu_level = 2;
-			if (inModVeh)
-			{
-				inModVeh = false;
-				FREEZE_CAR_POSITION(v_modding, 0);
-				LOCK_CAR_DOORS(v_modding, 1);
-				WARP_CHAR_FROM_CAR_TO_COORD(GetPlayerPed(), exit_x, exit_y, exit_z);
-				menu_cam_set = false;
-			}
+			JumpOutVehicle(exit_x, exit_y, exit_z);
 		}
 		else if (menu_level == 4)
 		{
@@ -829,27 +853,13 @@ void DoMenu(void)
 			{
 				menu_level = 2;
 				inVehModify = false;
-				if (inModVeh)
-				{
-					inModVeh = false;
-					FREEZE_CAR_POSITION(v_modding, 0);
-					LOCK_CAR_DOORS(v_modding, 1);
-					WARP_CHAR_FROM_CAR_TO_COORD(GetPlayerPed(), exit_x, exit_y, exit_z);
-					menu_cam_set = false;
-				}
+				JumpOutVehicle(exit_x, exit_y, exit_z);
 			}
 			else if (inVehCol)
 			{
 				menu_level = 2;
 				inVehCol = false;
-				if (inModVeh)
-				{
-					inModVeh = false;
-					FREEZE_CAR_POSITION(v_modding, 0);
-					LOCK_CAR_DOORS(v_modding, 1);
-					WARP_CHAR_FROM_CAR_TO_COORD(GetPlayerPed(), exit_x, exit_y, exit_z);
-					menu_cam_set = false;
-				}
+				JumpOutVehicle(exit_x, exit_y, exit_z);
 			}
 		}
 		else if (menu_level == 5)
@@ -864,31 +874,30 @@ void DoMenu(void)
 				item_vehspawn_selected = 0;
 				inVehMenu = false;
 				veh_change_set = false;
-				if (inModVeh)
-				{
-					inModVeh = false;
-					FREEZE_CAR_POSITION(v_spawn, 0);
-					LOCK_CAR_DOORS(v_spawn, 1);
-					WARP_CHAR_FROM_CAR_TO_COORD(GetPlayerPed(), exit_x, exit_y, exit_z);
-					menu_cam_set = false;
-				}
+				SET_RANDOM_CAR_DENSITY_MULTIPLIER(1.0000);
+				JumpOutVehicle(exit_x, exit_y, exit_z);
 			}
-			if (inVehUpgrade)
+			else if (inVehUpgrade)
 			{
 				inVehUpgrade = false;
 				menu_level = 2;
 				item_up_selected = 0;
 				veh_change_set = false;
-				if (inModVeh)
-				{
-					inModVeh = false;
-					FREEZE_CAR_POSITION(v_modding, 0);
-					LOCK_CAR_DOORS(v_modding, 1);
-					WARP_CHAR_FROM_CAR_TO_COORD(GetPlayerPed(), exit_x, exit_y, exit_z);
-					menu_cam_set = false;
-				}
+				JumpOutVehicle(exit_x, exit_y, exit_z);
 			}
-			if (inVehCol)
+			else if (inVModifyDoors)
+			{
+				menu_level = 3;
+				item_selected = 3;
+				menu_len = 2;
+				item_modify_selected = 0;
+				item_modifytype_selected = 0;
+				VehModifyMode = 1;
+				inVModifyDoors = false;
+				veh_change_set = false;
+				JumpOutVehicle(exit_x, exit_y, exit_z);
+			}
+			else if (inVehCol)
 			{
 				item_col_selected = 0;
 				item_colnum_selected = 0;
@@ -910,7 +919,7 @@ void DoMenu(void)
 			item_col_selected = item_highlighted;
 			veh_change_set = false;
 		}
-		else if (inVehModify && item_modifytype_selected != 0)
+		else if (inVModifyDoors && item_modifytype_selected != 0)
 		{
 			item_modify_selected = item_highlighted;
 			if (item_modify_selected == 1)
