@@ -30,6 +30,9 @@ int item_vehspawn_selected = 0;
 int item_up_selected = 0;
 int item_colnum_selected = 0;
 int item_col_selected = 0;
+int item_modifytype_selected = 0;
+int item_modify_selected = 0;
+int VehModifyMode = 1;
 
 float spawn_x, spawn_y, spawn_z, spawn_h;
 float exit_x, exit_y, exit_z, exit_h;
@@ -41,11 +44,10 @@ bool inVehSpawn = false;
 bool inVehMenu = false;
 bool inVehUpgrade = false;
 bool inVehModify = false;
+bool inVModifyDoors = false;
 bool inVehCol = false;
 bool inModVeh = false;
 bool veh_change_set = false;
-
-bool inFarSpawn = false;
 
 char *menu_items[16];
 int menu_len;
@@ -60,6 +62,7 @@ typedef struct _rgbcolours
 
 rgbcolours car_colours[134];
 
+/*
 typedef struct _Vector4
 {
 	float x;
@@ -83,4 +86,4 @@ typedef struct _GarageArea
 	GarageCoord heli;
 } GarageArea;
 
-GarageArea garage;
+GarageArea garage;*/

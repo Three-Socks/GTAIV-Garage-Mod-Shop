@@ -1,4 +1,4 @@
-void FixWashCar(float warp_x, float warp_y, float warp_z, float warp_h)
+void LocateVehicle(float warp_x, float warp_y, float warp_z)
 {
 
 	if (DOES_VEHICLE_EXIST(v_spawn))
@@ -17,6 +17,13 @@ void FixWashCar(float warp_x, float warp_y, float warp_z, float warp_h)
 			v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 71);
 		}
 	}
+
+}
+
+void FixWashCar(float warp_x, float warp_y, float warp_z, float warp_h)
+{
+
+	LocateVehicle(warp_x, warp_y, warp_z);
 
 	if (DOES_VEHICLE_EXIST(v_modding))
 	{
@@ -41,29 +48,7 @@ void FixWashCar(float warp_x, float warp_y, float warp_z, float warp_h)
 
 }
 
-void LocateVehicle(float warp_x, float warp_y, float warp_z)
-{
-
-	if (DOES_VEHICLE_EXIST(v_spawn))
-	{
-		v_modding = v_spawn;
-	}
-	else
-	{
-		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 70);
-		if (!DOES_VEHICLE_EXIST(v_modding))
-		{
-			v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 69);
-		}
-		if (!DOES_VEHICLE_EXIST(v_modding))
-		{
-			v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 71);
-		}
-	}
-
-}
-
-bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h)
+bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h, bool delaysetground)
 {
 	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
 
@@ -81,14 +66,16 @@ bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h)
 
 		FREEZE_CAR_POSITION(v_modding, 1);
 		LOCK_CAR_DOORS(v_modding, 4);
-		
-		SET_GAME_CAM_HEADING(217.0000);
-		Camera game_cam;
-		GET_GAME_CAM(&game_cam);
-		SET_CAM_POS(game_cam, 879.2956, -129.3145, 7.0849);
 
-		// Test fix
-		WAIT(400);
+		if (!menu_cam_set)
+		{
+			SET_GAME_CAM_HEADING(217.0000);
+		}
+
+		if (delaysetground)
+		{
+			WAIT(1000);
+		}
 		SET_CAR_ON_GROUND_PROPERLY(v_modding);
 		return true;
 	}
