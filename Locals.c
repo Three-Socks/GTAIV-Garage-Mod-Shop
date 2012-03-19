@@ -20,6 +20,7 @@ uint soundID = 2;
 //bool activateMenu = false;
 
 bool menu_cam_set = false;
+bool veh_cam_set = false;
 bool draw_menu_set = true;
 
 int menu_level = 2;
@@ -46,7 +47,6 @@ bool inVehUpgrade = false;
 bool inVehModify = false;
 bool inVModifyDoors = false;
 bool inVehCol = false;
-bool inModVeh = false;
 bool veh_change_set = false;
 
 char *menu_items[16];

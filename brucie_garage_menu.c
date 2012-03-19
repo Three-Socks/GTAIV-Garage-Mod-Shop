@@ -610,7 +610,7 @@ void main(void)
 	{
 		WAIT(0);
 		DoMenu();
-		if (HAS_DEATHARREST_EXECUTED() || 
+		if (!G_doneExitCheck && HAS_DEATHARREST_EXECUTED() || 
 		(
 		!LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), 874.81200000, -114.20310000, 5.61220000, 50.00000000, 50.00000000, 50.00000000, 0) && 
 		!LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), 807.7111, -161.0524, 6.4449, 50.00000000, 50.00000000, 50.00000000, 0) && 
@@ -619,8 +619,11 @@ void main(void)
 		))
 		{
 			G_activateMenu = false;
-			TERMINATE_THIS_SCRIPT();
 			G_scriptloaded = false;
+			G_doneExitCheck = true;
+			SET_PLAYER_CONTROL(GetPlayerIndex(), true);
+			SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
+			TERMINATE_THIS_SCRIPT();
 		}
 	}
 }

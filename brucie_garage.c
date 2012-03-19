@@ -29,7 +29,7 @@ void Init(void)
 	CHANGE_BLIP_SPRITE(blipgarage, 79);
 	CHANGE_BLIP_NAME_FROM_ASCII(blipgarage, "Garage Mod Shop");
 	FLASH_BLIP(blipgarage, true);
-	WAIT(7500);
+	WAIT(5500);
 	FLASH_BLIP(blipgarage, false);
 	CHANGE_BLIP_PRIORITY(blipgarage, 0);
 	SET_BLIP_AS_SHORT_RANGE(blipgarage, true);
@@ -139,6 +139,7 @@ void main(void)
 		WAIT(0);
 		if (G_activateMenu)
 		{
+			HIDE_HUD_AND_RADAR_THIS_FRAME();
 			if (!G_scriptloaded)
 			{
 				if ((GET_NUMBER_OF_INSTANCES_OF_STREAMED_SCRIPT("brucie_garage_menu")) >= 1)
