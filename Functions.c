@@ -48,7 +48,7 @@ void FixWashCar(float warp_x, float warp_y, float warp_z, float warp_h)
 
 }
 
-bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h, bool delaysetground, bool setheading)
+bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h, bool delaysetground)
 {
 	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
 
@@ -66,9 +66,11 @@ bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h, bool 
 		FREEZE_CAR_POSITION(v_modding, 1);
 		LOCK_CAR_DOORS(v_modding, 4);
 
-		if (!veh_cam_set && setheading)
+		if (!veh_cam_set)
 		{
-			SET_GAME_CAM_HEADING(217.0000);
+			//SET_CAM_IN_FRONT_OF_PED(GetPlayerPed());
+			SET_GAME_CAM_HEADING(227.0000);
+			//SET_GAME_CAM_PITCH(5.0000);
 			veh_cam_set = true;
 		}
 
