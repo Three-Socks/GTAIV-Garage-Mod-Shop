@@ -28,6 +28,8 @@ void DrawPalette(void)
 			item_highlighted = item_highlighted + 7;
 	}
 
+	//DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
+
 	for (I = 1; I < 134; I++)
 	{
 		r = car_colours[I].r, g = car_colours[I].g, b = car_colours[I].b, a = 255;
@@ -298,7 +300,7 @@ void EnterMenu(int item_selected)
 		}
 		else if (item_selected == 2)
 		{
-			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false, true))
+			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false))
 			{
 				menu_len = 9;
 				inVehUpgrade = true;
@@ -309,7 +311,7 @@ void EnterMenu(int item_selected)
 		}
 		else if (item_selected == 3)
 		{
-			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false, true))
+			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false))
 			{
 				menu_items[1] = "Doors";
 				menu_len = 1;
@@ -327,7 +329,7 @@ void EnterMenu(int item_selected)
 		}
 		else if (item_selected == 5)
 		{
-			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false, true))
+			if (JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false))
 			{
 				menu_items[1] = "Color 1";
 				menu_items[2] = "Color 2";
@@ -549,12 +551,16 @@ void EnterMenu(int item_selected)
 		{
 			if (inVehMenu && item_vehspawn_selected != 0)
 			{
+				//Camera game_cam;
+				//float cam_x, cam_y, cam_z;
+				//GET_GAME_CAM(&game_cam);
+				//GET_CAM_POS(game_cam, &cam_x, &cam_y, &cam_z);
+				
 				SET_RANDOM_CAR_DENSITY_MULTIPLIER(0.0000);
 				SET_CHAR_VISIBLE(GetPlayerPed(), false);
-				bool headingset = true;
+
 				if (DOES_VEHICLE_EXIST(v_spawn))
 				{
-					headingset = false;
 					DELETE_CAR(&v_spawn);
 				}
 				REQUEST_MODEL(spawn_cars[item_vehspawn_selected]);
@@ -562,6 +568,7 @@ void EnterMenu(int item_selected)
 				SUPPRESS_CAR_MODEL(spawn_cars[item_vehspawn_selected]);
 
 				CREATE_CAR(spawn_cars[item_vehspawn_selected], 0, 0, 0, &v_spawn, false);
+				//WAIT(100);
 				MARK_MODEL_AS_NO_LONGER_NEEDED(spawn_cars[item_vehspawn_selected]);
 
 				float last_spawn_x = spawn_x;
@@ -617,8 +624,9 @@ void EnterMenu(int item_selected)
 							WAIT(0);
 						}
 						LOAD_SCENE(spawn_x, spawn_y, spawn_z);
-						//WAIT(4000);
-						JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, true, headingset);
+						//WAIT(100);
+						veh_cam_set = false;
+						JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, true);
 						while (IS_SCREEN_FADING())
 						{
 							WAIT(0);
@@ -631,9 +639,11 @@ void EnterMenu(int item_selected)
 				}
 				else
 				{
-					JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false, headingset);
+					JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false);
 				}
 				SET_CHAR_VISIBLE(GetPlayerPed(), true);
+				//WAIT(200);
+				//SET_CAM_POS(game_cam, 878.5634, -117.7989, 6.7102);
 			}
 			else if (inVehUpgrade && item_up_selected != 0)
 			{
@@ -708,6 +718,7 @@ void EnterMenu(int item_selected)
 				if (item_col_selected == 0)
 				{
 					draw_menu_set = false;
+					//G_drewrect = true;
 					ColourIndex colour_normal1, colour_normal2, colour_extra1, colour_extra2;
 					GET_CAR_COLOURS(v_modding, &colour_normal1, &colour_normal2);
 					GET_EXTRA_CAR_COLOURS(v_modding, &colour_extra1, &colour_extra2);
@@ -760,7 +771,14 @@ void DoMenu(void)
 {
 	// Debug
 	/*Camera game_cam;
-	GET_GAME_CAM(&game_cam);
+	if (IS_BUTTON_PRESSED(0, BUTTON_DPAD_LEFT))
+	{
+		GET_GAME_CAM_CHILD(&game_cam);
+	}
+	else
+	{
+		GET_GAME_CAM(&game_cam);
+	}
 	float game_cam_x, game_cam_y, game_cam_z, pos_x = 0.05000000, width = 0.30000000, height = 0.30000000;
 	uint r = 255, g = 255, b = 255, a = 110;
 	if (IS_CAM_ACTIVE(game_cam))
@@ -817,7 +835,7 @@ void DoMenu(void)
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.51800000, item_modifytype_selected);
 	*/
-	
+
 	DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
 
 	if (!menu_cam_set)
@@ -903,6 +921,7 @@ void DoMenu(void)
 				item_colnum_selected = 0;
 				veh_change_set = false;
 				draw_menu_set = true;
+				//G_drewrect = false;
 			}
 		}
 	}
