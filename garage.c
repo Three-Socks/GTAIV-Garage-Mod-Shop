@@ -16,9 +16,54 @@ RefGet
 
 uint soundID = 2;
 
+float garagesBlipCoords_x[6], garagesBlipCoords_y[6], garagesBlipCoords_z[6];
+
 void Init(void)
 {
-	Vector3 vStartCoords;
+
+	// Brucie Garage
+	garagesBlipCoords_x[1] = 874.8120;
+	garagesBlipCoords_y[1] = -114.2031;
+	garagesBlipCoords_z[1] = 5.6122;
+
+	// Meadows Park
+	garagesBlipCoords_x[2] = 1775.6616;
+	garagesBlipCoords_y[2] = 836.8135;
+	garagesBlipCoords_z[2] = 16.2557;
+
+	// bohan
+	garagesBlipCoords_x[3] = 303.5034;
+	garagesBlipCoords_y[3] = 1877.3126;
+	garagesBlipCoords_z[3] = 21.5842;
+		
+	// scrapyard
+	garagesBlipCoords_x[4] = -502.4153;
+	garagesBlipCoords_y[4] = 1740.6450;
+	garagesBlipCoords_z[4] = 8.3289;
+
+	// packie MAIN
+	garagesBlipCoords_x[5] = -513.8602;
+	garagesBlipCoords_y[5] = 332.2618;
+	garagesBlipCoords_z[5] = 6.2173;
+
+	// showroom MAIN
+	garagesBlipCoords_x[6] = -1492.3105;
+	garagesBlipCoords_y[6] = 1131.0712;
+	garagesBlipCoords_z[6] = 22.5675;
+
+	int i;
+	for (i = 1; i <= 6; i++)
+	{
+		Blip blipgarage;
+		ADD_BLIP_FOR_COORD(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], &blipgarage);
+		CHANGE_BLIP_DISPLAY(blipgarage, 2);
+		CHANGE_BLIP_SPRITE(blipgarage, 79);
+		CHANGE_BLIP_NAME_FROM_ASCII(blipgarage, "Garage Mod Shop");
+		CHANGE_BLIP_PRIORITY(blipgarage, 0);
+		SET_BLIP_AS_SHORT_RANGE(blipgarage, true);
+	}
+	
+/*	Vector3 vStartCoords;
 	vStartCoords.x = 869.58590000;
 	vStartCoords.y = -121.03340000;
 	vStartCoords.z = 6.00050000;
@@ -44,11 +89,22 @@ void Init(void)
 
 	FLASH_BLIP(blipgarage2, false);
 	CHANGE_BLIP_PRIORITY(blipgarage2, 0);
-	SET_BLIP_AS_SHORT_RANGE(blipgarage2, true);
+	SET_BLIP_AS_SHORT_RANGE(blipgarage2, true);*/
 }
 
 void DoActivators(void)
 {
+	int i;
+	for (i = 1; i <= 6; i++)
+	{
+		DRAW_COLOURED_CYLINDER(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i] - 1, 0.80000000, 0.20000000, 0, 132, 202, 255);
+		if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 1.40000000, 1.40000000, 2.00000000, 0))
+		{
+				G_activateMenu = true;
+				G_garageId = i;
+		}
+	}
+
 	Object garage_object = 0x123;
 
 	Vector3 upGarageCoords, downGarageCoords, currentGarageCoords, currentCharCoords;
@@ -102,7 +158,7 @@ void DoActivators(void)
 		}
 	}
 
-	// Brucie Garage cylinder
+/*	// Brucie Garage cylinder
 	DRAW_COLOURED_CYLINDER(869.01190000, -114.65010000, 6.00540000 - 1, 0.80000000, 0.20000000, 0, 132, 202, 255);
 	if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), 869.01190000, -114.65010000, 6.00540000, 0.80000000, 0.80000000, 2.00000000, 0))
 	{
@@ -124,7 +180,7 @@ void DoActivators(void)
 			G_activateMenu = true;
 			G_garageId = 2;
 	}
-
+*/
 	// Brucie Heli pad down
 	float helidown_x = 791.26930000, helidown_y = 126.93620000, helidown_z = 6.04020000;
 	DRAW_COLOURED_CYLINDER(776.21300000, 153.28020000, 27.57500000 - 2, 0.80000000, 0.20000000, 0, 132, 202, 255);
@@ -158,112 +214,16 @@ void DoActivators(void)
 void main(void)
 {
 	Init();
-
-/* Meadows park (1st island)
-// MAIN
-	garage.main.spawn.x = 1775.6616;
-	garage.main.spawn.y = 836.8135;
-	garage.main.spawn.z = 16.2557;
-	garage.main.spawn.h = 344.5343;
-
-	garage.main.exit.x = garage.main.spawn.x;
-	garage.main.exit.y = garage.main.spawn.y;
-	garage.main.exit.z = garage.main.spawn.z;
-	garage.main.exit.h = garage.main.spawn.h;
-
-	garage.main.quit.x = garage.main.spawn.x;
-	garage.main.quit.y = garage.main.spawn.y;
-	garage.main.quit.z = garage.main.spawn.z;
-	garage.main.quit.h = garage.main.spawn.h;
-
-// Big
-	garage.big.spawn.x = 1780.5695;
-	garage.big.spawn.y = 853.7727;
-	garage.big.spawn.z = 16.2572;
-	garage.big.spawn.h = 77.0736;
-
-	garage.big.exit.x = garage.big.spawn.x;
-	garage.big.exit.y = garage.big.spawn.y;
-	garage.big.exit.z = garage.big.spawn.z;
-	garage.big.exit.h = garage.big.spawn.h;
-
-	garage.big.quit.x = garage.big.spawn.x;
-	garage.big.quit.y = garage.big.spawn.y;
-	garage.big.quit.z = garage.big.spawn.z;
-	garage.big.quit.h = garage.big.spawn.h;
 	
-// HELI
-	garage.heli.spawn.x = 1774.4158;
-	garage.heli.spawn.y = 837.0033;
-	garage.heli.spawn.z = 22.9287;
-	garage.heli.spawn.h = 73.8474;
-
-	garage.heli.exit.x = garage.heli.spawn.x;
-	garage.heli.exit.y = garage.heli.spawn.y;
-	garage.heli.exit.z = garage.heli.spawn.z;
-	garage.heli.exit.h = garage.heli.spawn.h;
-
-	garage.heli.quit.x = garage.heli.spawn.x;
-	garage.heli.quit.y = garage.heli.spawn.y;
-	garage.heli.quit.z = garage.heli.spawn.z;
-	garage.heli.quit.h = garage.heli.spawn.h;
-
-*/
-
-/* Brucie Garage
-// MAIN
-	garage.main.exit.x = 869.0119;
-	garage.main.exit.y = -114.6501;
-	garage.main.exit.z = 5.5054;
-	garage.main.exit.h = 270.0000;
-
-	garage.main.quit.x = 866.3309;
-	garage.main.quit.y = -116.7025;
-	garage.main.quit.z = 6.0054;
-	garage.main.quit.h = 181.0000;
-
-	garage.main.spawn.x = 874.8120;
-	garage.main.spawn.y = -114.2031;
-	garage.main.spawn.z = 5.6122;
-	garage.main.spawn.h = 180.0000;
-
-// BIG
-	garage.big.exit.x = 799.8708;
-	garage.big.exit.y = -161.9819;
-	garage.big.exit.z = 6.1214;
-	garage.big.exit.h = 291.4525;
-
-	garage.big.quit.x = 799.8708;
-	garage.big.quit.y = -161.9819;
-	garage.big.quit.z = 6.1214;
-	garage.big.quit.h = 291.4525;
-
-	garage.big.spawn.x = 807.7111;
-	garage.big.spawn.y = -161.0524;
-	garage.big.spawn.z = 6.4449;
-	garage.big.spawn.h = 335.8888;
-
-// HELI
-	garage.heli.exit.x = 869.0119;
-	garage.heli.exit.y = -114.6501;
-	garage.heli.exit.z = 5.5054;
-	garage.heli.exit.h = 270.0000;
-
-	garage.heli.quit.x = 866.3309;
-	garage.heli.quit.y = -116.7025;
-	garage.heli.quit.z = 6.0054;
-	garage.heli.quit.h = 181.0000;
-
-	garage.heli.spawn.x = 874.8120;
-	garage.heli.spawn.y = -114.2031;
-	garage.heli.spawn.z = 5.6122;
-	garage.heli.spawn.h = 180.0000;
-*/
 	while(true)
 	{
 		WAIT(0);
 		if (G_activateMenu)
 		{
+			if (!G_drewrect)
+			{
+				DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
+			}
 			HIDE_HUD_AND_RADAR_THIS_FRAME();
 			if (!G_scriptloaded)
 			{

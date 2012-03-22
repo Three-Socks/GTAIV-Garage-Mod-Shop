@@ -15,8 +15,6 @@
 #define BUTTON_STICK_LEFT  0x12
 #define BUTTON_STICK_RIGHT  0x13
 
-//bool activateMenu = false;
-
 /*typedef struct _Vector4
 {
 	float x;
@@ -109,17 +107,17 @@ bool menu_cam_set = false;
 bool veh_cam_set = false;
 bool draw_menu_set = true;
 
-int menu_level = 2;
-int item_highlighted = 1;
-int item_selected = 0;
-int item_vehcat_selected = 0;
-int item_vehspawn_selected = 0;
-int item_up_selected = 0;
-int item_colnum_selected = 0;
-int item_col_selected = 0;
-int item_modifytype_selected = 0;
-int item_modify_selected = 0;
-int VehModifyMode = 1;
+uint menu_level = 2;
+//uint item_highlighted = 1;
+uint item_selected = 0;
+uint item_vehcat_selected = 0;
+uint item_vehspawn_selected = 0;
+uint item_up_selected = 0;
+uint item_colnum_selected = 0;
+uint item_col_selected = 0;
+uint item_modifytype_selected = 0;
+uint item_modify_selected = 0;
+uint VehModifyMode = 1;
 
 float spawn_x, spawn_y, spawn_z, spawn_h;
 float exit_x, exit_y, exit_z, exit_h;
@@ -127,6 +125,7 @@ float quit_x, quit_y, quit_z, quit_h;
 
 Vehicle v_spawn;
 Vehicle v_modding;
+
 bool inVehSpawn = false;
 bool inVehMenu = false;
 bool inVehUpgrade = false;
@@ -136,14 +135,16 @@ bool inVehCol = false;
 bool veh_change_set = false;
 
 char *menu_items[16];
-int menu_len;
+uint menu_len;
 uint spawn_cars[15];
 
-typedef struct _rgbcolours
+/*typedef struct _rgbcolours
 {
 	uint r;
 	uint g;
 	uint b;
 } rgbcolours;
 
-rgbcolours car_colours[134];
+rgbcolours car_colours[134];*/
+
+//uint car_colours_r[134], car_colours_g[134], car_colours_b[134];
