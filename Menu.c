@@ -584,9 +584,9 @@ void EnterMenu(int item_selected)
 				)
 				{
 					// Warehouse
-					exit_x = 799.87080000; exit_y = -161.98190000; exit_z = 6.12140000; exit_h = 291.45250000;
-					quit_x = 799.87080000; quit_y = -161.98190000; quit_z = 6.12140000; quit_h = 291.45250000;
-					spawn_x = 807.7111; spawn_y = -161.0524; spawn_z = 6.4449; spawn_h = 335.8888;
+					exit_x = garage_big_exit_x; exit_y = garage_big_exit_y; exit_z = garage_big_exit_z; exit_h = garage_big_exit_h;
+					quit_x = garage_big_quit_x; quit_y = garage_big_quit_y; quit_z = garage_big_quit_z; quit_h = garage_big_quit_h;
+					spawn_x = garage_big_spawn_x; spawn_y = garage_big_spawn_y; spawn_z = garage_big_spawn_z; spawn_h = garage_big_spawn_h;
 					//LOAD_PATH_NODES_IN_AREA(807.7111, -161.0524, 6.4449, 20.00000000);
 					//RELEASE_PATH_NODES();
 				}
@@ -600,16 +600,16 @@ void EnterMenu(int item_selected)
 				else if(item_vehcat_selected == 13)
 				{
 					// Helipad
-					exit_x = 778.40660000, exit_y = 152.24480000, exit_z = 27.83940000, exit_h = 268.0;
-					quit_x = 778.40660000, quit_y = 152.24480000, quit_z = 27.83940000, quit_h = 268.0;
-					spawn_x = 786.53470000; spawn_y = 150.74470000; spawn_z = 27.74790000; spawn_h = 180.0000;
+					exit_x = garage_heli_exit_x; exit_y = garage_heli_exit_y; exit_z = garage_heli_exit_z; exit_h = garage_heli_exit_h;
+					quit_x = garage_heli_quit_x; quit_y = garage_heli_quit_y; quit_z = garage_heli_quit_z; quit_h = garage_heli_quit_h;
+					spawn_x = garage_heli_spawn_x; spawn_y = garage_heli_spawn_y; spawn_z = garage_heli_spawn_z; spawn_h = garage_heli_spawn_h;
 				}
 				else
 				{
 					// Garage
-					exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
-					quit_x = 866.33090000; quit_y = -116.70250000; quit_z = 6.00540000; quit_h = 181.00000000;
-					spawn_x = 874.81200000; spawn_y = -114.20310000; spawn_z = 5.61220000; spawn_h = 180.0;
+					exit_x = garage_main_exit_x; exit_y = garage_main_exit_y; exit_z = garage_main_exit_z; exit_h = garage_main_exit_h;
+					quit_x = garage_main_quit_x; quit_y = garage_main_quit_y; quit_z = garage_main_quit_z; quit_h = garage_main_quit_h;
+					spawn_x = garage_main_spawn_x; spawn_y = garage_main_spawn_y; spawn_z = garage_main_spawn_z; spawn_h = garage_main_spawn_h;
 				}
 
 				if (last_spawn_x != spawn_x)
