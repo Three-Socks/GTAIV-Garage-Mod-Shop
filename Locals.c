@@ -15,9 +15,95 @@
 #define BUTTON_STICK_LEFT  0x12
 #define BUTTON_STICK_RIGHT  0x13
 
-uint soundID = 2;
-
 //bool activateMenu = false;
+
+/*typedef struct _Vector4
+{
+	float x;
+	float y;
+	float z;
+	float h;
+} Vector4;
+
+typedef struct _GarageCoord
+{
+	Vector4 exit;
+	Vector4 quit;
+	Vector4 spawn;
+} GarageCoord;
+
+typedef struct _GarageArea
+{
+	GarageCoord main;
+	GarageCoord big;
+	GarageCoord heli;
+} GarageArea;
+
+GarageArea garage;*/
+
+// MAIN
+	float garage_main_exit_x,
+	garage_main_exit_y,
+	garage_main_exit_z,
+	garage_main_exit_h,
+
+	garage_main_quit_x,
+	garage_main_quit_y,
+	garage_main_quit_z,
+	garage_main_quit_h,
+
+	garage_main_spawn_x,
+	garage_main_spawn_y,
+	garage_main_spawn_z,
+	garage_main_spawn_h,
+
+// BIG
+	garage_big_exit_x,
+	garage_big_exit_y,
+	garage_big_exit_z,
+	garage_big_exit_h,
+
+	garage_big_quit_x,
+	garage_big_quit_y,
+	garage_big_quit_z,
+	garage_big_quit_h,
+
+	garage_big_spawn_x,
+	garage_big_spawn_y,
+	garage_big_spawn_z,
+	garage_big_spawn_h,
+
+// BOAT
+	garage_boat_exit_x,
+	garage_boat_exit_y,
+	garage_boat_exit_z,
+	garage_boat_exit_h,
+
+	garage_boat_quit_x,
+	garage_boat_quit_y,
+	garage_boat_quit_z,
+	garage_boat_quit_h,
+
+	garage_boat_spawn_x,
+	garage_boat_spawn_y,
+	garage_boat_spawn_z,
+	garage_boat_spawn_h,
+
+// HELI
+	garage_heli_exit_x,
+	garage_heli_exit_y,
+	garage_heli_exit_z,
+	garage_heli_exit_h,
+
+	garage_heli_quit_x,
+	garage_heli_quit_y,
+	garage_heli_quit_z,
+	garage_heli_quit_h,
+
+	garage_heli_spawn_x,
+	garage_heli_spawn_y,
+	garage_heli_spawn_z,
+	garage_heli_spawn_h;
 
 bool menu_cam_set = false;
 bool veh_cam_set = false;
@@ -61,29 +147,3 @@ typedef struct _rgbcolours
 } rgbcolours;
 
 rgbcolours car_colours[134];
-
-/*
-typedef struct _Vector4
-{
-	float x;
-	float y;
-	float z;
-	float h;
-} Vector4;
-
-typedef struct _GarageCoord
-{
-	Vector4 exit;
-	Vector4 quit;
-	Vector4 spawn;
-	bool placeauto;
-} GarageCoord;
-
-typedef struct _GarageArea
-{
-	GarageCoord main;
-	GarageCoord big;
-	GarageCoord heli;
-} GarageArea;
-
-GarageArea garage;*/

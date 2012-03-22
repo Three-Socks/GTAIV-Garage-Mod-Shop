@@ -5,6 +5,10 @@ void LocateVehicle(float warp_x, float warp_y, float warp_z)
 	{
 		v_modding = v_spawn;
 	}
+	else if (IS_CHAR_IN_ANY_CAR(GetPlayerPed()))
+	{
+		GET_CAR_CHAR_IS_USING(GetPlayerPed(), &v_modding);
+	}
 	else
 	{
 		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 70);
