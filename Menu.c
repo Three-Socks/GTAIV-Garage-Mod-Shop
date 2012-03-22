@@ -1,86 +1,26 @@
-void DrawPalette(void)
-{
-	int I;
-	int rows = 0;
-	float Ipos_x = 0.05400000;
-	float Ipos_y = 0.06350000;
-	uint r, g, b, a;
-
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT) && item_highlighted != 1)
-	{
-		item_highlighted = item_highlighted - 1;
-	}
-
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT) && item_highlighted != 133)
-	{
-		item_highlighted = item_highlighted + 1;
-	}
-
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_UP))
-	{
-		if (item_highlighted > 6)
-			item_highlighted = item_highlighted - 7;
-	}
-
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_DOWN))
-	{
-		if (item_highlighted < 127)
-			item_highlighted = item_highlighted + 7;
-	}
-
-	//DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
-
-	for (I = 1; I < 134; I++)
-	{
-		r = car_colours[I].r, g = car_colours[I].g, b = car_colours[I].b, a = 255;
-
-		if (I != 1)
-		{
-			Ipos_x = Ipos_x + 0.03200000;
-			if (rows == 7)
-			{
-				Ipos_x = 0.05400000;
-				Ipos_y = Ipos_y + 0.03200000;
-				rows = 0;
-			}
-		}
-
-		if (item_highlighted == I)
-		{
-			DRAW_RECT(Ipos_x, Ipos_y, 0.03300000, 0.03300000, 255, 255, 255, a);
-		}
-
-		rows++;
-
-		DRAW_RECT(Ipos_x, Ipos_y, 0.02900000, 0.02900000, r, g, b, a);
-
-	}
-
-}
-
 void DrawMenu(int array_len)
 {
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_DOWN))
 	{
-		if (item_highlighted == array_len)
+		if (G_item_highlighted == array_len)
 		{
-			item_highlighted = 1;
+			G_item_highlighted = 1;
 		}
 		else
 		{
-			item_highlighted++;
+			G_item_highlighted++;
 		}
 	}
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_UP))
 	{
-		if (item_highlighted == 1)
+		if (G_item_highlighted == 1)
 		{
-			item_highlighted = array_len;
+			G_item_highlighted = array_len;
 		}
 		else
 		{
-			item_highlighted--;
+			G_item_highlighted--;
 		}
 	}
 
@@ -101,7 +41,7 @@ void DrawMenu(int array_len)
 				b = 255;
 				Ipos_y = Ipos_y + 0.04000000;
 
-				if (item_highlighted == I)
+				if (G_item_highlighted == I)
 				{
 					r = 253;
 					g = 160;
@@ -153,7 +93,7 @@ void DrawMenu(int array_len)
 			b = 255;
 			Ipos_y = Ipos_y + 0.04000000;
 
-			if (item_highlighted == I)
+			if (G_item_highlighted == I)
 			{
 				r = 253;
 				g = 160;
@@ -220,7 +160,7 @@ void DrawMenu(int array_len)
 			b = 255;
 			Ipos_y = Ipos_y + 0.04000000;
 
-			if (item_highlighted == I)
+			if (G_item_highlighted == I)
 			{
 				r = 253;
 				g = 160;
@@ -245,7 +185,7 @@ void ExitMenu(void)
 	// Don't think this is needed no more.
 	/*spawn_x = 874.81200000; spawn_y = -114.20310000; spawn_z = 5.61220000; spawn_h = 180.0;
 	exit_x = 869.01190000; exit_y = -114.65010000; exit_z = 5.50540000; exit_h = 270.00000000;
-	item_highlighted = 1;
+	G_item_highlighted = 1;
 	item_selected = 0;
 	menu_level = 2;
 	menu_cam_set = false;
@@ -304,7 +244,7 @@ void EnterMenu(int item_selected)
 			{
 				menu_len = 9;
 				inVehUpgrade = true;
-				item_highlighted = 1;
+				G_item_highlighted = 1;
 				menu_level = 5;
 			}
 			return;
@@ -316,7 +256,7 @@ void EnterMenu(int item_selected)
 				menu_items[1] = "Doors";
 				menu_len = 1;
 				inVehModify = true;
-				item_highlighted = 1;
+				G_item_highlighted = 1;
 				menu_level = 4;
 			}
 			return;
@@ -337,7 +277,7 @@ void EnterMenu(int item_selected)
 				menu_items[4] = "Specular Color 2";
 				menu_len = 4;
 				menu_level = 4;
-				item_highlighted = 1;
+				G_item_highlighted = 1;
 				inVehCol = true;
 			}
 			return;
@@ -541,6 +481,7 @@ void EnterMenu(int item_selected)
 			{
 				menu_len = 7;
 				inVModifyDoors = true;
+				CLEAR_CHAR_SECONDARY_TASK(GetPlayerPed());
 			}
 			//else if (item_modifytype_selected == 2)
 			//{
@@ -558,6 +499,11 @@ void EnterMenu(int item_selected)
 				
 				SET_RANDOM_CAR_DENSITY_MULTIPLIER(0.0000);
 				SET_CHAR_VISIBLE(GetPlayerPed(), false);
+
+				if (DOES_VEHICLE_EXIST(v_modding))
+				{
+					DELETE_CAR(&v_modding);
+				}
 
 				if (DOES_VEHICLE_EXIST(v_spawn))
 				{
@@ -718,19 +664,19 @@ void EnterMenu(int item_selected)
 				if (item_col_selected == 0)
 				{
 					draw_menu_set = false;
-					//G_drewrect = true;
+					G_drewrect = true;
 					ColourIndex colour_normal1, colour_normal2, colour_extra1, colour_extra2;
 					GET_CAR_COLOURS(v_modding, &colour_normal1, &colour_normal2);
 					GET_EXTRA_CAR_COLOURS(v_modding, &colour_extra1, &colour_extra2);
 
 					if (item_colnum_selected == 1)
-						item_highlighted = colour_normal1 + 1;
+						G_item_highlighted = colour_normal1 + 1;
 					else if (item_selected == 2)
-						item_highlighted = colour_normal2 + 1;
+						G_item_highlighted = colour_normal2 + 1;
 					else if (item_colnum_selected == 3)
-						item_highlighted = colour_extra1 + 1;
+						G_item_highlighted = colour_extra1 + 1;
 					else if (item_colnum_selected == 4)
-						item_highlighted = colour_extra2 + 1;
+						G_item_highlighted = colour_extra2 + 1;
 				}
 				if (item_col_selected != 0 && item_colnum_selected != 0)
 				{
@@ -795,7 +741,7 @@ void DoMenu(void)
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.08800000, menu_level);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.12800000, item_highlighted);
+	draw_number("NUMBR", 0.58700000, 0.12800000, G_item_highlighted);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.16800000, item_selected);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -836,7 +782,7 @@ void DoMenu(void)
 	draw_number("NUMBR", 0.58700000, 0.51800000, item_modifytype_selected);
 	*/
 
-	DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
+	//DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
 
 	if (!menu_cam_set)
 	{
@@ -851,7 +797,7 @@ void DoMenu(void)
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_O))
 	{
-		item_highlighted = 1;
+		G_item_highlighted = 1;
 		item_selected = 0;
 
 		if (menu_level == 3)
@@ -921,7 +867,10 @@ void DoMenu(void)
 				item_colnum_selected = 0;
 				veh_change_set = false;
 				draw_menu_set = true;
-				//G_drewrect = false;
+				G_drewrect = false;
+
+				G_scriptloadedpalette = false;
+				TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("garage_menu_palette");
 			}
 		}
 	}
@@ -930,17 +879,17 @@ void DoMenu(void)
 	{
 		if (inVehMenu && item_vehcat_selected != 0)
 		{
-			item_vehspawn_selected = item_highlighted;
+			item_vehspawn_selected = G_item_highlighted;
 			veh_change_set = false;
 		}
 		else if (inVehCol && item_colnum_selected != 0)
 		{
-			item_col_selected = item_highlighted;
+			item_col_selected = G_item_highlighted;
 			veh_change_set = false;
 		}
 		else if (inVModifyDoors && item_modifytype_selected != 0)
 		{
-			item_modify_selected = item_highlighted;
+			item_modify_selected = G_item_highlighted;
 			if (item_modify_selected == 1)
 			{
 				if (VehModifyMode == 1)
@@ -956,12 +905,12 @@ void DoMenu(void)
 		}
 		else if (inVehUpgrade)
 		{
-			item_up_selected = item_highlighted;
+			item_up_selected = G_item_highlighted;
 			veh_change_set = false;
 		}
 		else
 		{
-			item_selected = item_highlighted;
+			item_selected = G_item_highlighted;
 		}
 
 		if (menu_level == 2)
@@ -976,18 +925,18 @@ void DoMenu(void)
 		{
 			if (inVehSpawn)
 			{
-				item_vehcat_selected = item_highlighted;
-				item_highlighted = 1;
+				item_vehcat_selected = G_item_highlighted;
+				G_item_highlighted = 1;
 				menu_level = 5;
 			}
 			else if (inVehModify)
 			{
-				item_modifytype_selected = item_highlighted;
+				item_modifytype_selected = G_item_highlighted;
 				menu_level = 5;
 			}
 			else if (inVehCol)
 			{
-				item_colnum_selected = item_highlighted;
+				item_colnum_selected = G_item_highlighted;
 				menu_level = 5;
 			}
 		}
@@ -999,7 +948,25 @@ void DoMenu(void)
 	}
 	else if (inVehCol)
 	{
-		DrawPalette();
+		if (!G_scriptloadedpalette)
+		{
+			if ((GET_NUMBER_OF_INSTANCES_OF_STREAMED_SCRIPT("garage_menu_palette")) >= 1)
+			{
+				G_scriptloadedpalette = true;
+			}
+			else
+			{
+				REQUEST_SCRIPT("garage_menu_palette");
+				while (!HAS_SCRIPT_LOADED("garage_menu_palette"))
+				{
+					REQUEST_SCRIPT("garage_menu_palette");
+					WAIT(0);
+				}
+				START_NEW_SCRIPT("garage_menu_palette", 1024);
+				MARK_SCRIPT_AS_NO_LONGER_NEEDED("garage_menu_palette");
+				G_scriptloadedpalette = true;
+			}
+		}
 	}
 
 	// Not sure if it will stop the main while loop.
