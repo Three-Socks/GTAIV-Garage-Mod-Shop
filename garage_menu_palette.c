@@ -560,26 +560,26 @@ void DrawPalette(void)
 	float Ipos_y = 0.06350000;
 	uint r, g, b, a;
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT) && G_item_highlighted != 1)
+	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT) && G_item_highlighted[2398] != 1)
 	{
-		G_item_highlighted = G_item_highlighted - 1;
+		G_item_highlighted[2398] = G_item_highlighted[2398] - 1;
 	}
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT) && G_item_highlighted != 133)
+	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT) && G_item_highlighted[2398] != 133)
 	{
-		G_item_highlighted = G_item_highlighted + 1;
+		G_item_highlighted[2398] = G_item_highlighted[2398] + 1;
 	}
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_UP))
 	{
-		if (G_item_highlighted > 6)
-			G_item_highlighted = G_item_highlighted - 7;
+		if (G_item_highlighted[2398] > 6)
+			G_item_highlighted[2398] = G_item_highlighted[2398] - 7;
 	}
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_DOWN))
 	{
-		if (G_item_highlighted < 127)
-			G_item_highlighted = G_item_highlighted + 7;
+		if (G_item_highlighted[2398] < 127)
+			G_item_highlighted[2398] = G_item_highlighted[2398] + 7;
 	}
 
 	DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
@@ -599,7 +599,7 @@ void DrawPalette(void)
 			}
 		}
 
-		if (G_item_highlighted == I)
+		if (G_item_highlighted[2398] == I)
 		{
 			DRAW_RECT(Ipos_x, Ipos_y, 0.03300000, 0.03300000, 255, 255, 255, a);
 		}
