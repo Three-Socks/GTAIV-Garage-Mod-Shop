@@ -16,15 +16,22 @@ RefGet
 
 uint soundID = 2;
 
-float garagesBlipCoords_x[6], garagesBlipCoords_y[6], garagesBlipCoords_z[6];
+float garagesBlipCoords_x[7], garagesBlipCoords_y[7], garagesBlipCoords_z[7];
 
 void Init(void)
 {
+	G_scriptloaded[2398] = false;
+	G_scriptloadedpalette[2398] = false;
+	G_activateMenu[2398] = false;
+	G_doneExitCheck[2398] = false;
+	G_drewrect[2398] = false;
+	G_garageId[2398] = 0;
+	G_item_highlighted[2398] = 0;
 
 	// Brucie Garage
-	garagesBlipCoords_x[1] = 874.8120;
-	garagesBlipCoords_y[1] = -114.2031;
-	garagesBlipCoords_z[1] = 5.6122;
+	garagesBlipCoords_x[1] = 869.0119;
+	garagesBlipCoords_y[1] = -114.6501;
+	garagesBlipCoords_z[1] = 5.5054;
 
 	// Meadows Park
 	garagesBlipCoords_x[2] = 1775.6616;
@@ -52,7 +59,7 @@ void Init(void)
 	garagesBlipCoords_z[6] = 22.5675;
 
 	int i;
-	for (i = 1; i <= 6; i++)
+	for (i = 1; i < 7; i++)
 	{
 		Blip blipgarage;
 		ADD_BLIP_FOR_COORD(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], &blipgarage);
@@ -95,13 +102,13 @@ void Init(void)
 void DoActivators(void)
 {
 	int i;
-	for (i = 1; i <= 6; i++)
+	for (i = 1; i < 7; i++)
 	{
 		DRAW_COLOURED_CYLINDER(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i] - 1, 0.80000000, 0.20000000, 0, 132, 202, 255);
 		if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 1.40000000, 1.40000000, 2.00000000, 0))
 		{
-				G_activateMenu = true;
-				G_garageId = i;
+				G_activateMenu[2398] = true;
+				G_garageId[2398] = i;
 		}
 	}
 
@@ -218,18 +225,18 @@ void main(void)
 	while(true)
 	{
 		WAIT(0);
-		if (G_activateMenu)
+		if (G_activateMenu[2398])
 		{
-			if (!G_drewrect)
+			if (!G_drewrect[2398])
 			{
 				DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
 			}
 			HIDE_HUD_AND_RADAR_THIS_FRAME();
-			if (!G_scriptloaded)
+			if (!G_scriptloaded[2398])
 			{
 				if ((GET_NUMBER_OF_INSTANCES_OF_STREAMED_SCRIPT("garage_menu")) >= 1)
 				{
-					G_scriptloaded = true;
+					G_scriptloaded[2398] = true;
 				}
 				else
 				{
@@ -242,7 +249,7 @@ void main(void)
 					START_NEW_SCRIPT("garage_menu", 1024);
 					//START_NEW_SCRIPT_WITH_ARGS("garage_menu", &G_testarg, 1, 1024);
 					MARK_SCRIPT_AS_NO_LONGER_NEEDED("garage_menu");
-					G_scriptloaded = true;
+					G_scriptloaded[2398] = true;
 				}
 			}
 		}
