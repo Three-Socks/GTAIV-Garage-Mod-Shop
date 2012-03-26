@@ -13,6 +13,8 @@
 
 void Init(void)
 {
+	CLEAR_PRINTS();
+	CLEAR_HELP();
 
 // Brucie Garage
 // Brucie MAIN
@@ -104,12 +106,12 @@ void Init(void)
 		garage_big_spawn_z = 16.2572;
 		garage_big_spawn_h = 77.0736;
 
-		garage_big_exit_x = garage_big_spawn_x - 2;
+		garage_big_exit_x = garage_big_spawn_x + 2;
 		garage_big_exit_y = garage_big_spawn_y;
 		garage_big_exit_z = garage_big_spawn_z;
 		garage_big_exit_h = garage_big_spawn_h;
 
-		garage_big_quit_x = garage_big_spawn_x - 2;
+		garage_big_quit_x = garage_big_spawn_x + 2;
 		garage_big_quit_y = garage_big_spawn_y;
 		garage_big_quit_z = garage_big_spawn_z;
 		garage_big_quit_h = garage_big_spawn_h;
@@ -136,12 +138,12 @@ void Init(void)
 		garage_heli_spawn_z = 22.9287;
 		garage_heli_spawn_h = 73.8474;
 
-		garage_heli_exit_x = garage_heli_spawn_x - 5;
+		garage_heli_exit_x = garage_heli_spawn_x + 5;
 		garage_heli_exit_y = garage_heli_spawn_y;
 		garage_heli_exit_z = garage_heli_spawn_z;
 		garage_heli_exit_h = garage_heli_spawn_h;
 
-		garage_heli_quit_x = garage_heli_spawn_x - 5;
+		garage_heli_quit_x = garage_heli_spawn_x + 5;
 		garage_heli_quit_y = garage_heli_spawn_y;
 		garage_heli_quit_z = garage_heli_spawn_z;
 		garage_heli_quit_h = garage_heli_spawn_h;
@@ -204,12 +206,12 @@ void Init(void)
 		garage_heli_spawn_h = 269.7008;
 
 		garage_heli_exit_x = garage_heli_spawn_x;
-		garage_heli_exit_y = garage_heli_spawn_y - 4;
+		garage_heli_exit_y = garage_heli_spawn_y + 4;
 		garage_heli_exit_z = garage_heli_spawn_z;
 		garage_heli_exit_h = garage_heli_spawn_h;
 
 		garage_heli_quit_x = garage_heli_spawn_x;
-		garage_heli_quit_y = garage_heli_spawn_y - 4;
+		garage_heli_quit_y = garage_heli_spawn_y + 4;
 		garage_heli_quit_z = garage_heli_spawn_z;
 		garage_heli_quit_h = garage_heli_spawn_h;
 	}
@@ -222,12 +224,12 @@ void Init(void)
 		garage_main_spawn_z = 8.3289;
 		garage_main_spawn_h = 211.6515;
 
-		garage_main_exit_x = garage_main_spawn_x;
+		garage_main_exit_x = garage_main_spawn_x + 4;
 		garage_main_exit_y = garage_main_spawn_y;
 		garage_main_exit_z = garage_main_spawn_z;
 		garage_main_exit_h = garage_main_spawn_h;
 
-		garage_main_quit_x = garage_main_spawn_x;
+		garage_main_quit_x = garage_main_spawn_x + 4;
 		garage_main_quit_y = garage_main_spawn_y;
 		garage_main_quit_z = garage_main_spawn_z;
 		garage_main_quit_h = garage_main_spawn_h;
@@ -238,12 +240,12 @@ void Init(void)
 		garage_big_spawn_z = garage_main_spawn_z;
 		garage_big_spawn_h = garage_main_spawn_h;
 
-		garage_big_exit_x = garage_main_spawn_x;
+		garage_big_exit_x = garage_main_spawn_x + 4;
 		garage_big_exit_y = garage_main_spawn_y;
 		garage_big_exit_z = garage_main_spawn_z;
 		garage_big_exit_h = garage_main_spawn_h;
 
-		garage_big_quit_x = garage_main_spawn_x;
+		garage_big_quit_x = garage_main_spawn_x + 4;
 		garage_big_quit_y = garage_main_spawn_y;
 		garage_big_quit_z = garage_main_spawn_z;
 		garage_big_quit_h = garage_main_spawn_h;
@@ -270,12 +272,12 @@ void Init(void)
 		garage_heli_spawn_z = garage_main_spawn_z;
 		garage_heli_spawn_h = garage_main_spawn_h;
 
-		garage_heli_exit_x = garage_main_spawn_x;
+		garage_heli_exit_x = garage_main_spawn_x + 4;
 		garage_heli_exit_y = garage_main_spawn_y;
 		garage_heli_exit_z = garage_main_spawn_z;
 		garage_heli_exit_h = garage_main_spawn_h;
 
-		garage_heli_quit_x = garage_main_spawn_x;
+		garage_heli_quit_x = garage_main_spawn_x + 4;
 		garage_heli_quit_y = garage_main_spawn_y;
 		garage_heli_quit_z = garage_main_spawn_z;
 		garage_heli_quit_h = garage_main_spawn_h;

@@ -12,6 +12,13 @@ PushS 9088
 GlobalVar
 RefGet
 
+
+EFLC
+
+PushS 10438
+GlobalVar
+RefGet
+
 */
 
 uint soundID = 2;
@@ -104,8 +111,8 @@ void DoActivators(void)
 	int i;
 	for (i = 1; i < 7; i++)
 	{
-		DRAW_COLOURED_CYLINDER(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i] - 1, 0.80000000, 0.20000000, 0, 132, 202, 255);
-		if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 1.40000000, 1.40000000, 2.00000000, 0))
+		DRAW_COLOURED_CYLINDER(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 0.80000000, 0.20000000, 0, 132, 202, 255);
+		if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 1.00000000, 1.00000000, 2.00000000, 0))
 		{
 				G_activateMenu[2398] = true;
 				G_garageId[2398] = i;
