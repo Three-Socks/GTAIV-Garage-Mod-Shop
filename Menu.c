@@ -233,7 +233,15 @@ void EnterMenu(int item_selected)
 			menu_items[11] = "Motorcycles";
 			menu_items[12] = "Boats";
 			menu_items[13] = "Aircraft";
-			menu_len = 13;
+			if (GET_CURRENT_EPISODE == 2)
+			{
+				menu_items[14] = "The Ballad of Gay Tony";
+				menu_len = 14;
+			}
+			else
+			{
+				menu_len = 13;
+			}
 			menu_level = 4;
 			inVehSpawn = true;
 			return;
@@ -295,7 +303,7 @@ void EnterMenu(int item_selected)
 	}
 	else if (menu_level == 5)
 	{
-		if (inVehSpawn && item_vehcat_selected != 0)
+		if (inVehSpawn && !inVehSpawn2 && item_vehcat_selected != 0)
 		{
 			if (item_vehcat_selected == 1)
 			{
@@ -470,6 +478,18 @@ void EnterMenu(int item_selected)
 				spawn_cars[4] = MODEL_POLMAV;
 				menu_len = 4;
 			}
+			else if (item_vehcat_selected == 14 && GET_CURRENT_EPISODE == 2)
+			{
+				menu_items[1] = "Cars";
+				menu_items[2] = "...Cars";
+				menu_items[3] = "Motorcycles";
+				menu_items[4] = "Boats";
+				menu_items[5] = "Aircraft";
+				menu_len = 5;
+				menu_level = 6;
+				inVehSpawn2 = true;
+				return;
+			}
 			inVehMenu = true;
 		}
 		else if (inVehModify && item_modifytype_selected != 0)
@@ -478,7 +498,7 @@ void EnterMenu(int item_selected)
 			{
 				menu_len = 7;
 				inVModifyDoors = true;
-				CLEAR_CHAR_SECONDARY_TASK(GetPlayerPed());
+				//CLEAR_CHAR_SECONDARY_TASK(GetPlayerPed());
 			}
 			//else if (item_modifytype_selected == 2)
 			//{
@@ -489,12 +509,7 @@ void EnterMenu(int item_selected)
 		{
 			if (inVehMenu && item_vehspawn_selected != 0)
 			{
-				//Camera game_cam;
-				//float cam_x, cam_y, cam_z;
-				//GET_GAME_CAM(&game_cam);
-				//GET_CAM_POS(game_cam, &cam_x, &cam_y, &cam_z);
-				
-				SET_RANDOM_CAR_DENSITY_MULTIPLIER(0.0000);
+		    SET_CAR_GENERATORS_ACTIVE_IN_AREA(-9999.90000000, -9999.90000000, -9999.90000000, 9999.90000000, 9999.90000000, 9999.90000000, 0);
 				SET_CHAR_VISIBLE(GetPlayerPed(), false);
 
 				if (DOES_VEHICLE_EXIST(v_modding))
@@ -530,17 +545,15 @@ void EnterMenu(int item_selected)
 					exit_x = garage_big_exit_x; exit_y = garage_big_exit_y; exit_z = garage_big_exit_z; exit_h = garage_big_exit_h;
 					quit_x = garage_big_quit_x; quit_y = garage_big_quit_y; quit_z = garage_big_quit_z; quit_h = garage_big_quit_h;
 					spawn_x = garage_big_spawn_x; spawn_y = garage_big_spawn_y; spawn_z = garage_big_spawn_z; spawn_h = garage_big_spawn_h;
-					//LOAD_PATH_NODES_IN_AREA(807.7111, -161.0524, 6.4449, 20.00000000);
-					//RELEASE_PATH_NODES();
 				}
-				else if (item_vehcat_selected == 12)
+				else if (IS_THIS_MODEL_A_BOAT(spawn_cars[item_vehspawn_selected]))
 				{
 					// Jetty
-					exit_x = 696.34010000; exit_y = -147.73820000; exit_z = 1.48330000; exit_h = 154.97670000;
-					quit_x = 696.34010000; quit_y = -147.73820000; quit_z = 1.48330000; quit_h = 154.97670000;
-					spawn_x = 698.8500; spawn_y = -153.6000; spawn_z = 0.0000; spawn_h = 61.3000;
+					exit_x = garage_boat_exit_x; exit_y = garage_boat_exit_y; exit_z = garage_boat_exit_z; exit_h = garage_boat_exit_h;
+					quit_x = garage_boat_quit_x; quit_y = garage_boat_quit_y; quit_z = garage_boat_quit_z; quit_h = garage_boat_quit_h;
+					spawn_x = garage_boat_spawn_x; spawn_y = garage_boat_spawn_y; spawn_z = garage_boat_spawn_z; spawn_h = garage_boat_spawn_h;
 				}
-				else if(item_vehcat_selected == 13)
+				else if(IS_THIS_MODEL_A_HELI(spawn_cars[item_vehspawn_selected]))
 				{
 					// Helipad
 					exit_x = garage_heli_exit_x; exit_y = garage_heli_exit_y; exit_z = garage_heli_exit_z; exit_h = garage_heli_exit_h;
@@ -585,8 +598,6 @@ void EnterMenu(int item_selected)
 					JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false);
 				}
 				SET_CHAR_VISIBLE(GetPlayerPed(), true);
-				//WAIT(200);
-				//SET_CAM_POS(game_cam, 878.5634, -117.7989, 6.7102);
 			}
 			else if (inVehUpgrade && item_up_selected != 0)
 			{
@@ -634,14 +645,6 @@ void EnterMenu(int item_selected)
 					LOCK_CAR_DOORS(v_modding, 1);
 					float doorangle;
 					GET_DOOR_ANGLE_RATIO(v_modding, item_modify_selected - 2, &doorangle);
-					/*if (doorangle >= 0.5000)
-					{
-						CONTROL_CAR_DOOR(v_modding, item_modify_selected - 2, 1, 0.0000);
-					}
-					else if (doorangle <= 0.5000)
-					{
-						CONTROL_CAR_DOOR(v_modding, item_modify_selected - 2, 1, 1.0000);
-					}*/
 
 					if (!IS_CAR_DOOR_DAMAGED(v_modding, item_modify_selected - 2) && doorangle >= 0.5000)
 					{
@@ -651,9 +654,6 @@ void EnterMenu(int item_selected)
 					{
 						OPEN_CAR_DOOR(v_modding, item_modify_selected - 2);
 					}
-					//WAIT(20);
-					//FREEZE_CAR_POSITION(v_modding, 1);
-					//LOCK_CAR_DOORS(v_modding, 4);
 				}
 			}
 			else if (inVehCol)
@@ -707,6 +707,71 @@ void EnterMenu(int item_selected)
 			veh_change_set = true;
 		}
 		return;
+	}
+	else if (menu_level == 6)
+	{
+		return;
+	}
+	else if (menu_level == 7)
+	{
+		if (inVehSpawn2 && item_vehcat_selected != 0)
+		{
+			if (item_vehcat_selected == 1)
+			{
+				spawn_cars[1] = MODEL_SLAMVAN;
+				spawn_cars[2] = MODEL_CADDY;
+				spawn_cars[3] = MODEL_APC;
+				spawn_cars[4] = MODEL_SUPERD;
+				spawn_cars[5] = MODEL_SUPERD2;
+				spawn_cars[6] = MODEL_SERRANO;
+				spawn_cars[7] = MODEL_SERRANO2;
+				spawn_cars[8] = MODEL_BUFFALO;
+				spawn_cars[9] = MODEL_AVAN;
+				spawn_cars[10] = MODEL_SCHAFTER2;
+				spawn_cars[11] = MODEL_SCHAFTER3;
+				spawn_cars[12] = MODEL_BULLET;
+				spawn_cars[13] = MODEL_TAMPA;
+				spawn_cars[14] = MODEL_CAVALCADE2;
+				menu_len = 14;
+			}
+			else if (item_vehcat_selected == 2)
+			{
+				spawn_cars[1] = MODEL_F620;
+				spawn_cars[2] = MODEL_LIMO2;
+				spawn_cars[3] = MODEL_POLICE3;
+				spawn_cars[4] = MODEL_POLICEW;
+				spawn_cars[5] = MODEL_POLICE4;
+				spawn_cars[6] = MODEL_POLICEB;
+				menu_len = 6;
+			}
+			else if (item_vehcat_selected == 3)
+			{
+				spawn_cars[1] = MODEL_HEXER;
+				spawn_cars[2] = MODEL_FAGGIO2;
+				spawn_cars[3] = MODEL_BATI2;
+				spawn_cars[4] = MODEL_VADER;
+				spawn_cars[5] = MODEL_AKUMA;
+				spawn_cars[6] = MODEL_HAKUCHOU;
+				spawn_cars[7] = MODEL_DOUBLE;
+				menu_len = 7;
+			}
+			else if (item_vehcat_selected == 4)
+			{
+				spawn_cars[1] = MODEL_BUZZARD;
+				spawn_cars[2] = MODEL_SWIFT;
+				spawn_cars[3] = MODEL_SKYLIFT;
+				menu_len = 3;
+			}
+			else if (item_vehcat_selected == 5)
+			{
+				spawn_cars[1] = MODEL_SMUGGLER;
+				spawn_cars[2] = MODEL_FLOATER;
+				spawn_cars[3] = MODEL_BLADE;
+				menu_len = 3;
+			}
+			menu_level = 5;
+			return;
+		}
 	}
 }
 
@@ -834,8 +899,9 @@ void DoMenu(void)
 				item_vehcat_selected = 0;
 				item_vehspawn_selected = 0;
 				inVehMenu = false;
+				inVehSpawn2 = false;
 				veh_change_set = false;
-				SET_RANDOM_CAR_DENSITY_MULTIPLIER(1.0000);
+				SET_ALL_CAR_GENERATORS_BACK_TO_ACTIVE();
 				JumpOutVehicle(exit_x, exit_y, exit_z);
 			}
 			else if (inVehUpgrade)
@@ -868,6 +934,16 @@ void DoMenu(void)
 
 				G_scriptloadedpalette[2398] = false;
 				TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("garage_menu_palette");
+			}
+		}
+		else if (menu_level == 6)
+		{
+			if (inVehSpawn2)
+			{
+				menu_level = 3;
+				item_selected = 1;
+				menu_len = 14;
+				inVehSpawn2 = false;
 			}
 		}
 	}
@@ -935,6 +1011,15 @@ void DoMenu(void)
 			{
 				item_colnum_selected = G_item_highlighted[2398];
 				menu_level = 5;
+			}
+		}
+		else if (menu_level == 6)
+		{
+			if (inVehSpawn2)
+			{
+				item_vehcat_selected = G_item_highlighted[2398];
+				G_item_highlighted[2398] = 1;
+				menu_level = 7;
 			}
 		}
 	}
