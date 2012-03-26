@@ -25,7 +25,7 @@ void Init(void)
 
 	garage_main_exit_x = 869.0119;
 	garage_main_exit_y = -114.6501;
-	garage_main_exit_z = 5.5054;
+	garage_main_exit_z = 5.4054;
 	garage_main_exit_h = 270.0000;
 
 	garage_main_quit_x = 866.3309;
@@ -41,7 +41,7 @@ void Init(void)
 
 	garage_big_exit_x = 799.8708;
 	garage_big_exit_y = -161.9819;
-	garage_big_exit_z = 6.1214;
+	garage_big_exit_z = 5.8214;
 	garage_big_exit_h = 291.4525;
 
 	garage_big_quit_x = garage_big_exit_x;
@@ -55,10 +55,10 @@ void Init(void)
 	garage_boat_spawn_z = 0.0000;
 	garage_boat_spawn_h = 61.3000;
 	
-	garage_boat_exit_x = 696.34010000;
-	garage_boat_exit_y = -147.73820000;
-	garage_boat_exit_z = 1.48330000;
-	garage_boat_exit_h = 154.97670000;
+	garage_boat_exit_x = 696.3401;
+	garage_boat_exit_y = -147.7382;
+	garage_boat_exit_z = 1.2833;
+	garage_boat_exit_h = 154.9767;
 
 	garage_boat_quit_x = garage_boat_exit_x;
 	garage_boat_quit_y = garage_boat_exit_y;
@@ -73,7 +73,7 @@ void Init(void)
 
 	garage_heli_exit_x = 778.4066;
 	garage_heli_exit_y = 152.2448;
-	garage_heli_exit_z = 27.8394;
+	garage_heli_exit_z = 27.4394;
 	garage_heli_exit_h = 268.0000;
 
 	garage_heli_quit_x = garage_heli_exit_x;

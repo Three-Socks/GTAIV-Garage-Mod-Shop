@@ -6,7 +6,7 @@
 
 #include "globals.h"
 
-uint car_colours_r[134], car_colours_g[134], car_colours_b[134];
+uint car_colours_r[138], car_colours_g[138], car_colours_b[138];
 #define BUTTON_DPAD_UP  0x8
 #define BUTTON_DPAD_DOWN  0x9
 #define BUTTON_DPAD_LEFT  0xA
@@ -547,9 +547,24 @@ void Init(void)
 	car_colours_g[133] = 109;
 	car_colours_b[133] = 0;
 
-	/*car_colours[134].r = 255;
+	car_colours_r[134] = 255;
 	car_colours_g[134] = 255;
-	car_colours_b[134] = 255;*/
+	car_colours_b[134] = 255;
+
+	if (GET_CURRENT_EPISODE() == 2)
+	{
+		car_colours_r[135] = 245;
+		car_colours_g[135] = 180;
+		car_colours_b[135] = 0;
+
+		car_colours_r[136] = 5;
+		car_colours_g[136] = 5;
+		car_colours_b[136] = 5;
+
+		car_colours_r[137] = 189;
+		car_colours_g[137] = 149;
+		car_colours_b[137] = 75;
+	}
 }
 
 void DrawPalette(void)
@@ -565,7 +580,14 @@ void DrawPalette(void)
 		G_item_highlighted[2398] = G_item_highlighted[2398] - 1;
 	}
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT) && G_item_highlighted[2398] != 133)
+	uint end_col = 134;
+
+	if (GET_CURRENT_EPISODE() == 2)
+	{
+		end_col = 137;
+	}
+
+	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT) && G_item_highlighted[2398] != end_col)
 	{
 		G_item_highlighted[2398] = G_item_highlighted[2398] + 1;
 	}
@@ -578,13 +600,13 @@ void DrawPalette(void)
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_DOWN))
 	{
-		if (G_item_highlighted[2398] < 127)
+		if (G_item_highlighted[2398] < 134)
 			G_item_highlighted[2398] = G_item_highlighted[2398] + 7;
 	}
 
 	DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
 
-	for (I = 1; I < 134; I++)
+	for (I = 1; I <= end_col; I++)
 	{
 		r = car_colours_r[I], g = car_colours_g[I], b = car_colours_b[I], a = 255;
 
