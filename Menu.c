@@ -539,6 +539,7 @@ void EnterMenu(int item_selected)
 					&& spawn_cars[item_vehspawn_selected] != MODEL_MOONBEAM
 					&& spawn_cars[item_vehspawn_selected] != MODEL_PERENNIAL
 					&& spawn_cars[item_vehspawn_selected] != MODEL_PERENNIAL2
+					&& spawn_cars[item_vehspawn_selected] != MODEL_POLICE4
 				)
 				{
 					// Warehouse
@@ -579,6 +580,7 @@ void EnterMenu(int item_selected)
 						{
 							WAIT(0);
 						}
+						CLEAR_AREA(spawn_x, spawn_y, spawn_z, 3.0000, true);
 						LOAD_SCENE(spawn_x, spawn_y, spawn_z);
 						//WAIT(100);
 						veh_cam_set = false;
@@ -757,21 +759,22 @@ void EnterMenu(int item_selected)
 			}
 			else if (item_vehcat_selected == 4)
 			{
-				spawn_cars[1] = MODEL_BUZZARD;
-				spawn_cars[2] = MODEL_SWIFT;
-				spawn_cars[3] = MODEL_SKYLIFT;
-				menu_len = 3;
-			}
-			else if (item_vehcat_selected == 5)
-			{
 				spawn_cars[1] = MODEL_SMUGGLER;
 				spawn_cars[2] = MODEL_FLOATER;
 				spawn_cars[3] = MODEL_BLADE;
 				menu_len = 3;
 			}
+			else if (item_vehcat_selected == 5)
+			{
+				spawn_cars[1] = MODEL_BUZZARD;
+				spawn_cars[2] = MODEL_SWIFT;
+				spawn_cars[3] = MODEL_SKYLIFT;
+				menu_len = 3;
+			}
 			menu_level = 5;
-			return;
 		}
+		inVehMenu = true;
+		return;
 	}
 }
 
@@ -940,10 +943,13 @@ void DoMenu(void)
 		{
 			if (inVehSpawnTBoGT)
 			{
-				menu_level = 3;
-				item_selected = 1;
-				menu_len = 14;
+				menu_level = 5;
+				menu_len = 5;
+				item_vehcat_selected = 1;
+				item_vehspawn_selected = 0;
+				inVehMenu = false;
 				inVehSpawnTBoGT = false;
+				veh_change_set = false;
 			}
 		}
 	}
