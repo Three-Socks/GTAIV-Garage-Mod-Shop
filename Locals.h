@@ -127,7 +127,7 @@ Vehicle v_spawn;
 Vehicle v_modding;
 
 bool inVehSpawn = false;
-bool inVehSpawn2 = false;
+bool inVehSpawnTBoGT = false;
 bool inVehMenu = false;
 bool inVehUpgrade = false;
 bool inVehModify = false;

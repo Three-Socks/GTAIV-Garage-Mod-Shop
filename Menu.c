@@ -233,7 +233,7 @@ void EnterMenu(int item_selected)
 			menu_items[11] = "Motorcycles";
 			menu_items[12] = "Boats";
 			menu_items[13] = "Aircraft";
-			if (GET_CURRENT_EPISODE == 2)
+			if (GET_CURRENT_EPISODE() == 2)
 			{
 				menu_items[14] = "The Ballad of Gay Tony";
 				menu_len = 14;
@@ -303,7 +303,7 @@ void EnterMenu(int item_selected)
 	}
 	else if (menu_level == 5)
 	{
-		if (inVehSpawn && !inVehSpawn2 && item_vehcat_selected != 0)
+		if (inVehSpawn && !inVehSpawnTBoGT && item_vehcat_selected != 0)
 		{
 			if (item_vehcat_selected == 1)
 			{
@@ -478,7 +478,7 @@ void EnterMenu(int item_selected)
 				spawn_cars[4] = MODEL_POLMAV;
 				menu_len = 4;
 			}
-			else if (item_vehcat_selected == 14 && GET_CURRENT_EPISODE == 2)
+			else if (item_vehcat_selected == 14 && GET_CURRENT_EPISODE() == 2)
 			{
 				menu_items[1] = "Cars";
 				menu_items[2] = "...Cars";
@@ -487,7 +487,7 @@ void EnterMenu(int item_selected)
 				menu_items[5] = "Aircraft";
 				menu_len = 5;
 				menu_level = 6;
-				inVehSpawn2 = true;
+				inVehSpawnTBoGT = true;
 				return;
 			}
 			inVehMenu = true;
@@ -714,7 +714,7 @@ void EnterMenu(int item_selected)
 	}
 	else if (menu_level == 7)
 	{
-		if (inVehSpawn2 && item_vehcat_selected != 0)
+		if (inVehSpawnTBoGT && item_vehcat_selected != 0)
 		{
 			if (item_vehcat_selected == 1)
 			{
@@ -899,7 +899,7 @@ void DoMenu(void)
 				item_vehcat_selected = 0;
 				item_vehspawn_selected = 0;
 				inVehMenu = false;
-				inVehSpawn2 = false;
+				inVehSpawnTBoGT = false;
 				veh_change_set = false;
 				SET_ALL_CAR_GENERATORS_BACK_TO_ACTIVE();
 				JumpOutVehicle(exit_x, exit_y, exit_z);
@@ -938,12 +938,12 @@ void DoMenu(void)
 		}
 		else if (menu_level == 6)
 		{
-			if (inVehSpawn2)
+			if (inVehSpawnTBoGT)
 			{
 				menu_level = 3;
 				item_selected = 1;
 				menu_len = 14;
-				inVehSpawn2 = false;
+				inVehSpawnTBoGT = false;
 			}
 		}
 	}
@@ -1015,7 +1015,7 @@ void DoMenu(void)
 		}
 		else if (menu_level == 6)
 		{
-			if (inVehSpawn2)
+			if (inVehSpawnTBoGT)
 			{
 				item_vehcat_selected = G_item_highlighted[2398];
 				G_item_highlighted[2398] = 1;
