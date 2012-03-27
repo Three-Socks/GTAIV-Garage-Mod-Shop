@@ -30,6 +30,7 @@ void Init(void)
 	G_scriptloaded[2398] = false;
 	G_scriptloadedpalette[2398] = false;
 	G_activateMenu[2398] = false;
+	G_justexitmenu[2398] = 0;
 	G_doneExitCheck[2398] = false;
 	G_drewrect[2398] = false;
 	G_garageId[2398] = 0;
@@ -43,31 +44,33 @@ void Init(void)
 	// Meadows Park
 	garagesBlipCoords_x[2] = 1775.6616;
 	garagesBlipCoords_y[2] = 836.8135;
-	garagesBlipCoords_z[2] = 16.2557;
+	garagesBlipCoords_z[2] = 16.2557 - 1;
 
 	// bohan
 	garagesBlipCoords_x[3] = 303.5034;
 	garagesBlipCoords_y[3] = 1877.3126;
-	garagesBlipCoords_z[3] = 21.5842;
+	garagesBlipCoords_z[3] = 21.5842 - 1;
 		
 	// scrapyard
 	garagesBlipCoords_x[4] = -502.4153;
 	garagesBlipCoords_y[4] = 1740.6450;
-	garagesBlipCoords_z[4] = 8.3289;
+	garagesBlipCoords_z[4] = 8.3289 - 1;
 
 	// packie MAIN
 	garagesBlipCoords_x[5] = -513.8602;
 	garagesBlipCoords_y[5] = 332.2618;
-	garagesBlipCoords_z[5] = 6.2173;
+	garagesBlipCoords_z[5] = 6.2173 - 1;
 
 	// showroom MAIN
 	garagesBlipCoords_x[6] = -1492.3105;
 	garagesBlipCoords_y[6] = 1131.0712;
-	garagesBlipCoords_z[6] = 22.5675;
+	garagesBlipCoords_z[6] = 22.5675 - 1;
 
 	int i;
 	for (i = 1; i < 7; i++)
 	{
+		CLEAR_AREA(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 3.0000, true);
+	
 		Blip blipgarage;
 		ADD_BLIP_FOR_COORD(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], &blipgarage);
 		CHANGE_BLIP_DISPLAY(blipgarage, 2);
@@ -111,11 +114,23 @@ void DoActivators(void)
 	int i;
 	for (i = 1; i < 7; i++)
 	{
-		DRAW_COLOURED_CYLINDER(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 0.80000000, 0.20000000, 0, 132, 202, 255);
-		if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 1.00000000, 1.00000000, 2.00000000, 0))
+		if (G_justexitmenu[2398] == i && !LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 1.40000000, 1.00000000, 2.00000000, 0))
 		{
-				G_activateMenu[2398] = true;
-				G_garageId[2398] = i;
+			G_justexitmenu[2398] = 0;
+		}
+	
+		if (G_justexitmenu[2398] == 0 && !G_activateMenu[2398])
+		{
+			DRAW_COLOURED_CYLINDER(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 1.00000000, 1.00000000, 0, 132, 202, 255);
+			if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 1.40000000, 1.00000000, 2.00000000, 0))
+			{
+					G_activateMenu[2398] = true;
+					G_garageId[2398] = i;
+			}
+			else
+			{
+				G_activateMenu[2398] = false;
+			}
 		}
 	}
 

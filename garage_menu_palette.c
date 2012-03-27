@@ -604,7 +604,7 @@ void DrawPalette(void)
 			G_item_highlighted[2398] = G_item_highlighted[2398] + 7;
 	}
 
-	DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
+	DRAW_RECT(0.15000000, 0.36500000, 0.23000000, 0.663000000, 0, 0, 0, 230);
 
 	for (I = 1; I <= end_col; I++)
 	{
@@ -616,7 +616,7 @@ void DrawPalette(void)
 			if (rows == 7)
 			{
 				Ipos_x = 0.05400000;
-				Ipos_y = Ipos_y + 0.03200000;
+				Ipos_y = Ipos_y + 0.03300000;
 				rows = 0;
 			}
 		}

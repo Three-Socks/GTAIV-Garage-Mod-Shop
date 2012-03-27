@@ -97,7 +97,7 @@ bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h, bool 
 
 void JumpOutVehicle(float warp_x, float warp_y, float warp_z)
 {
-	if (DOES_VEHICLE_EXIST(v_modding))
+	if (DOES_VEHICLE_EXIST(v_modding) && warp_x != spawn_x && warp_y != spawn_y && warp_z != spawn_z)
 	{
 		FREEZE_CAR_POSITION(v_modding, 0);
 		LOCK_CAR_DOORS(v_modding, 1);

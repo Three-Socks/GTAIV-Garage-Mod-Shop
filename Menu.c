@@ -192,6 +192,7 @@ void ExitMenu(void)
 	*/
 	G_activateMenu[2398] = false;
 	G_scriptloaded[2398] = false;
+	G_justexitmenu[2398] = G_garageId[2398];
 
 	SET_PLAYER_CONTROL(GetPlayerIndex(), true);
 	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
@@ -511,6 +512,8 @@ void EnterMenu(int item_selected)
 			{
 		    SET_CAR_GENERATORS_ACTIVE_IN_AREA(-9999.90000000, -9999.90000000, -9999.90000000, 9999.90000000, 9999.90000000, 9999.90000000, 0);
 				SET_CHAR_VISIBLE(GetPlayerPed(), false);
+
+				LocateVehicle(spawn_x, spawn_y, spawn_z);
 
 				if (DOES_VEHICLE_EXIST(v_modding))
 				{
