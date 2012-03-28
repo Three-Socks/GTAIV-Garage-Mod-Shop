@@ -609,7 +609,7 @@ void DrawPalette(void)
 			G_item_highlighted[2398] = 1;
 	}
 
-	DRAW_RECT(0.1500, 0.3730, 0.2300, 0.6620, 0, 0, 0, 230);
+	DRAW_RECT(0.1500, 0.3660, 0.2300, 0.6640, 0, 0, 0, 230);
 
 	for (I = 1; I <= end_col; I++)
 	{
@@ -617,11 +617,11 @@ void DrawPalette(void)
 
 		if (I != 1)
 		{
-			Ipos_x = Ipos_x + 0.0320;
+			Ipos_x = Ipos_x + 0.0300;
 			if (rows == 7)
 			{
 				Ipos_x = 0.0540;
-				Ipos_y = Ipos_y + 0.0330;
+				Ipos_y = Ipos_y + 0.0320;
 				rows = 0;
 			}
 		}
@@ -633,7 +633,7 @@ void DrawPalette(void)
 
 		rows++;
 
-		DRAW_RECT(Ipos_x, Ipos_y, 0.0300, 0.0300, r, g, b, a);
+		DRAW_RECT(Ipos_x, Ipos_y, 0.0280, 0.0280, r, g, b, a);
 
 	}
 
