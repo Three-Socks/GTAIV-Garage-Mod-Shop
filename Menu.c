@@ -200,6 +200,11 @@ void ExitMenu(void)
 	SET_CHAR_COORDINATES_NO_OFFSET(GetPlayerPed(), quit_x, quit_y, quit_z);
 	SET_CHAR_HEADING(GetPlayerPed(), quit_h);
 
+	if (G_garageId[2398] == 6)
+	{
+		CLEAR_WANTED_LEVEL(GetPlayerIndex());
+	}
+
 	TERMINATE_THIS_SCRIPT();
 
 }
@@ -234,14 +239,15 @@ void EnterMenu(int item_selected)
 			menu_items[11] = "Motorcycles";
 			menu_items[12] = "Boats";
 			menu_items[13] = "Aircraft";
+			menu_items[14] = "Beat Up";
 			if (GET_CURRENT_EPISODE() == 2)
 			{
-				menu_items[14] = "The Ballad of Gay Tony";
-				menu_len = 14;
+				menu_items[15] = "The Ballad of Gay Tony";
+				menu_len = 15;
 			}
 			else
 			{
-				menu_len = 13;
+				menu_len = 14;
 			}
 			menu_level = 4;
 			inVehSpawn = true;
@@ -479,7 +485,7 @@ void EnterMenu(int item_selected)
 				spawn_cars[4] = MODEL_POLMAV;
 				menu_len = 4;
 			}
-			else if (item_vehcat_selected == 14 && GET_CURRENT_EPISODE() == 2)
+			else if (item_vehcat_selected == 15 && GET_CURRENT_EPISODE() == 2)
 			{
 				menu_items[1] = "Cars";
 				menu_items[2] = "...Cars";
@@ -854,6 +860,7 @@ void DoMenu(void)
 
 	if (!menu_cam_set)
 	{
+		SET_CHAR_COORDINATES_NO_OFFSET(GetPlayerPed(), exit_x, exit_y, exit_z);
 		SET_CHAR_HEADING(GetPlayerPed(), exit_h);
 		SET_CAM_BEHIND_PED(GetPlayerPed());
 		SET_PLAYER_CONTROL(GetPlayerIndex(), false);
@@ -899,13 +906,21 @@ void DoMenu(void)
 			menu_level = 4;
 			if (inVehMenu)
 			{
-				menu_level = 3;
-				item_selected = 1;
-				menu_len = 13;
-				item_vehcat_selected = 0;
+				if (inVehSpawnTBoGT)
+				{
+					inVehSpawnTBoGT = false;
+					menu_level = 5;
+					menu_len = 5;
+					item_vehcat_selected = 15;
+				}
+				else
+				{
+					menu_level = 3;
+					item_selected = 1;
+					item_vehcat_selected = 0;
+				}
 				item_vehspawn_selected = 0;
 				inVehMenu = false;
-				inVehSpawnTBoGT = false;
 				veh_change_set = false;
 				SET_ALL_CAR_GENERATORS_BACK_TO_ACTIVE();
 				JumpOutVehicle(exit_x, exit_y, exit_z);
@@ -946,9 +961,9 @@ void DoMenu(void)
 		{
 			if (inVehSpawnTBoGT)
 			{
-				menu_level = 5;
-				menu_len = 5;
-				item_vehcat_selected = 1;
+				menu_level = 3;
+				item_selected = 1;
+				item_vehcat_selected = 0;
 				item_vehspawn_selected = 0;
 				inVehMenu = false;
 				inVehSpawnTBoGT = false;

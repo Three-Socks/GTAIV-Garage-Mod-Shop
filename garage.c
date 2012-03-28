@@ -39,7 +39,7 @@ void Init(void)
 	// Brucie Garage
 	garagesBlipCoords_x[1] = 869.0119;
 	garagesBlipCoords_y[1] = -114.6501;
-	garagesBlipCoords_z[1] = 5.5054;
+	garagesBlipCoords_z[1] = 6.0054 - 1;
 
 	// Meadows Park
 	garagesBlipCoords_x[2] = 1775.6616;
@@ -47,7 +47,7 @@ void Init(void)
 	garagesBlipCoords_z[2] = 16.2557 - 1;
 
 	// bohan
-	garagesBlipCoords_x[3] = 303.5034;
+	garagesBlipCoords_x[3] = 307.5034;
 	garagesBlipCoords_y[3] = 1877.3126;
 	garagesBlipCoords_z[3] = 21.5842 - 1;
 		
@@ -62,9 +62,9 @@ void Init(void)
 	garagesBlipCoords_z[5] = 6.2173 - 1;
 
 	// showroom MAIN
-	garagesBlipCoords_x[6] = -1492.3105;
-	garagesBlipCoords_y[6] = 1131.0712;
-	garagesBlipCoords_z[6] = 22.5675 - 1;
+	garagesBlipCoords_x[6] = -1496.8005;
+	garagesBlipCoords_y[6] = 1118.9890;
+	garagesBlipCoords_z[6] = 23.2138 - 1;
 
 	int i;
 	for (i = 1; i < 7; i++)
@@ -114,22 +114,18 @@ void DoActivators(void)
 	int i;
 	for (i = 1; i < 7; i++)
 	{
-		if (G_justexitmenu[2398] == i && !LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 1.40000000, 1.00000000, 2.00000000, 0))
+		if (G_justexitmenu[2398] == i && !LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 5.00000000, 5.00000000, 5.00000000, 0))
 		{
 			G_justexitmenu[2398] = 0;
 		}
-	
+
 		if (G_justexitmenu[2398] == 0 && !G_activateMenu[2398])
 		{
-			DRAW_COLOURED_CYLINDER(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 1.00000000, 1.00000000, 0, 132, 202, 255);
-			if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 1.40000000, 1.00000000, 2.00000000, 0))
+			DRAW_COLOURED_CYLINDER(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 2.50000000, 2.50000000, 0, 132, 202, 255);
+			if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 2.50000000, 2.50000000, 4.00000000, 0))
 			{
 					G_activateMenu[2398] = true;
 					G_garageId[2398] = i;
-			}
-			else
-			{
-				G_activateMenu[2398] = false;
 			}
 		}
 	}
@@ -187,29 +183,6 @@ void DoActivators(void)
 		}
 	}
 
-/*	// Brucie Garage cylinder
-	DRAW_COLOURED_CYLINDER(869.01190000, -114.65010000, 6.00540000 - 1, 0.80000000, 0.20000000, 0, 132, 202, 255);
-	if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), 869.01190000, -114.65010000, 6.00540000, 0.80000000, 0.80000000, 2.00000000, 0))
-	{
-		if (IS_CHAR_ON_FOOT(GetPlayerPed()))
-		{
-			G_activateMenu = true;
-			G_garageId = 1;
-		}
-	}
-	//else
-	//{
-	//	G_activateMenu = false;
-	//}
-	
-	// Meadows park (1st island)
-	DRAW_COLOURED_CYLINDER(1775.6616, 836.8135, 16.2557 - 1, 0.80000000, 0.20000000, 0, 132, 202, 255);
-	if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), 1775.6616, 836.8135, 16.2557, 0.80000000, 0.80000000, 2.00000000, 0))
-	{
-			G_activateMenu = true;
-			G_garageId = 2;
-	}
-*/
 	// Brucie Heli pad down
 	float helidown_x = 791.26930000, helidown_y = 126.93620000, helidown_z = 6.04020000;
 	DRAW_COLOURED_CYLINDER(776.21300000, 153.28020000, 27.57500000 - 2, 0.80000000, 0.20000000, 0, 132, 202, 255);
@@ -237,13 +210,25 @@ void DoActivators(void)
 				SET_CAM_BEHIND_PED(GetPlayerPed());
 		}
 	}
+	
+	char *GenGarage = "PaulMH3";
+	// Packie's Garage - used in "Harboring a Grudge"
+	if (IS_GARAGE_CLOSED(GenGarage) && LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), -513.50000000, 332.00000000, 7.00000000, 35.00000000, 35.00000000, 10.00000000, 0))
+	{
+		SET_GARAGE_LEAVE_CAMERA_ALONE(GenGarage, 1);
+		OPEN_GARAGE(GenGarage);
+	}
+	else
+	{
+		CLOSE_GARAGE(GenGarage);
+	}
 
 }
 
 void main(void)
 {
 	Init();
-	
+
 	while(true)
 	{
 		WAIT(0);
