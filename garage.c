@@ -13,7 +13,13 @@ GlobalVar
 RefGet
 
 
-EFLC
+TLAD
+
+PushS 10374
+GlobalVar
+RefGet
+
+TBoGT
 
 PushS 10438
 GlobalVar
@@ -114,7 +120,7 @@ void DoActivators(void)
 	int i;
 	for (i = 1; i < 7; i++)
 	{
-		if (G_justexitmenu[2398] == i && !LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 5.00000000, 5.00000000, 5.00000000, 0))
+		if (G_justexitmenu[2398] == i && !LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 5.00000000, 5.00000000, 6.00000000, 0))
 		{
 			G_justexitmenu[2398] = 0;
 		}
@@ -131,6 +137,15 @@ void DoActivators(void)
 	}
 
 	Object garage_object = 0x123;
+	
+	if (GET_CURRENT_EPISODE() == 1)
+	{
+		garage_object = 0x456;
+	}
+	else if (GET_CURRENT_EPISODE() == 2)
+	{
+		garage_object = 0x789;
+	}
 
 	Vector3 upGarageCoords, downGarageCoords, currentGarageCoords, currentCharCoords;
 	upGarageCoords.x = 864.32000000;
@@ -213,14 +228,17 @@ void DoActivators(void)
 	
 	char *GenGarage = "PaulMH3";
 	// Packie's Garage - used in "Harboring a Grudge"
-	if (IS_GARAGE_CLOSED(GenGarage) && LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), -513.50000000, 332.00000000, 7.00000000, 35.00000000, 35.00000000, 10.00000000, 0))
+	if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), -513.50000000, 332.00000000, 7.00000000, 35.00000000, 35.00000000, 10.00000000, 0))
 	{
 		SET_GARAGE_LEAVE_CAMERA_ALONE(GenGarage, 1);
-		OPEN_GARAGE(GenGarage);
+		if (IS_GARAGE_CLOSED(GenGarage))
+		{
+			CLOSE_GARAGE(GenGarage);
+		}
 	}
 	else
 	{
-		CLOSE_GARAGE(GenGarage);
+		OPEN_GARAGE(GenGarage);
 	}
 
 }
