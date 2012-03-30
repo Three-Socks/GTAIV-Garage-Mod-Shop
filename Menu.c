@@ -26,7 +26,7 @@ void DrawMenu(int array_len)
 
 	if (inVehUpgrade)
 	{
-		float pos_x = 0.05600000, num_pos_x = 0.12800000, onoff_pos_x = 0.20000000, width = 0.30000000, height = 0.30000000;
+		float pos_x = 0.05540000, num_pos_x = 0.12800000, onoff_pos_x = 0.20000000, width = 0.30000000, height = 0.30000000;
 		uint r, g, b, a = 255;
 
 		int I;
@@ -71,7 +71,7 @@ void DrawMenu(int array_len)
 	}
 	else if (inVModifyDoors)
 	{
-		float pos_x = 0.05600000, num_pos_x = 0.12800000, onoff_pos_x = 0.160000000, width = 0.30000000, height = 0.30000000;
+		float pos_x = 0.05540000, num_pos_x = 0.12800000, onoff_pos_x = 0.160000000, width = 0.30000000, height = 0.30000000;
 		uint r, g, b, a = 255;
 
 		int I;
@@ -148,7 +148,7 @@ void DrawMenu(int array_len)
 	}
 	else
 	{
-		float pos_x = 0.05600000, width = 0.30000000, height = 0.30000000;
+		float pos_x = 0.05540000, width = 0.30000000, height = 0.30000000;
 		uint r, g, b, a = 255;
 		int I;
 		float Ipos_y = 0.02000000;

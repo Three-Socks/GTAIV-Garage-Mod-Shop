@@ -29,7 +29,7 @@ RefGet
 
 uint soundID = 2;
 
-float garagesBlipCoords_x[7], garagesBlipCoords_y[7], garagesBlipCoords_z[7];
+float garagesBlipCoords_x[8], garagesBlipCoords_y[8], garagesBlipCoords_z[8];
 
 void Init(void)
 {
@@ -62,18 +62,23 @@ void Init(void)
 	garagesBlipCoords_y[4] = 1740.6450;
 	garagesBlipCoords_z[4] = 8.3289 - 1;
 
-	// packie MAIN
-	garagesBlipCoords_x[5] = -513.8602;
-	garagesBlipCoords_y[5] = 332.2618;
-	garagesBlipCoords_z[5] = 6.2173 - 1;
+	// Meat MAIN
+	garagesBlipCoords_x[5] = -422.4109;
+	garagesBlipCoords_y[5] = -31.6985;
+	garagesBlipCoords_z[5] = 9.5386 - 1;
 
 	// showroom MAIN
 	garagesBlipCoords_x[6] = -1496.8005;
 	garagesBlipCoords_y[6] = 1118.9890;
 	garagesBlipCoords_z[6] = 23.2138 - 1;
+	
+	// tudor MAIN
+		garagesBlipCoords_x[7] = -1364.3031;
+		garagesBlipCoords_y[7] = 11.7368;
+		garagesBlipCoords_z[7] = 7.2487 - 1;
 
 	int i;
-	for (i = 1; i < 7; i++)
+	for (i = 1; i < 8; i++)
 	{
 		CLEAR_AREA(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 3.0000, true);
 	
@@ -118,7 +123,7 @@ void Init(void)
 void DoActivators(void)
 {
 	int i;
-	for (i = 1; i < 7; i++)
+	for (i = 1; i < 8; i++)
 	{
 		if (G_justexitmenu[2398] == i && !LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 5.00000000, 5.00000000, 6.00000000, 0))
 		{
@@ -136,17 +141,6 @@ void DoActivators(void)
 		}
 	}
 
-	Object garage_object = 0x123;
-	
-	if (GET_CURRENT_EPISODE() == 1)
-	{
-		garage_object = 0x456;
-	}
-	else if (GET_CURRENT_EPISODE() == 2)
-	{
-		garage_object = 0x789;
-	}
-
 	Vector3 upGarageCoords, downGarageCoords, currentGarageCoords, currentCharCoords;
 	upGarageCoords.x = 864.32000000;
 	upGarageCoords.y = -121.64500000;
@@ -155,6 +149,21 @@ void DoActivators(void)
 	downGarageCoords.x = 864.32000000;
 	downGarageCoords.y = -121.64500000;
 	downGarageCoords.z = 7.40000000;
+
+	Object garage_object;
+
+	if (GET_CURRENT_EPISODE() == 0)
+	{
+		garage_object = 0x123;
+	}
+	else if (GET_CURRENT_EPISODE() == 1)
+	{
+		garage_object = 0x456;
+	}
+	else if (GET_CURRENT_EPISODE() == 2)
+	{
+		garage_object = 0x789;
+	}
 
 	if (DOES_OBJECT_EXIST(garage_object))
 	{
@@ -225,21 +234,6 @@ void DoActivators(void)
 				SET_CAM_BEHIND_PED(GetPlayerPed());
 		}
 	}
-	
-	char *GenGarage = "PaulMH3";
-	// Packie's Garage - used in "Harboring a Grudge"
-	if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), -513.50000000, 332.00000000, 7.00000000, 35.00000000, 35.00000000, 10.00000000, 0))
-	{
-		SET_GARAGE_LEAVE_CAMERA_ALONE(GenGarage, 1);
-		if (IS_GARAGE_CLOSED(GenGarage))
-		{
-			CLOSE_GARAGE(GenGarage);
-		}
-	}
-	else
-	{
-		OPEN_GARAGE(GenGarage);
-	}
 
 }
 
@@ -272,7 +266,6 @@ void main(void)
 						WAIT(0);
 					}
 					START_NEW_SCRIPT("garage_menu", 1024);
-					//START_NEW_SCRIPT_WITH_ARGS("garage_menu", &G_testarg, 1, 1024);
 					MARK_SCRIPT_AS_NO_LONGER_NEEDED("garage_menu");
 					G_scriptloaded[2398] = true;
 				}

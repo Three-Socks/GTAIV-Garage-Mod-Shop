@@ -253,7 +253,7 @@ void Init(void)
 		// scrapyard BOAT
 		garage_boat_spawn_x = -432.7500;
 		garage_boat_spawn_y = 1869.7600;
-		garage_boat_spawn_z = 0.5000;
+		garage_boat_spawn_z = 0.0000;
 		garage_boat_spawn_h = 338.0500;
 
 		garage_boat_exit_x = garage_boat_spawn_x;
@@ -284,12 +284,12 @@ void Init(void)
 	}
 	else if (G_garageId[2398] == 5)
 	{
-		// Westminster packie garage (3rd island)
-		// packie MAIN
-		garage_main_spawn_x = -513.8602;
-		garage_main_spawn_y = 332.2618;
-		garage_main_spawn_z = 6.2173;
-		garage_main_spawn_h = 88.3298;
+		// Meat garage (3rd island)
+		// Meat MAIN
+		garage_main_spawn_x = -422.4109;
+		garage_main_spawn_y = -31.6985;
+		garage_main_spawn_z = 9.5386;
+		garage_main_spawn_h = 87.8152;
 
 		garage_main_exit_x = garage_main_spawn_x;
 		garage_main_exit_y = garage_main_spawn_y;
@@ -301,7 +301,7 @@ void Init(void)
 		garage_main_quit_z = garage_main_spawn_z;
 		garage_main_quit_h = garage_main_spawn_h;
 
-		// packie BIG
+		// Meat BIG
 		garage_big_spawn_x = garage_main_spawn_x;
 		garage_big_spawn_y = garage_main_spawn_y;
 		garage_big_spawn_z = garage_main_spawn_z;
@@ -317,11 +317,11 @@ void Init(void)
 		garage_big_quit_z = garage_main_spawn_z;
 		garage_big_quit_h = garage_main_spawn_h;
 
-		// packie BOAT
-		garage_boat_spawn_x = 646.0000;
-		garage_boat_spawn_y = 304.0000;
+		// Meat BOAT
+		garage_boat_spawn_x = -677.2500;
+		garage_boat_spawn_y = -112.5800;
 		garage_boat_spawn_z = 0.0000;
-		garage_boat_spawn_h = 89.0000;
+		garage_boat_spawn_h = 90.0000;
 
 		garage_boat_exit_x = garage_boat_spawn_x;
 		garage_boat_exit_y = garage_boat_spawn_y;
@@ -333,21 +333,21 @@ void Init(void)
 		garage_boat_quit_z = garage_boat_spawn_z;
 		garage_boat_quit_h = garage_boat_spawn_h;
 		
-		// packie HELI
-		garage_heli_spawn_x = 708.9586;
-		garage_heli_spawn_y = 357.4991;
-		garage_heli_spawn_z = 3.9857;
-		garage_heli_spawn_h = 270.0002;
+		// Meat HELI
+		garage_heli_spawn_x = -439.0980;
+		garage_heli_spawn_y = 7.6451;
+		garage_heli_spawn_z = 20.9172;
+		garage_heli_spawn_h = 14.3725;
 
-		garage_heli_exit_x = garage_main_spawn_x;
-		garage_heli_exit_y = garage_main_spawn_y;
-		garage_heli_exit_z = garage_main_spawn_z;
-		garage_heli_exit_h = garage_main_spawn_h;
+		garage_heli_exit_x = garage_heli_spawn_x;
+		garage_heli_exit_y = garage_heli_spawn_y;
+		garage_heli_exit_z = garage_heli_spawn_z;
+		garage_heli_exit_h = garage_heli_spawn_h;
 
-		garage_heli_quit_x = garage_main_spawn_x;
-		garage_heli_quit_y = garage_main_spawn_y;
-		garage_heli_quit_z = garage_main_spawn_z;
-		garage_heli_quit_h = garage_main_spawn_h;		
+		garage_heli_quit_x = garage_heli_spawn_x;
+		garage_heli_quit_y = garage_heli_spawn_y;
+		garage_heli_quit_z = garage_heli_spawn_z;
+		garage_heli_quit_h = garage_heli_spawn_h;		
 	}
 	else if (G_garageId[2398] == 6)
 	{
@@ -405,6 +405,73 @@ void Init(void)
 		garage_heli_spawn_y = 1104.2229;
 		garage_heli_spawn_z = 26.4210;
 		garage_heli_spawn_h = 174.8738;
+
+		garage_heli_exit_x = garage_heli_spawn_x;
+		garage_heli_exit_y = garage_heli_spawn_y;
+		garage_heli_exit_z = garage_heli_spawn_z;
+		garage_heli_exit_h = garage_heli_spawn_h;
+
+		garage_heli_quit_x = garage_heli_spawn_x;
+		garage_heli_quit_y = garage_heli_spawn_y;
+		garage_heli_quit_z = garage_heli_spawn_z;
+		garage_heli_quit_h = garage_heli_spawn_h;
+	}
+	else if (G_garageId[2398] == 7)
+	{
+		// tudor garage (4th island)
+		// tudor MAIN
+		garage_main_spawn_x = -1364.3031;
+		garage_main_spawn_y = 11.7368;
+		garage_main_spawn_z = 7.2487;
+		garage_main_spawn_h = 58.4022;
+
+		garage_main_exit_x = garage_main_spawn_x;
+		garage_main_exit_y = garage_main_spawn_y;
+		garage_main_exit_z = garage_main_spawn_z;
+		garage_main_exit_h = garage_main_spawn_h;
+
+		garage_main_quit_x = garage_main_spawn_x;
+		garage_main_quit_y = garage_main_spawn_y;
+		garage_main_quit_z = garage_main_spawn_z;
+		garage_main_quit_h = garage_main_spawn_h;
+
+		// tudor BIG
+		garage_big_spawn_x = garage_main_spawn_x;
+		garage_big_spawn_y = garage_main_spawn_y;
+		garage_big_spawn_z = garage_main_spawn_z;
+		garage_big_spawn_h = garage_main_spawn_h;
+
+		garage_big_exit_x = garage_main_spawn_x;
+		garage_big_exit_y = garage_main_spawn_y;
+		garage_big_exit_z = garage_main_spawn_z;
+		garage_big_exit_h = garage_main_spawn_h;
+
+		garage_big_quit_x = garage_main_spawn_x;
+		garage_big_quit_y = garage_main_spawn_y;
+		garage_big_quit_z = garage_main_spawn_z;
+		garage_big_quit_h = garage_main_spawn_h;
+
+		// tudor BOAT
+		garage_boat_spawn_x = -1180.0000;
+		garage_boat_spawn_y = 90.0000;
+		garage_boat_spawn_z = 0.0000;
+		garage_boat_spawn_h = 270.0000;
+
+		garage_boat_exit_x = garage_boat_spawn_x;
+		garage_boat_exit_y = garage_boat_spawn_y;
+		garage_boat_exit_z = garage_boat_spawn_z;
+		garage_boat_exit_h = garage_boat_spawn_h;
+
+		garage_boat_quit_x = garage_boat_spawn_x;
+		garage_boat_quit_y = garage_boat_spawn_y;
+		garage_boat_quit_z = garage_boat_spawn_z;
+		garage_boat_quit_h = garage_boat_spawn_h;
+		
+		// tudor HELI
+		garage_heli_spawn_x = -1357.8734;
+		garage_heli_spawn_y = 21.2085;
+		garage_heli_spawn_z = 11.6700;
+		garage_heli_spawn_h = 92.2760;
 
 		garage_heli_exit_x = garage_heli_spawn_x;
 		garage_heli_exit_y = garage_heli_spawn_y;
