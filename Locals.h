@@ -119,6 +119,9 @@ uint item_modifytype_selected = 0;
 uint item_modify_selected = 0;
 uint VehModifyMode = 1;
 
+uint d_r = 255, d_g = 255, d_b = 255, h_r = 253, h_g = 160, h_b = 35;
+float start_pos_x = 0.0553, menu_spacing = 0.0400, menu_width = 0.3000, menu_height = 0.3000;
+
 float spawn_x, spawn_y, spawn_z, spawn_h;
 float exit_x, exit_y, exit_z, exit_h;
 float quit_x, quit_y, quit_z, quit_h;
@@ -132,6 +135,7 @@ bool inVehMenu = false;
 bool inVehUpgrade = false;
 bool inVehModify = false;
 bool inVModifyDoors = false;
+bool inVModifyWindows = false;
 bool inVehCol = false;
 bool veh_change_set = false;
 

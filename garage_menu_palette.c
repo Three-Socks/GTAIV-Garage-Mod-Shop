@@ -571,8 +571,8 @@ void DrawPalette(void)
 {
 	int I;
 	int rows = 0;
-	float Ipos_x = 0.05400000;
-	float Ipos_y = 0.06350000;
+	float Ipos_x = 0.0540;
+	float Ipos_y = 0.0635;
 	uint r, g, b, a;
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT) && G_item_highlighted[2398] != 1)
