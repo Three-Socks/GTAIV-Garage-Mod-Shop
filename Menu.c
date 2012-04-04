@@ -23,6 +23,33 @@ void DrawMenu(int array_len)
 			G_item_highlighted[2398]--;
 		}
 	}
+	
+	if (inNumberSelector && num_item_highlighted != 0)
+	{
+		if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT))
+		{
+			if (num_highlighted == 1)
+			{
+				num_highlighted = num_len;
+			}
+			else
+			{
+				num_highlighted--;
+			}
+		}
+
+		if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT))
+		{
+			if (num_highlighted == num_len)
+			{
+				num_highlighted = 1;
+			}
+			else
+			{
+				num_highlighted++;
+			}
+		}
+	}
 
 	if (inVehUpgrade)
 	{
@@ -203,6 +230,16 @@ void DrawMenu(int array_len)
 			b = d_b;
 			Ipos_y = Ipos_y + menu_spacing;
 
+			if (inNumberSelector && num_item_highlighted == I)
+			{
+				set_up_draw(0, menu_width, menu_height, r, g, b, a);
+				draw_text("STRING", 0.2000, Ipos_y, "<");
+				set_up_draw(0, menu_width, menu_height, r, g, b, a);
+				draw_number("NUMBR", 0.2150, Ipos_y, num_highlighted);
+				set_up_draw(0, menu_width, menu_height, r, g, b, a);
+				draw_text("STRING", 0.2400, Ipos_y, ">");
+			}
+
 			if (G_item_highlighted[2398] == I)
 			{
 				r =  h_r;
@@ -331,8 +368,20 @@ void EnterMenu(int item_selected)
 				menu_items[3] = "Specular Color 1";
 				menu_items[4] = "Specular Color 2";
 				menu_len = 4;
+
+				GET_NUM_CAR_COLOURS(v_modding, &NumColours);
+				if (NumColours > 0)
+				{
+					menu_items[5] = "Color Variation";
+					menu_len++;
+				}
+
+				menu_items[6] = "Livery";
+				menu_len++;
+
 				menu_level = 4;
 				G_item_highlighted[2398] = 1;
+				num_highlighted = 1;
 				inVehCol = true;
 			}
 			return;
@@ -346,6 +395,20 @@ void EnterMenu(int item_selected)
 	}
 	else if (menu_level == 4)
 	{
+		if (inVehCol)
+		{
+			veh_change_set = false;
+			num_item_highlighted = 0;
+			inNumberSelector = false;
+
+			if (G_item_highlighted[2398] == 5 && NumColours > 0)
+			{
+				num_item_highlighted = 5;
+				inNumberSelector = true;
+
+				num_len = NumColours;
+			}
+		}
 		return;
 	}
 	else if (menu_level == 5)
@@ -643,13 +706,12 @@ void EnterMenu(int item_selected)
 						//	WAIT(0);
 						//}
 						DO_SCREEN_FADE_OUT(10);
-						//while (IS_SCREEN_FADING())
-						//{
-						//	WAIT(0);
-						//}
+						while (IS_SCREEN_FADING())
+						{
+							WAIT(0);
+						}
 						CLEAR_AREA(spawn_x, spawn_y, spawn_z, 3.0000, true);
 						LOAD_SCENE(spawn_x, spawn_y, spawn_z);
-						//WAIT(100);
 						veh_cam_set = false;
 						JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, true);
 						//while (IS_SCREEN_FADING())
@@ -670,6 +732,37 @@ void EnterMenu(int item_selected)
 			}
 			else if (inVehUpgrade && item_up_selected != 0)
 			{
+				// Store broken/open doors & windows.
+				FREEZE_CAR_POSITION(v_modding, 0);
+				LOCK_CAR_DOORS(v_modding, 1);
+		
+				int window_I, window_notintact[5];
+				for (window_I = 0; window_I < 4; window_I++)
+				{
+					if (!IS_VEH_WINDOW_INTACT(v_modding, window_I))
+					{
+						window_notintact[window_I] = 1;
+					}
+				}				
+		
+				int door_I, door_damaged[7], door_opened[7];
+				for (door_I = 0; door_I < 6; door_I++)
+				{
+					if (IS_CAR_DOOR_DAMAGED(v_modding, door_I))
+					{
+						door_damaged[door_I] = 1;
+					}
+					
+					float doorangle;
+					GET_DOOR_ANGLE_RATIO(v_modding, door_I, &doorangle);
+
+					if (!IS_CAR_DOOR_DAMAGED(v_modding, door_I) && doorangle >= 0.5000)
+					{
+						door_opened[door_I] = 1;
+					}
+				}
+	
+				// Apply upgrade.
 				if (IS_VEHICLE_EXTRA_TURNED_ON(v_modding, item_up_selected))
 				{
 					TURN_OFF_VEHICLE_EXTRA(v_modding, item_up_selected, true);
@@ -682,6 +775,30 @@ void EnterMenu(int item_selected)
 						PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Upgrade not available.", 1000, 1);
 					}
 				}
+				
+				// Re-Apply broken/open doors & windows.
+				for (door_I = 0; door_I < 6; door_I++)
+				{
+					if (door_damaged[door_I] == 1)
+					{
+						BREAK_CAR_DOOR(v_modding, door_I, false);
+					}
+
+					if (door_opened[door_I] == 1)
+					{
+						OPEN_CAR_DOOR(v_modding, door_I);
+					}
+				}
+				
+				for (window_I = 0; window_I < 4; window_I++)
+				{
+					if (window_notintact[window_I] == 1)
+					{
+						REMOVE_CAR_WINDOW(v_modding, window_I);
+					}
+				}		
+				CLEAR_AREA_OF_OBJECTS(spawn_x, spawn_y, spawn_z, 5.0000);
+
 			}
 			else if (inVehModify && item_modify_selected > 1 && item_modifytype_selected != 0)
 			{
@@ -691,6 +808,16 @@ void EnterMenu(int item_selected)
 					{
 						if (IS_CAR_DOOR_DAMAGED(v_modding, item_modify_selected - 2))
 						{
+
+							int window_I, window_notintact[5];
+							for (window_I = 0; window_I < 4; window_I++)
+							{
+								if (!IS_VEH_WINDOW_INTACT(v_modding, window_I))
+								{
+									window_notintact[window_I] = 1;
+								}
+							}
+
 							int door_I, door_damaged[7];
 							for (door_I = 0; door_I < 6; door_I++)
 							{
@@ -707,6 +834,15 @@ void EnterMenu(int item_selected)
 									BREAK_CAR_DOOR(v_modding, door_I, false);
 								}
 							}
+
+							for (window_I = 0; window_I < 4; window_I++)
+							{
+								if (window_notintact[window_I] == 1)
+								{
+									REMOVE_CAR_WINDOW(v_modding, window_I);
+								}
+							}
+							
 						}
 						else
 						{
@@ -733,26 +869,49 @@ void EnterMenu(int item_selected)
 				}
 				else if (inVModifyWindows)
 				{
+					if (IS_VEH_WINDOW_INTACT(v_modding, -1))
+					{
+						PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Window -1 IS_VEH_WINDOW_INTACT.", 1000, 1);
+					}
 					if (IS_VEH_WINDOW_INTACT(v_modding, item_modify_selected - 1))
 					{
 						REMOVE_CAR_WINDOW(v_modding, item_modify_selected - 1);
+						PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "REMOVE_CAR_WINDOW called.", 1000, 1);
 					}
 					else
 					{
+						PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "!REMOVE_CAR_WINDOW called.", 1000, 1);
 						int window_I, window_notintact[5];
-						for (window_I = 0; window_I < 5; window_I++)
+						for (window_I = 0; window_I < 4; window_I++)
 						{
-							if (!IS_VEH_WINDOW_INTACT(v_modding, window_I) && window_I != item_modify_selected - 2)
+							if (!IS_VEH_WINDOW_INTACT(v_modding, window_I) && window_I != item_modify_selected - 1)
 							{
 								window_notintact[window_I] = 1;
 							}
 						}
-						FIX_CAR(v_modding);
-						for (window_I = 0; window_I < 6; window_I++)
+						
+						int door_I, door_damaged[7];
+						for (door_I = 0; door_I < 6; door_I++)
+						{
+							if (IS_CAR_DOOR_DAMAGED(v_modding, door_I) && door_I != item_modify_selected - 2)
+							{
+								door_damaged[door_I] = 1;
+							}
+						}
+						FIX_CAR(v_modding);		
+						for (door_I = 0; door_I < 6; door_I++)
+						{
+							if (door_damaged[door_I] == 1)
+							{
+								BREAK_CAR_DOOR(v_modding, door_I, false);
+							}
+						}
+
+						for (window_I = 0; window_I < 4; window_I++)
 						{
 							if (window_notintact[window_I] == 1)
 							{
-								BREAK_CAR_DOOR(v_modding, window_I, false);
+								REMOVE_CAR_WINDOW(v_modding, window_I);
 							}
 						}
 					}
@@ -760,50 +919,70 @@ void EnterMenu(int item_selected)
 			}
 			else if (inVehCol)
 			{
-				if (item_col_selected == 0)
+				if (item_colnum_selected <= 4)
 				{
-					draw_menu_set = false;
-					G_drewrect[2398] = true;
-					ColourIndex colour_normal1, colour_normal2, colour_extra1, colour_extra2;
-					GET_CAR_COLOURS(v_modding, &colour_normal1, &colour_normal2);
-					GET_EXTRA_CAR_COLOURS(v_modding, &colour_extra1, &colour_extra2);
+					if (item_col_selected == 0)
+					{
+						draw_menu_set = false;
+						G_drewrect[2398] = true;
+						ColourIndex colour_normal1, colour_normal2, colour_extra1, colour_extra2;
+						GET_CAR_COLOURS(v_modding, &colour_normal1, &colour_normal2);
+						GET_EXTRA_CAR_COLOURS(v_modding, &colour_extra1, &colour_extra2);
 
-					if (item_colnum_selected == 1)
-						G_item_highlighted[2398] = colour_normal1 + 1;
-					else if (item_selected == 2)
-						G_item_highlighted[2398] = colour_normal2 + 1;
-					else if (item_colnum_selected == 3)
-						G_item_highlighted[2398] = colour_extra1 + 1;
-					else if (item_colnum_selected == 4)
-						G_item_highlighted[2398] = colour_extra2 + 1;
+						if (item_colnum_selected == 1)
+							G_item_highlighted[2398] = colour_normal1 + 1;
+						else if (item_selected == 2)
+							G_item_highlighted[2398] = colour_normal2 + 1;
+						else if (item_colnum_selected == 3)
+							G_item_highlighted[2398] = colour_extra1 + 1;
+						else if (item_colnum_selected == 4)
+							G_item_highlighted[2398] = colour_extra2 + 1;
+					}
+					else if (item_col_selected != 0)
+					{
+						if (item_colnum_selected == 1)
+						{
+							ColourIndex normal1, normal2;
+							GET_CAR_COLOURS(v_modding, &normal1, &normal2);
+							CHANGE_CAR_COLOUR(v_modding, item_col_selected - 1, normal2);
+						}
+						else if (item_colnum_selected == 2)
+						{
+							ColourIndex normal1, normal2;
+							GET_CAR_COLOURS(v_modding, &normal1, &normal2);
+							CHANGE_CAR_COLOUR(v_modding, normal1, item_col_selected - 1);
+						}
+						else if (item_colnum_selected == 3)
+						{
+							ColourIndex normal1, normal2;
+							GET_EXTRA_CAR_COLOURS(v_modding, &normal1, &normal2);
+							SET_EXTRA_CAR_COLOURS(v_modding, item_col_selected - 1, normal2);
+						}
+						else if (item_colnum_selected == 4)
+						{
+							ColourIndex normal1, normal2;
+							GET_EXTRA_CAR_COLOURS(v_modding, &normal1, &normal2);
+							SET_EXTRA_CAR_COLOURS(v_modding, normal1, item_col_selected - 1);
+						}
+						item_col_selected = 0;
+					}
 				}
-				if (item_col_selected != 0 && item_colnum_selected != 0)
+				else if (item_colnum_selected >= 5)
 				{
-					if (item_colnum_selected == 1)
+					if (item_colnum_selected == 5)
 					{
-						ColourIndex normal1, normal2;
-						GET_CAR_COLOURS(v_modding, &normal1, &normal2);
-						CHANGE_CAR_COLOUR(v_modding, item_col_selected - 1, normal2);
+						SET_CAR_COLOUR_COMBINATION(v_modding, num_selected - 1);
 					}
-					else if (item_colnum_selected == 2)
+					else if (item_colnum_selected == 6)
 					{
-						ColourIndex normal1, normal2;
-						GET_CAR_COLOURS(v_modding, &normal1, &normal2);
-						CHANGE_CAR_COLOUR(v_modding, normal1, item_col_selected - 1);
+						SET_CAR_LIVERY(v_modding, -1);
 					}
-					else if (item_colnum_selected == 3)
-					{
-						ColourIndex normal1, normal2;
-						GET_EXTRA_CAR_COLOURS(v_modding, &normal1, &normal2);
-						SET_EXTRA_CAR_COLOURS(v_modding, item_col_selected - 1, normal2);
-					}
-					else if (item_colnum_selected == 4)
-					{
-						ColourIndex normal1, normal2;
-						GET_EXTRA_CAR_COLOURS(v_modding, &normal1, &normal2);
-						SET_EXTRA_CAR_COLOURS(v_modding, normal1, item_col_selected - 1);
-					}
-					item_col_selected = 0;
+					menu_level = 4;
+					item_colnum_selected = 0;
+					//item_selected = 5;
+					//item_col_selected = 0;
+					//item_colnum_selected = 0;
+					//veh_change_set = false;
 				}
 			}
 			veh_change_set = true;
@@ -955,7 +1134,7 @@ void DoMenu(void)
 	set_up_draw(2, width, height, r, g, b, a);
 	draw_float("NUMBR", pos_x, 0.13000000, padleft_y);
 	*/
-	/*
+	
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.08800000, menu_level);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -963,27 +1142,28 @@ void DoMenu(void)
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.16800000, item_selected);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.20800000, VehModifyMode);
-	if (inVehModify)
+	draw_number("NUMBR", 0.58700000, 0.20800000, item_modify_selected);
+	if (inNumberSelector)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-		draw_text("STRING", 0.58700000, 0.24800000, "inVehModify");
+		draw_text("STRING", 0.58700000, 0.24800000, "inNumberSelector");
 	}
-	if (inVModifyDoors)
+	if (inVehCol)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-		draw_text("STRING", 0.58700000, 0.28800000, "inVModifyDoors");
-	}
+		draw_text("STRING", 0.58700000, 0.28800000, "inVehCol");
+	}/*
 	if (inModVeh)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 		draw_text("STRING", 0.58700000, 0.32800000, "inModVeh");
-	}
+	}*/
 	if (veh_change_set)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 		draw_text("STRING", 0.58700000, 0.36800000, "veh_change_set");
 	}
+	/*
 	if (inVehSpawn)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -993,12 +1173,11 @@ void DoMenu(void)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 		draw_text("STRING", 0.58700000, 0.44800000, "inVehMenu");
-	}
+	}*/
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.48800000, item_modify_selected);
+	draw_number("NUMBR", 0.58700000, 0.48800000, num_highlighted);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.51800000, item_modifytype_selected);
-	*/
+	draw_number("NUMBR", 0.58700000, 0.51800000, num_selected);
 
 	//DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
 
@@ -1016,8 +1195,17 @@ void DoMenu(void)
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_O))
 	{
+		int I;
+		for (I = 1; I < (menu_len + 1); I++)
+		{
+			menu_items[I] = " ";
+			//spawn_cars[I] = ;
+		}
+
 		G_item_highlighted[2398] = 1;
+		num_highlighted = 1;
 		item_selected = 0;
+		num_selected = 0;
 
 		if (menu_level == 3)
 		{
@@ -1042,6 +1230,8 @@ void DoMenu(void)
 			{
 				menu_level = 2;
 				inVehCol = false;
+				inNumberSelector = false;
+				num_item_highlighted = 0;
 				JumpOutVehicle(exit_x, exit_y, exit_z);
 			}
 		}
@@ -1096,6 +1286,8 @@ void DoMenu(void)
 			}
 			else if (inVehCol)
 			{
+				menu_level = 3;
+				item_selected = 5;
 				item_col_selected = 0;
 				item_colnum_selected = 0;
 				veh_change_set = false;
@@ -1128,9 +1320,12 @@ void DoMenu(void)
 			item_vehspawn_selected = G_item_highlighted[2398];
 			veh_change_set = false;
 		}
-		else if (inVehCol && item_colnum_selected != 0)
+		else if (inVehCol && (item_colnum_selected != 0 || inNumberSelector || item_colnum_selected == 6))
 		{
-			item_col_selected = G_item_highlighted[2398];
+			if (!inNumberSelector)
+			{
+				item_col_selected = G_item_highlighted[2398];
+			}
 			veh_change_set = false;
 		}
 		else if (inVModifyDoors && item_modifytype_selected != 0)
@@ -1183,10 +1378,16 @@ void DoMenu(void)
 			else if (inVehModify)
 			{
 				item_modifytype_selected = G_item_highlighted[2398];
+				G_item_highlighted[2398] = 1;
 				menu_level = 5;
 			}
 			else if (inVehCol)
 			{
+				if (inNumberSelector)
+				{
+					num_selected = num_highlighted;
+				}
+
 				item_colnum_selected = G_item_highlighted[2398];
 				menu_level = 5;
 			}

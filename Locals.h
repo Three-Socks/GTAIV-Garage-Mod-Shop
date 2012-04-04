@@ -15,30 +15,6 @@
 #define BUTTON_STICK_LEFT  0x12
 #define BUTTON_STICK_RIGHT  0x13
 
-/*typedef struct _Vector4
-{
-	float x;
-	float y;
-	float z;
-	float h;
-} Vector4;
-
-typedef struct _GarageCoord
-{
-	Vector4 exit;
-	Vector4 quit;
-	Vector4 spawn;
-} GarageCoord;
-
-typedef struct _GarageArea
-{
-	GarageCoord main;
-	GarageCoord big;
-	GarageCoord heli;
-} GarageArea;
-
-GarageArea garage;*/
-
 // MAIN
 	float garage_main_exit_x,
 	garage_main_exit_y,
@@ -108,7 +84,6 @@ bool veh_cam_set = false;
 bool draw_menu_set = true;
 
 uint menu_level = 2;
-//uint item_highlighted = 1;
 uint item_selected = 0;
 uint item_vehcat_selected = 0;
 uint item_vehspawn_selected = 0;
@@ -118,6 +93,9 @@ uint item_col_selected = 0;
 uint item_modifytype_selected = 0;
 uint item_modify_selected = 0;
 uint VehModifyMode = 1;
+uint num_item_highlighted = 0;
+uint num_highlighted = 1;
+uint num_selected = 0;
 
 uint d_r = 255, d_g = 255, d_b = 255, h_r = 253, h_g = 160, h_b = 35;
 float start_pos_x = 0.0553, menu_spacing = 0.0400, menu_width = 0.3000, menu_height = 0.3000;
@@ -138,18 +116,12 @@ bool inVModifyDoors = false;
 bool inVModifyWindows = false;
 bool inVehCol = false;
 bool veh_change_set = false;
+bool inNumberSelector = false;
 
 char *menu_items[16];
 uint menu_len;
+uint num_len;
 uint spawn_cars[15];
 
-/*typedef struct _rgbcolours
-{
-	uint r;
-	uint g;
-	uint b;
-} rgbcolours;
-
-rgbcolours car_colours[134];*/
-
-//uint car_colours_r[134], car_colours_g[134], car_colours_b[134];
+uint NumColours = 0;
+uint window_notintact[5], door_damaged[7], door_opened[7];
