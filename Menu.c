@@ -346,7 +346,11 @@ void EnterMenu(int item_selected)
 			{
 				menu_items[1] = "Doors";
 				menu_items[2] = "Windows";
-				menu_len = 2;
+				menu_items[3] = "Handling";
+				menu_items[4] = "Lights";
+				menu_items[5] = "Health";
+				menu_items[6] = "Misc";
+				menu_len = 6;
 				inVehModify = true;
 				G_item_highlighted[2398] = 1;
 				menu_level = 4;
@@ -631,6 +635,84 @@ void EnterMenu(int item_selected)
 				menu_len = 4;
 				inVModifyWindows = true;		
 			}
+			else if (item_modifytype_selected == 3)
+			{
+				// HANDLING
+				//void SET_CAR_FORWARD_SPEED(Vehicle vehicle, float speed);
+				menu_items[1] = "Speed";
+				//void SET_VEHICLE_STEER_BIAS(Vehicle veh, float val);
+				menu_items[2] = "Steer Bias";
+				//void SET_CAR_ALWAYS_CREATE_SKIDS(Car car, boolean set);
+				menu_items[3] = "Always Skid";
+				//void SET_CAR_TRACTION(Car car, float traction);
+				menu_items[4] = "Traction";
+				menu_len = 4;
+				inVModifyHandling = true;
+			}
+			else if (item_modifytype_selected == 4)
+			{
+				// LIGHTS
+				//void SET_VEH_HAZARDLIGHTS(Vehicle vehicle, boolean on);
+				menu_items[1] = "Hazard Lights";
+				//void SET_VEH_INDICATORLIGHTS(Vehicle veh, boolean set);
+				menu_items[2] = "Indicator Lights";
+				//void SET_VEH_INTERIORLIGHT(Vehicle veh, boolean set);
+				menu_items[3] = "Interior Light";
+				//void SET_CAR_LIGHT_MULTIPLIER(Car car, float multiplier);
+				menu_items[4] = "Light Multiplier";
+				menu_len = 4;
+				inVModifyLights = true;
+			}
+			else if (item_modifytype_selected == 5)
+			{
+				// HEALTH
+				//void SET_CAR_HEALTH(Vehicle vehicle, uint Value);
+				menu_items[1] = "Health";
+				//void SET_ENGINE_HEALTH(Vehicle vehicle, float health);
+				menu_items[2] = "Engine Health";
+				//void SET_CAR_PROOFS(Vehicle vehicle, boolean bulletProof, boolean fireProof, boolean explosionProof, boolean collisionProof, boolean meleeProof);
+				menu_items[3] = "Bullet Proof";
+				menu_items[4] = "Fire Proof";
+				menu_items[5] = "Explosion Proof";
+				menu_items[6] = "Collision Proof";
+				menu_items[7] = "Melee Proof";
+				//void SET_CAR_STRONG(Vehicle vehicle, boolean strong);
+				menu_items[8] = "Strong";
+				//void SET_VEH_HAS_STRONG_AXLES(Vehicle veh, boolean set);
+				menu_items[9] = "Strong Axles";
+				//void SET_CAR_COLLISION(Car car, boolean set);
+				menu_items[10] = "Collision";
+				//void SET_CAR_CAN_BE_DAMAGED(Vehicle vehicle, boolean value);
+				menu_items[11] = "Damage";
+				//void SET_CAR_CAN_BE_VISIBLY_DAMAGED(Vehicle vehicle, boolean value);
+				menu_items[12] = "Visible Damage";
+				//void SET_VEHICLE_DEFORMATION_MULT(Vehicle veh, float multiplier);
+				menu_items[13] = "Deformation Multiplier";
+				//void SET_CAR_WATERTIGHT(Car car, boolean set);
+				menu_items[14] = "Watertight";
+				menu_len = 14;
+				inVModifyHealth = true;
+			}
+			else if (item_modifytype_selected == 6)
+			{
+				// MISC
+				//void SET_VEHICLE_DIRT_LEVEL(Vehicle vehicle, float intensity);
+				menu_items[1] = "Dirt Level";
+				//void SET_VEHICLE_CAN_BE_TARGETTED(Vehicle veh, boolean set);
+				menu_items[2] = "Can be targetted";
+				//void SET_VEHICLE_ALPHA(Vehicle veh, int alpha);
+				menu_items[3] = "Transparency";
+				//void SET_VEH_ALARM(Vehicle veh, boolean set);
+				menu_items[4] = "Alarm";
+				//void SET_VEH_ALARM_DURATION(Vehicle veh, int duration);
+				menu_items[5] = "Alarm Duration";
+				//void SET_CAR_VISIBLE(Vehicle vehicle, boolean value);
+				menu_items[6] = "Visible";
+				//void SET_CAR_AS_MISSION_CAR(Car car);
+				menu_items[7] = "Mission";
+				menu_len = 7;
+				inVModifyMisc = true;
+			}	
 		}
 
 		if (!veh_change_set && (DOES_VEHICLE_EXIST(v_modding) || inVehMenu))
@@ -732,37 +814,8 @@ void EnterMenu(int item_selected)
 			}
 			else if (inVehUpgrade && item_up_selected != 0)
 			{
-				// Store broken/open doors & windows.
-				FREEZE_CAR_POSITION(v_modding, 0);
-				LOCK_CAR_DOORS(v_modding, 1);
-		
-				int window_I, window_notintact[5];
-				for (window_I = 0; window_I < 4; window_I++)
-				{
-					if (!IS_VEH_WINDOW_INTACT(v_modding, window_I))
-					{
-						window_notintact[window_I] = 1;
-					}
-				}				
-		
-				int door_I, door_damaged[7], door_opened[7];
-				for (door_I = 0; door_I < 6; door_I++)
-				{
-					if (IS_CAR_DOOR_DAMAGED(v_modding, door_I))
-					{
-						door_damaged[door_I] = 1;
-					}
-					
-					float doorangle;
-					GET_DOOR_ANGLE_RATIO(v_modding, door_I, &doorangle);
+				StoreModify(false, false, false, 0, 0, 0);
 
-					if (!IS_CAR_DOOR_DAMAGED(v_modding, door_I) && doorangle >= 0.5000)
-					{
-						door_opened[door_I] = 1;
-					}
-				}
-	
-				// Apply upgrade.
 				if (IS_VEHICLE_EXTRA_TURNED_ON(v_modding, item_up_selected))
 				{
 					TURN_OFF_VEHICLE_EXTRA(v_modding, item_up_selected, true);
@@ -776,73 +829,21 @@ void EnterMenu(int item_selected)
 					}
 				}
 				
-				// Re-Apply broken/open doors & windows.
-				for (door_I = 0; door_I < 6; door_I++)
-				{
-					if (door_damaged[door_I] == 1)
-					{
-						BREAK_CAR_DOOR(v_modding, door_I, false);
-					}
-
-					if (door_opened[door_I] == 1)
-					{
-						OPEN_CAR_DOOR(v_modding, door_I);
-					}
-				}
-				
-				for (window_I = 0; window_I < 4; window_I++)
-				{
-					if (window_notintact[window_I] == 1)
-					{
-						REMOVE_CAR_WINDOW(v_modding, window_I);
-					}
-				}		
-				CLEAR_AREA_OF_OBJECTS(spawn_x, spawn_y, spawn_z, 5.0000);
-
+				ReApplyModify();
 			}
-			else if (inVehModify && item_modify_selected > 1 && item_modifytype_selected != 0)
+			else if (inVehModify && item_modify_selected != 0 && item_modifytype_selected != 0)
 			{
-				if (inVModifyDoors)
+				if (inVModifyDoors && item_modify_selected != 1)
 				{
 					if (VehModifyMode == 2)
 					{
 						if (IS_CAR_DOOR_DAMAGED(v_modding, item_modify_selected - 2))
 						{
+							StoreModify(false, true, false, 0, item_modify_selected - 2, 0);
 
-							int window_I, window_notintact[5];
-							for (window_I = 0; window_I < 4; window_I++)
-							{
-								if (!IS_VEH_WINDOW_INTACT(v_modding, window_I))
-								{
-									window_notintact[window_I] = 1;
-								}
-							}
-
-							int door_I, door_damaged[7];
-							for (door_I = 0; door_I < 6; door_I++)
-							{
-								if (IS_CAR_DOOR_DAMAGED(v_modding, door_I) && door_I != item_modify_selected - 2)
-								{
-									door_damaged[door_I] = 1;
-								}
-							}
 							FIX_CAR(v_modding);
-							for (door_I = 0; door_I < 6; door_I++)
-							{
-								if (door_damaged[door_I] == 1)
-								{
-									BREAK_CAR_DOOR(v_modding, door_I, false);
-								}
-							}
-
-							for (window_I = 0; window_I < 4; window_I++)
-							{
-								if (window_notintact[window_I] == 1)
-								{
-									REMOVE_CAR_WINDOW(v_modding, window_I);
-								}
-							}
 							
+							ReApplyModify();
 						}
 						else
 						{
@@ -869,52 +870,96 @@ void EnterMenu(int item_selected)
 				}
 				else if (inVModifyWindows)
 				{
-					if (IS_VEH_WINDOW_INTACT(v_modding, -1))
-					{
-						PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Window -1 IS_VEH_WINDOW_INTACT.", 1000, 1);
-					}
 					if (IS_VEH_WINDOW_INTACT(v_modding, item_modify_selected - 1))
 					{
 						REMOVE_CAR_WINDOW(v_modding, item_modify_selected - 1);
-						PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "REMOVE_CAR_WINDOW called.", 1000, 1);
 					}
 					else
 					{
-						PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "!REMOVE_CAR_WINDOW called.", 1000, 1);
-						int window_I, window_notintact[5];
-						for (window_I = 0; window_I < 4; window_I++)
-						{
-							if (!IS_VEH_WINDOW_INTACT(v_modding, window_I) && window_I != item_modify_selected - 1)
-							{
-								window_notintact[window_I] = 1;
-							}
-						}
+						StoreModify(true, false, false, item_modify_selected - 1, 0, 0);
 						
-						int door_I, door_damaged[7];
-						for (door_I = 0; door_I < 6; door_I++)
-						{
-							if (IS_CAR_DOOR_DAMAGED(v_modding, door_I) && door_I != item_modify_selected - 2)
-							{
-								door_damaged[door_I] = 1;
-							}
-						}
-						FIX_CAR(v_modding);		
-						for (door_I = 0; door_I < 6; door_I++)
-						{
-							if (door_damaged[door_I] == 1)
-							{
-								BREAK_CAR_DOOR(v_modding, door_I, false);
-							}
-						}
+						FIX_CAR(v_modding);
 
-						for (window_I = 0; window_I < 4; window_I++)
+						ReApplyModify();
+					}
+				}
+				else if (inVModifyHandling)
+				{
+
+					if (item_modify_selected == 1)
+					{
+						SET_CAR_FORWARD_SPEED(v_modding, floatnum_selected);
+					}
+					else if (item_modify_selected == 2)
+					{
+						SET_VEHICLE_STEER_BIAS(v_modding, floatnum_selected);
+					}
+					else if (item_modify_selected == 3)
+					{
+						if (MiscEnabled[1] == 2)
 						{
-							if (window_notintact[window_I] == 1)
-							{
-								REMOVE_CAR_WINDOW(v_modding, window_I);
-							}
+							SET_CAR_ALWAYS_CREATE_SKIDS(v_modding, false);
+							MiscEnabled[1] = 0;
+						}
+						else
+						{
+							SET_CAR_ALWAYS_CREATE_SKIDS(v_modding, true);
+							MiscEnabled[1] = 2;
 						}
 					}
+					else if (item_modify_selected == 4)
+					{
+						SET_CAR_TRACTION(v_modding, floatnum_selected);
+					}
+
+				}
+				else if (inVModifyLights)
+				{
+
+					if (item_modify_selected == 1)
+					{
+						if (MiscEnabled[2] == 2)
+						{
+							SET_VEH_HAZARDLIGHTS(v_modding, false);
+							MiscEnabled[2] = 0;
+						}
+						else
+						{
+							SET_VEH_HAZARDLIGHTS(v_modding, true);
+							MiscEnabled[2] = 2;
+						}
+					}
+					else if (item_modify_selected == 2)
+					{
+						if (MiscEnabled[3] == 2)
+						{
+							SET_VEH_INDICATORLIGHTS(v_modding, false);
+							MiscEnabled[3] = 0;
+						}
+						else
+						{
+							SET_VEH_INDICATORLIGHTS(v_modding, true);
+							MiscEnabled[3] = 2;
+						}
+					}
+					else if (item_modify_selected == 3)
+					{
+						if (MiscEnabled[4] == 2)
+						{
+							SET_VEH_INTERIORLIGHT(v_modding, false);
+							MiscEnabled[4] = 0;
+						}
+						else
+						{
+							SET_VEH_INTERIORLIGHT(v_modding, true);
+							MiscEnabled[4] = 2;
+						}
+					}
+					else if (item_modify_selected == 4)
+					{
+						SET_CAR_LIGHT_MULTIPLIER(v_modding, floatnum_selected);
+					}
+
 				}
 			}
 			else if (inVehCol)
@@ -1283,6 +1328,10 @@ void DoMenu(void)
 				{
 					inVModifyWindows = false;
 				}
+				else if (inVModifyMisc)
+				{
+					inVModifyMisc = false;
+				}
 			}
 			else if (inVehCol)
 			{
@@ -1322,7 +1371,7 @@ void DoMenu(void)
 		}
 		else if (inVehCol && (item_colnum_selected != 0 || inNumberSelector || item_colnum_selected == 6))
 		{
-			if (!inNumberSelector)
+			if (!inNumberSelector && item_colnum_selected != 6)
 			{
 				item_col_selected = G_item_highlighted[2398];
 			}
@@ -1345,6 +1394,11 @@ void DoMenu(void)
 			veh_change_set = false;
 		}
 		else if (inVModifyWindows && item_modifytype_selected != 0)
+		{
+			item_modify_selected = G_item_highlighted[2398];
+			veh_change_set = false;
+		}
+		else if (inVModifyMisc && item_modifytype_selected != 0)
 		{
 			item_modify_selected = G_item_highlighted[2398];
 			veh_change_set = false;

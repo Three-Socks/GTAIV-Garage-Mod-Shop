@@ -1,6 +1,5 @@
 void StoreModify(bool notwindow, bool notbreak, bool notopen, uint itemwindow, uint itembreak, uint itemopen)
 {
-
 	// Store broken/open doors & windows.
 	FREEZE_CAR_POSITION(v_modding, 0);
 	LOCK_CAR_DOORS(v_modding, 1);
@@ -22,7 +21,7 @@ void StoreModify(bool notwindow, bool notbreak, bool notopen, uint itemwindow, u
 				window_notintact[window_I] = 1;
 			}
 		}
-	}				
+	}
 
 	int door_I;
 	for (door_I = 0; door_I < 6; door_I++)
@@ -65,7 +64,6 @@ void StoreModify(bool notwindow, bool notbreak, bool notopen, uint itemwindow, u
 
 void ReApplyModify(void)
 {
-
 	// Re-Apply broken/open doors & windows.
 	int door_I;
 	for (door_I = 0; door_I < 6; door_I++)
@@ -80,19 +78,19 @@ void ReApplyModify(void)
 			OPEN_CAR_DOOR(v_modding, door_I);
 		}
 	}
-	
+
+	int window_I;
 	for (window_I = 0; window_I < 4; window_I++)
 	{
 		if (window_notintact[window_I] == 1)
 		{
 			REMOVE_CAR_WINDOW(v_modding, window_I);
 		}
-	}		
+	}
 	CLEAR_AREA_OF_OBJECTS(spawn_x, spawn_y, spawn_z, 5.0000);
 
-	FREEZE_CAR_POSITION(v_modding, 1);
-	LOCK_CAR_DOORS(v_modding, 4);
-
+	//FREEZE_CAR_POSITION(v_modding, 1);
+	//LOCK_CAR_DOORS(v_modding, 4);
 
 }
 

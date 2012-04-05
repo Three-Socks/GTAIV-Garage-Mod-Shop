@@ -96,6 +96,7 @@ uint VehModifyMode = 1;
 uint num_item_highlighted = 0;
 uint num_highlighted = 1;
 uint num_selected = 0;
+float floatnum_selected = 0;
 
 uint d_r = 255, d_g = 255, d_b = 255, h_r = 253, h_g = 160, h_b = 35;
 float start_pos_x = 0.0553, menu_spacing = 0.0400, menu_width = 0.3000, menu_height = 0.3000;
@@ -110,12 +111,20 @@ Vehicle v_modding;
 bool inVehSpawn = false;
 bool inVehSpawnDLC = false;
 bool inVehMenu = false;
+
 bool inVehUpgrade = false;
+
 bool inVehModify = false;
 bool inVModifyDoors = false;
 bool inVModifyWindows = false;
+bool inVModifyHandling = false;
+bool inVModifyLights = false;
+bool inVModifyHealth = false;
+bool inVModifyMisc = false;
+
 bool inVehCol = false;
 bool veh_change_set = false;
+
 bool inNumberSelector = false;
 
 char *menu_items[16];
@@ -125,3 +134,4 @@ uint spawn_cars[15];
 
 uint NumColours = 0;
 uint window_notintact[5], door_damaged[7], door_opened[7];
+uint MiscEnabled[30];
