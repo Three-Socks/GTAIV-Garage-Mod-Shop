@@ -1,3 +1,24 @@
+bool isButtonPressedLong(uint button)
+{
+
+	if (IS_BUTTON_PRESSED(0, button))
+	{
+		if (longPress == 50 || longPress == 100)
+		{
+			longPress = 100;
+			return true;
+		}
+
+		longPress++;
+	}
+	else
+	{
+		longPress = 0;
+	}
+	
+	return false;
+}
+
 void StoreModify(bool notwindow, bool notbreak, bool notopen, uint itemwindow, uint itembreak, uint itemopen)
 {
 	// Store broken/open doors & windows.
