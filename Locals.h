@@ -96,10 +96,8 @@ uint VehModifyMode = 1;
 uint num_item_highlighted = 0;
 uint num_highlighted = 1;
 uint num_selected = 0;
+float floatnum_highlighted = 1;
 float floatnum_selected = 0;
-
-uint d_r = 255, d_g = 255, d_b = 255, h_r = 253, h_g = 160, h_b = 35;
-float start_pos_x = 0.0553, menu_spacing = 0.0400, menu_width = 0.3000, menu_height = 0.3000;
 
 float spawn_x, spawn_y, spawn_z, spawn_h;
 float exit_x, exit_y, exit_z, exit_h;
@@ -126,12 +124,42 @@ bool inVehCol = false;
 bool veh_change_set = false;
 
 bool inNumberSelector = false;
+bool inFloatSelector = false;
 
-char *menu_items[16];
+//char *menu_items[16];
+
+typedef struct _menu
+{
+	char *name;
+	uint type;
+	uint extraI;
+	bool extraVar;
+} menu;
+
+/*
+ name: Display name
+
+ type: 
+   1 = toggle
+
+ extraI: Extra identifier
+ extraVar: Extra var
+*/
+
+
+menu menu_item[16];
+
 uint menu_len;
 uint num_len;
 uint spawn_cars[15];
 
 uint NumColours = 0;
 uint window_notintact[5], door_damaged[7], door_opened[7];
-uint MiscEnabled[30];
+uint miscEnabled[18];
+bool modifyBulletProof = false;
+bool modifyFireProof = false;
+bool modifyExplosionProof = false;
+bool modifyCollisionProof = false;
+bool modifyMeleeProof = false;
+
+int longPress = 0;
