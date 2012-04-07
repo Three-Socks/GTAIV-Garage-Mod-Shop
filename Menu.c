@@ -5,7 +5,7 @@ void DrawMenu(int array_len)
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_DOWN))
 	{
-		if ((inNumberSelector || inFloatSelector) && (num_highlighted != 0 || floatnum_highlighted != 0))
+		if ((inNumberSelector || inFloatSelector) && (num_highlighted > 1 || floatnum_highlighted > 1))
 		{
 			num_highlighted = 0;
 			floatnum_highlighted = 0;
@@ -23,7 +23,7 @@ void DrawMenu(int array_len)
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_UP))
 	{
-		if ((inNumberSelector || inFloatSelector) && (num_highlighted != 0 || floatnum_highlighted != 0))
+		if ((inNumberSelector || inFloatSelector) && (num_highlighted > 1 || floatnum_highlighted > 1))
 		{
 			num_highlighted = 0;
 			floatnum_highlighted = 0;
@@ -410,7 +410,8 @@ void EnterMenu(int item_selected)
 				menu_item[4].name = "Lights";
 				menu_item[5].name = "Health";
 				menu_item[6].name = "Misc";
-				menu_len = 6;
+				menu_item[7].name = "Neon";
+				menu_len = 7;
 				inVehModify = true;
 				G_item_highlighted[2398] = 1;
 				menu_level = 4;
@@ -431,18 +432,17 @@ void EnterMenu(int item_selected)
 				menu_item[2].name = "Color 2";
 				menu_item[3].name = "Specular Color 1";
 				menu_item[4].name = "Specular Color 2";
-				menu_item[5].name = "Neon";
-				menu_len = 5;
+				menu_len = 4;
 
 				GET_NUM_CAR_COLOURS(v_modding, &NumColours);
 				if (NumColours > 0)
 				{
-					menu_item[6].name = "Color Variation";
+					menu_item[5].name = "Color Variation";
 					menu_len++;
 				}
 
 				//void GET_NUM_CAR_LIVERIES(Car car, int *num);
-				menu_item[7].name = "Livery";
+				menu_item[6].name = "Livery";
 				menu_len++;
 
 				menu_level = 4;
@@ -467,7 +467,7 @@ void EnterMenu(int item_selected)
 			}
 			else
 			{
-				PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Your vehicle has been fixed and cleaned.", 2500, 1);
+				PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 2500, 1);
 			}
 			return;
 		}
@@ -922,6 +922,40 @@ void EnterMenu(int item_selected)
 					num_item_highlighted = 4;
 					inNumberSelector = true;
 					num_len = 30;
+				}
+			}
+			else if (item_modifytype_selected == 7)
+			{
+				menu_item[1].name = "Toggle";
+				menu_item[2].name = "Color";
+				menu_item[3].name = "Height";
+				menu_item[4].name = "Intensity";
+				menu_item[5].name = "Range";
+				menu_len = 5;
+				inVNeon = true;
+
+				veh_change_set = false;
+				num_item_highlighted = 0;
+				inNumberSelector = false;
+				inFloatSelector = false;
+
+				if (G_item_highlighted[2398] == 3)
+				{
+					num_item_highlighted = 3;
+					inFloatSelector = true;
+					num_len = 10;
+				}
+				else if (G_item_highlighted[2398] == 4)
+				{
+					num_item_highlighted = 4;
+					inNumberSelector = true;
+					num_len = 15;
+				}
+				else if (G_item_highlighted[2398] == 5)
+				{
+					num_item_highlighted = 5;
+					inNumberSelector = true;
+					num_len = 100;
 				}
 			}
 		}
@@ -1447,6 +1481,38 @@ void EnterMenu(int item_selected)
 					}
 
 				}
+				else if (inVNeon && !G_inVNeonCol[2398])
+				{
+					if (item_neon_selected == 1)
+					{
+						if (G_drawVNeon[23].enabled)
+						{
+							G_drawVNeon[23].enabled = false;
+						}
+						else
+						{
+							G_drawVNeon[23].enabled = true;
+						}
+					}
+					else if (item_neon_selected == 2)
+					{
+						draw_menu_set = false;
+						G_drewrect[2398] = true;
+						G_inVNeonCol[2398] = true;
+					}
+					else if (item_neon_selected == 3)
+					{
+						G_drawVNeon[23].height = floatnum_selected;
+					}
+					else if (item_neon_selected == 4)
+					{
+						G_drawVNeon[23].intensity = num_selected;
+					}
+					else if (item_neon_selected == 5)
+					{
+						G_drawVNeon[23].range = num_selected;
+					}
+				}
 				item_modify_selected = 0;
 			}
 			else if (inVehCol)
@@ -1499,95 +1565,13 @@ void EnterMenu(int item_selected)
 						item_col_selected = 0;
 					}
 				}
-				else if (item_colnum_selected == 5)
+				else if (item_colnum_selected >= 5)
 				{
-					if (item_col_selected == 0)
-					{
-						float v_attach_x, v_attach_y, v_attach_z;
-						GET_CAR_COORDINATES(v_modding, &v_attach_x, &v_attach_y, &v_attach_z);
-						G_drawVNeon[2398].intensity = 10.0000;
-						G_drawVNeon[2398].range = 50.0000;
-						G_drawVNeon[2398].height = v_attach_z;
-
-						draw_menu_set = false;
-						G_drewrect[2398] = true;
-					}
-					else if (item_col_selected != 0 && item_neon_selected == 0)
-					{
-						if (G_scriptloadedpalette[2398])
-						{
-							draw_menu_set = true;
-							G_drewrect[2398] = false;
-
-							G_scriptloadedpalette[2398] = false;
-							TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("garage_menu_palette");
-						}
-
-						menu_item[1].name = "Enable/Disable";
-						menu_item[2].name = "Height";
-						menu_item[3].name = "Intensity";
-						menu_item[4].name = "Range";
-						menu_len = 4;
-						G_inVNeon[2398] = true;
-
-						veh_change_set = false;
-						num_item_highlighted = 0;
-						inNumberSelector = false;
-						inFloatSelector = false;
-
-						if (G_item_highlighted[2398] == 2)
-						{
-							num_item_highlighted = 2;
-							inFloatSelector = true;
-							num_len = 10;
-						}
-						else if (G_item_highlighted[2398] == 3)
-						{
-							num_item_highlighted = 3;
-							inNumberSelector = true;
-							num_len = 15;
-						}
-						else if (G_item_highlighted[2398] == 4)
-						{
-							num_item_highlighted = 4;
-							inNumberSelector = true;
-							num_len = 100;
-						}						
-					}
-					else if (item_neon_selected != 0)
-					{
-						if (item_neon_selected == 1)
-						{
-							if (G_drawVNeon[2398].enabled)
-							{
-								G_drawVNeon[2398].enabled = false;
-							}
-							else
-							{
-								G_drawVNeon[2398].enabled = true;
-							}
-						}
-						else if (item_neon_selected == 2)
-						{
-							G_drawVNeon[2398].height = floatnum_selected;
-						}
-						else if (item_neon_selected == 3)
-						{
-							G_drawVNeon[2398].intensity = num_selected;
-						}
-						else if (item_neon_selected == 4)
-						{
-							G_drawVNeon[2398].range = num_selected;
-						}
-					}
-				}
-				else if (item_colnum_selected >= 6)
-				{
-					if (item_colnum_selected == 6)
+					if (item_colnum_selected == 5)
 					{
 						SET_CAR_COLOUR_COMBINATION(v_modding, num_selected - 1);
 					}
-					else if (item_colnum_selected == 7)
+					else if (item_colnum_selected == 6)
 					{
 						SET_CAR_LIVERY(v_modding, -1);
 					}
@@ -1919,13 +1903,22 @@ void DoMenu(void)
 				{
 					inVModifyMisc = false;
 				}
+				else if (inVNeon)
+				{
+					inVNeon = false;
+
+					if (G_inVNeonCol[2398])
+					{
+						draw_menu_set = true;
+						G_drewrect[2398] = false;
+
+						G_scriptloadedpalette[2398] = false;
+						TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("garage_menu_palette");
+					}
+				}
 			}
 			else if (inVehCol)
 			{
-				if (G_inVNeon[2398])
-				{
-					G_inVNeon[2398] = false;
-				}
 				menu_level = 3;
 				item_selected = 5;
 				item_col_selected = 0;
@@ -1968,7 +1961,7 @@ void DoMenu(void)
 			}
 			veh_change_set = false;
 		}
-		else if (G_inVNeon[2398] && item_col_selected != 0)
+		else if (inVNeon && item_modifytype_selected != 0)
 		{
 			if (inNumberSelector)
 			{
@@ -2093,6 +2086,15 @@ void DoMenu(void)
 				item_modifytype_selected = G_item_highlighted[2398];
 				G_item_highlighted[2398] = 1;
 				menu_level = 5;
+				
+				if (item_modifytype_selected == 7)
+				{
+					float v_attach_x, v_attach_y, v_attach_z;
+					GET_CAR_COORDINATES(v_modding, &v_attach_x, &v_attach_y, &v_attach_z);
+					G_drawVNeon[23].intensity = 10.0000;
+					G_drawVNeon[23].range = 50.0000;
+					G_drawVNeon[23].height = v_attach_z;
+				}
 			}
 			else if (inVehCol)
 			{
@@ -2120,7 +2122,7 @@ void DoMenu(void)
 	{
 		DrawMenu(menu_len);
 	}
-	else if (inVehCol)
+	else if (G_drewrect[2398])
 	{
 		if (!G_scriptloadedpalette[2398])
 		{

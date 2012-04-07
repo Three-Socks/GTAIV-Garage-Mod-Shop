@@ -120,6 +120,7 @@ bool inVModifyHandling = false;
 bool inVModifyLights = false;
 bool inVModifyHealth = false;
 bool inVModifyMisc = false;
+bool inVNeon = false;
 
 bool inVehCol = false;
 bool veh_change_set = false;
