@@ -4,6 +4,7 @@
 #include <types.h>
 #include <consts.h>
 
+#include "gmssl.h"
 #include "globals.h"
 
 uint car_colours_r[138], car_colours_g[138], car_colours_b[138];
@@ -647,11 +648,11 @@ void main(void)
 	{
 		WAIT(0);
 		DrawPalette();
-		if (G_inVNeon[2398] && IS_BUTTON_JUST_PRESSED(0, BUTTON_X))
+		if (G_inVNeonCol[2398] && IS_BUTTON_JUST_PRESSED(0, BUTTON_X))
 		{
-			G_drawVNeon[2398].colour_r = car_colours_r[G_item_highlighted[2398] - 1];
-			G_drawVNeon[2398].colour_g = car_colours_g[G_item_highlighted[2398] - 1];
-			G_drawVNeon[2398].colour_b = car_colours_b[G_item_highlighted[2398] - 1];
+			G_drawVNeon[23].colour_r = car_colours_r[G_item_highlighted[2398] - 1];
+			G_drawVNeon[23].colour_g = car_colours_g[G_item_highlighted[2398] - 1];
+			G_drawVNeon[23].colour_b = car_colours_b[G_item_highlighted[2398] - 1];
 		}
 	}
 }

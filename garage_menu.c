@@ -4,6 +4,7 @@
 #include <types.h>
 #include <consts.h>
 
+#include "gmssl.h"
 #include "globals.h"
 #include "Locals.h"
 
@@ -20,7 +21,7 @@ void Init(void)
 	// Brucie MAIN
 	garage_main_spawn_x = 874.8120;
 	garage_main_spawn_y = -114.2031;
-	garage_main_spawn_z = 5.8122;
+	garage_main_spawn_z = 6.0054;
 	garage_main_spawn_h = 180.0000;
 
 	garage_main_exit_x = 869.0119;
