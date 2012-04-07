@@ -5,6 +5,12 @@ void DrawMenu(int array_len)
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_DOWN))
 	{
+		if ((inNumberSelector || inFloatSelector) && (num_highlighted != 0 || floatnum_highlighted != 0))
+		{
+			num_highlighted = 0;
+			floatnum_highlighted = 0;
+		}
+
 		if (G_item_highlighted[2398] == array_len)
 		{
 			G_item_highlighted[2398] = 1;
@@ -17,6 +23,12 @@ void DrawMenu(int array_len)
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_UP))
 	{
+		if ((inNumberSelector || inFloatSelector) && (num_highlighted != 0 || floatnum_highlighted != 0))
+		{
+			num_highlighted = 0;
+			floatnum_highlighted = 0;
+		}
+
 		if (G_item_highlighted[2398] == 1)
 		{
 			G_item_highlighted[2398] = array_len;
@@ -33,7 +45,7 @@ void DrawMenu(int array_len)
 		{
 			if (inFloatSelector)
 			{
-				if (floatnum_highlighted == 0.0)
+				if (floatnum_highlighted < 0.1)
 				{
 					floatnum_highlighted = num_len;
 				}
@@ -266,7 +278,7 @@ void DrawMenu(int array_len)
 				set_up_draw(0, menu_width, menu_height, r, g, b, a);
 				if (inFloatSelector)
 				{
-					draw_number("NUMBR", 0.2150, Ipos_y, floatnum_highlighted);
+					draw_float("NUMBR", 0.2150, Ipos_y, floatnum_highlighted);
 				}
 				else
 				{
@@ -294,7 +306,7 @@ void DrawMenu(int array_len)
 			}
 
 
-			if (menu_item[I].type == 1)
+			if (inVehModify && menu_item[I].type == 2)
 			{
 				if (modifyEnabled[menu_item[I].extraI] == 2)
 				{
@@ -336,8 +348,9 @@ void EnterMenu(int item_selected)
 		menu_item[3].name = "Modify Vehicle";
 		menu_item[4].name = "Fix & Wash Vehicle";
 		menu_item[5].name = "Change Vehicle Color";
-		menu_item[6].name = "Exit";
-		menu_len = 6;
+		menu_item[6].name = "Save/Load Vehicle";
+		menu_item[7].name = "Exit";
+		menu_len = 7;
 		return;
 	}
 	else if (menu_level == 3)
@@ -418,17 +431,18 @@ void EnterMenu(int item_selected)
 				menu_item[2].name = "Color 2";
 				menu_item[3].name = "Specular Color 1";
 				menu_item[4].name = "Specular Color 2";
-				menu_len = 4;
+				menu_item[5].name = "Neon";
+				menu_len = 5;
 
 				GET_NUM_CAR_COLOURS(v_modding, &NumColours);
 				if (NumColours > 0)
 				{
-					menu_item[5].name = "Color Variation";
+					menu_item[6].name = "Color Variation";
 					menu_len++;
 				}
 
 				//void GET_NUM_CAR_LIVERIES(Car car, int *num);
-				menu_item[6].name = "Livery";
+				menu_item[7].name = "Livery";
 				menu_len++;
 
 				menu_level = 4;
@@ -439,6 +453,25 @@ void EnterMenu(int item_selected)
 			return;
 		}
 		else if (item_selected == 6)
+		{
+			LocateVehicle(spawn_x, spawn_y, spawn_z);
+				
+			if (DOES_VEHICLE_EXIST(v_modding))
+			{
+				menu_item[1].name = "Save";
+				menu_item[2].name = "Load";
+				menu_len = 2;
+				G_item_highlighted[2398] = 1;
+				menu_level = 4;
+				inVehSaveLoad = true;
+			}
+			else
+			{
+				PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Your vehicle has been fixed and cleaned.", 2500, 1);
+			}
+			return;
+		}
+		else if (item_selected == 7)
 		{
 			ExitMenu();
 			return;
@@ -692,7 +725,7 @@ void EnterMenu(int item_selected)
 				menu_item[2].name = "Steer Bias";
 				//void SET_CAR_ALWAYS_CREATE_SKIDS(Car car, boolean set);
 				menu_item[3].name = "Always Skid";
-				menu_item[3].type = 1;
+				menu_item[3].type = 2;
 				menu_item[3].extraI = 1;
 				//void SET_CAR_TRACTION(Car car, float traction);
 				menu_item[4].name = "Traction";
@@ -728,31 +761,31 @@ void EnterMenu(int item_selected)
 				// LIGHTS
 				//void FORCE_CAR_LIGHTS(Car car, int lights);
 				menu_item[1].name = "Head Lights";
-				menu_item[1].type = 1;
+				menu_item[1].type = 2;
 				menu_item[1].extraI = 2;
 				//void SET_VEH_HAZARDLIGHTS(Vehicle vehicle, boolean on);
 				menu_item[2].name = "Hazard Lights";
-				menu_item[2].type = 1;
+				menu_item[2].type = 2;
 				menu_item[2].extraI = 3;
 				//void SET_VEH_INDICATORLIGHTS(Vehicle veh, boolean set);
 				menu_item[3].name = "Indicator Lights";
-				menu_item[3].type = 1;
+				menu_item[3].type = 2;
 				menu_item[3].extraI = 4;
 				//void SET_VEH_INTERIORLIGHT(Vehicle veh, boolean set);
 				menu_item[4].name = "Interior Light";
-				menu_item[4].type = 1;
+				menu_item[4].type = 2;
 				menu_item[4].extraI = 5;
 				//void SWITCH_CAR_SIREN(Car car, boolean siren);
 				menu_item[5].name = "Siren";
-				menu_item[5].type = 1;
+				menu_item[5].type = 2;
 				menu_item[5].extraI = 6;
 				//void void SET_SIREN_WITH_NO_DRIVER(Car car, boolean set);
 				menu_item[6].name = "Always Siren";
-				menu_item[6].type = 1;
+				menu_item[6].type = 2;
 				menu_item[6].extraI = 7;
 				//void SET_TAXI_LIGHTS(Car car, boolean set);
 				menu_item[7].name = "Taxi Light";
-				menu_item[7].type = 1;
+				menu_item[7].type = 2;
 				menu_item[7].extraI = 8;
 				//void SET_CAR_LIGHT_MULTIPLIER(Car car, float multiplier);
 				menu_item[8].name = "Light Multiplier";
@@ -780,45 +813,45 @@ void EnterMenu(int item_selected)
 				menu_item[2].name = "Engine Health";
 				//void SET_CAR_PROOFS(Vehicle vehicle, boolean bulletProof, boolean fireProof, boolean explosionProof, boolean collisionProof, boolean meleeProof);
 				menu_item[3].name = "Bullet Proof";
-				menu_item[3].type = 1;
+				menu_item[3].type = 2;
 				menu_item[3].extraVar = modifyBulletProof;
 				menu_item[4].name = "Fire Proof";
-				menu_item[4].type = 1;
+				menu_item[4].type = 2;
 				menu_item[4].extraVar = modifyFireProof;
 				menu_item[5].name = "Explosion Proof";
-				menu_item[5].type = 1;
+				menu_item[5].type = 2;
 				menu_item[5].extraVar = modifyExplosionProof;
 				menu_item[6].name = "Collision Proof";
-				menu_item[6].type = 1;
+				menu_item[6].type = 2;
 				menu_item[6].extraVar = modifyCollisionProof;
 				menu_item[7].name = "Melee Proof";
-				menu_item[7].type = 1;
+				menu_item[7].type = 2;
 				menu_item[7].extraVar = modifyMeleeProof;
 				//void SET_CAR_STRONG(Vehicle vehicle, boolean strong);
 				menu_item[8].name = "Strong";
-				menu_item[8].type = 1;
+				menu_item[8].type = 2;
 				menu_item[8].extraI = 9;
 				//void SET_VEH_HAS_STRONG_AXLES(Vehicle veh, boolean set);
 				menu_item[9].name = "Strong Axles";
-				menu_item[9].type = 1;
+				menu_item[9].type = 2;
 				menu_item[9].extraI = 10;
 				//void SET_CAR_COLLISION(Car car, boolean set);
 				menu_item[10].name = "Collision";
-				menu_item[10].type = 1;
+				menu_item[10].type = 2;
 				menu_item[10].extraI = 11;
 				//void SET_CAR_CAN_BE_DAMAGED(Vehicle vehicle, boolean value);
 				menu_item[11].name = "Damage";
-				menu_item[11].type = 1;
+				menu_item[11].type = 2;
 				menu_item[11].extraI = 12;
 				//void SET_CAR_CAN_BE_VISIBLY_DAMAGED(Vehicle vehicle, boolean value);
 				menu_item[12].name = "Visible Damage";
-				menu_item[12].type = 1;
+				menu_item[12].type = 2;
 				menu_item[12].extraI = 13;
 				//void SET_VEHICLE_DEFORMATION_MULT(Vehicle veh, float multiplier);
 				//menu_item[13].name = "Deformation Multiplier";
 				//void SET_CAR_WATERTIGHT(Car car, boolean set);
 				menu_item[13].name = "Watertight";
-				menu_item[13].type = 1;
+				menu_item[13].type = 2;
 				menu_item[13].extraI = 14;
 				menu_len = 13;
 				inVModifyHealth = true;
@@ -848,7 +881,7 @@ void EnterMenu(int item_selected)
 				menu_item[1].name = "Dirt Level";
 				//void SET_VEHICLE_CAN_BE_TARGETTED(Vehicle veh, boolean set);
 				menu_item[2].name = "Can be Targetted";
-				menu_item[2].type = 1;
+				menu_item[2].type = 2;
 				menu_item[2].extraI = 15;
 				//void SET_VEHICLE_ALPHA(Vehicle veh, int alpha);
 				menu_item[3].name = "Transparency";
@@ -856,11 +889,11 @@ void EnterMenu(int item_selected)
 				menu_item[4].name = "Alarm Duration";
 				//void SET_VEH_ALARM(Vehicle veh, boolean set);
 				menu_item[5].name = "Alarm";
-				menu_item[5].type = 1;
+				menu_item[5].type = 2;
 				menu_item[5].extraI = 16;
 				//void SET_CAR_VISIBLE(Vehicle vehicle, boolean value);
 				menu_item[6].name = "Visible";
-				menu_item[6].type = 1;
+				menu_item[6].type = 2;
 				menu_item[6].extraI = 17;
 				//void SET_CAR_AS_MISSION_CAR(Car car);
 				menu_item[7].name = "Mission";
@@ -919,7 +952,7 @@ void EnterMenu(int item_selected)
 				//WAIT(100);
 				MARK_MODEL_AS_NO_LONGER_NEEDED(spawn_cars[item_vehspawn_selected]);
 
-				float last_spawn_x = spawn_x;
+				float last_spawn_x = spawn_x, last_spawn_y = spawn_y;
 
 				if ((IS_BIG_VEHICLE(v_spawn) || spawn_cars[item_vehspawn_selected] == MODEL_RIPLEY)
 					&& spawn_cars[item_vehspawn_selected] != MODEL_MERIT 
@@ -959,30 +992,39 @@ void EnterMenu(int item_selected)
 					spawn_x = garage_main_spawn_x; spawn_y = garage_main_spawn_y; spawn_z = garage_main_spawn_z; spawn_h = garage_main_spawn_h;
 				}
 
-				if (last_spawn_x != spawn_x)
+				if (last_spawn_x != spawn_x && last_spawn_y != spawn_y)
 				{
-						//while (IS_SCREEN_FADING())
-						//{
-						//	WAIT(0);
-						//}
+					float distfromlast;
+					GET_DISTANCE_BETWEEN_COORDS_2D(last_spawn_x, last_spawn_y, spawn_x, spawn_y, &distfromlast);
+
+					if (distfromlast > 50.0000)
+					{
+						while (IS_SCREEN_FADING())
+						{
+							WAIT(0);
+						}
 						DO_SCREEN_FADE_OUT(10);
 						while (IS_SCREEN_FADING())
 						{
 							WAIT(0);
 						}
-						CLEAR_AREA(spawn_x, spawn_y, spawn_z, 3.0000, true);
 						LOAD_SCENE(spawn_x, spawn_y, spawn_z);
-						veh_cam_set = false;
-						JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, true);
-						//while (IS_SCREEN_FADING())
-						//{
-						//	WAIT(0);
-						//}
+					}
+					CLEAR_AREA(spawn_x, spawn_y, spawn_z, 3.0000, true);
+					veh_cam_set = false;
+					JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, true);
+					if (distfromlast > 50.0000)
+					{
+						while (IS_SCREEN_FADING())
+						{
+							WAIT(0);
+						}
 						DO_SCREEN_FADE_IN(10);
-						//while (IS_SCREEN_FADING())
-						//{
-						//	WAIT(0);
-						//}
+						while (IS_SCREEN_FADING())
+						{
+							WAIT(0);
+						}
+					}
 				}
 				else
 				{
@@ -1074,15 +1116,15 @@ void EnterMenu(int item_selected)
 					}
 					else if (item_modify_selected == 3)
 					{
-						if (miscEnabled[1] == 2)
+						if (modifyEnabled[1] == 2)
 						{
 							SET_CAR_ALWAYS_CREATE_SKIDS(v_modding, false);
-							miscEnabled[1] = 0;
+							modifyEnabled[1] = 0;
 						}
 						else
 						{
 							SET_CAR_ALWAYS_CREATE_SKIDS(v_modding, true);
-							miscEnabled[1] = 2;
+							modifyEnabled[1] = 2;
 						}
 					}
 					else if (item_modify_selected == 4)
@@ -1095,93 +1137,93 @@ void EnterMenu(int item_selected)
 				{
 					if (item_modify_selected == 1)
 					{
-						if (miscEnabled[2] == 2)
+						if (modifyEnabled[2] == 2)
 						{
 							FORCE_CAR_LIGHTS(v_modding, 0);
-							miscEnabled[2] = 0;
+							modifyEnabled[2] = 0;
 						}
 						else
 						{
 							FORCE_CAR_LIGHTS(v_modding, 2);
-							miscEnabled[2] = 2;
+							modifyEnabled[2] = 2;
 						}
 					}
 					if (item_modify_selected == 2)
 					{
-						if (miscEnabled[3] == 2)
+						if (modifyEnabled[3] == 2)
 						{
 							SET_VEH_HAZARDLIGHTS(v_modding, false);
-							miscEnabled[3] = 0;
+							modifyEnabled[3] = 0;
 						}
 						else
 						{
 							SET_VEH_HAZARDLIGHTS(v_modding, true);
-							miscEnabled[3] = 2;
+							modifyEnabled[3] = 2;
 						}
 					}
 					else if (item_modify_selected == 3)
 					{
-						if (miscEnabled[4] == 2)
+						if (modifyEnabled[4] == 2)
 						{
 							SET_VEH_INDICATORLIGHTS(v_modding, false);
-							miscEnabled[4] = 0;
+							modifyEnabled[4] = 0;
 						}
 						else
 						{
 							SET_VEH_INDICATORLIGHTS(v_modding, true);
-							miscEnabled[4] = 2;
+							modifyEnabled[4] = 2;
 						}
 					}
 					else if (item_modify_selected == 4)
 					{
-						if (miscEnabled[5] == 2)
+						if (modifyEnabled[5] == 2)
 						{
 							SET_VEH_INTERIORLIGHT(v_modding, false);
-							miscEnabled[5] = 0;
+							modifyEnabled[5] = 0;
 						}
 						else
 						{
 							SET_VEH_INTERIORLIGHT(v_modding, true);
-							miscEnabled[5] = 2;
+							modifyEnabled[5] = 2;
 						}
 					}
 					else if (item_modify_selected == 5)
 					{
-						if (miscEnabled[6] == 2)
+						if (modifyEnabled[6] == 2)
 						{
 							SWITCH_CAR_SIREN(v_modding, false);
-							miscEnabled[6] = 0;
+							modifyEnabled[6] = 0;
 						}
 						else
 						{
 							SWITCH_CAR_SIREN(v_modding, true);
-							miscEnabled[6] = 2;
+							modifyEnabled[6] = 2;
 						}
 					}
 					else if (item_modify_selected == 6)
 					{
-						if (miscEnabled[7] == 2)
+						if (modifyEnabled[7] == 2)
 						{
 							SET_SIREN_WITH_NO_DRIVER(v_modding, false);
-							miscEnabled[7] = 0;
+							modifyEnabled[7] = 0;
 						}
 						else
 						{
 							SET_SIREN_WITH_NO_DRIVER(v_modding, true);
-							miscEnabled[7] = 2;
+							modifyEnabled[7] = 2;
 						}
 					}
 					else if (item_modify_selected == 7)
 					{
-						if (miscEnabled[8] == 2)
+						if (modifyEnabled[8] == 2)
 						{
 							SET_TAXI_LIGHTS(v_modding, false);
-							miscEnabled[8] = 0;
+							modifyEnabled[8] = 0;
 						}
 						else
 						{
 							SET_TAXI_LIGHTS(v_modding, true);
-							miscEnabled[8] = 2;
+							modifyEnabled[8] = 2;
 						}
 					}
 					else if (item_modify_selected == 8)
@@ -1268,80 +1310,80 @@ void EnterMenu(int item_selected)
 					}
 					else if (item_modify_selected == 8)
 					{
-						if (miscEnabled[9] == 2)
+						if (modifyEnabled[9] == 2)
 						{
 							SET_CAR_STRONG(v_modding, false);
-							miscEnabled[9] = 0;
+							modifyEnabled[9] = 0;
 						}
 						else
 						{
 							SET_CAR_STRONG(v_modding, true);
-							miscEnabled[9] = 2;
+							modifyEnabled[9] = 2;
 						}
 					}
 					else if (item_modify_selected == 9)
 					{
-						if (miscEnabled[10] == 2)
+						if (modifyEnabled[10] == 2)
 						{
 							SET_VEH_HAS_STRONG_AXLES(v_modding, false);
-							miscEnabled[10] = 0;
+							modifyEnabled[10] = 0;
 						}
 						else
 						{
 							SET_VEH_HAS_STRONG_AXLES(v_modding, true);
-							miscEnabled[10] = 2;
+							modifyEnabled[10] = 2;
 						}
 					}
 					else if (item_modify_selected == 10)
 					{
-						if (miscEnabled[11] == 2)
+						if (modifyEnabled[11] == 2)
 						{
 							SET_CAR_COLLISION(v_modding, false);
-							miscEnabled[11] = 0;
+							modifyEnabled[11] = 0;
 						}
 						else
 						{
 							SET_CAR_COLLISION(v_modding, true);
-							miscEnabled[11] = 2;
+							modifyEnabled[11] = 2;
 						}
 					}
 					else if (item_modify_selected == 11)
 					{
-						if (miscEnabled[12] == 2)
+						if (modifyEnabled[12] == 2)
 						{
 							SET_CAR_CAN_BE_DAMAGED(v_modding, false);
-							miscEnabled[12] = 0;
+							modifyEnabled[12] = 0;
 						}
 						else
 						{
 							SET_CAR_CAN_BE_DAMAGED(v_modding, true);
-							miscEnabled[12] = 2;
+							modifyEnabled[12] = 2;
 						}
 					}
 					else if (item_modify_selected == 12)
 					{
-						if (miscEnabled[13] == 2)
+						if (modifyEnabled[13] == 2)
 						{
 							SET_CAR_CAN_BE_VISIBLY_DAMAGED(v_modding, false);
-							miscEnabled[13] = 0;
+							modifyEnabled[13] = 0;
 						}
 						else
 						{
 							SET_CAR_CAN_BE_VISIBLY_DAMAGED(v_modding, true);
-							miscEnabled[13] = 2;
+							modifyEnabled[13] = 2;
 						}
 					}
 					else if (item_modify_selected == 13)
 					{
-						if (miscEnabled[14] == 2)
+						if (modifyEnabled[14] == 2)
 						{
 							SET_CAR_WATERTIGHT(v_modding, false);
-							miscEnabled[14] = 0;
+							modifyEnabled[14] = 0;
 						}
 						else
 						{
 							SET_CAR_WATERTIGHT(v_modding, true);
-							miscEnabled[14] = 2;
+							modifyEnabled[14] = 2;
 						}
 					}
 			
@@ -1354,15 +1396,15 @@ void EnterMenu(int item_selected)
 					}
 					else if (item_modify_selected == 2)
 					{
-						if (miscEnabled[15] == 2)
+						if (modifyEnabled[15] == 2)
 						{
 							SET_VEHICLE_CAN_BE_TARGETTED(v_modding, false);
-							miscEnabled[15] = 0;
+							modifyEnabled[15] = 0;
 						}
 						else
 						{
 							SET_VEHICLE_CAN_BE_TARGETTED(v_modding, true);
-							miscEnabled[15] = 2;
+							modifyEnabled[15] = 2;
 						}
 					}
 					else if (item_modify_selected == 3)
@@ -1375,28 +1417,28 @@ void EnterMenu(int item_selected)
 					}
 					else if (item_modify_selected == 5)
 					{
-						if (miscEnabled[16] == 2)
+						if (modifyEnabled[16] == 2)
 						{
 							SET_VEH_ALARM(v_modding, false);
-							miscEnabled[16] = 0;
+							modifyEnabled[16] = 0;
 						}
 						else
 						{
 							SET_VEH_ALARM(v_modding, true);
-							miscEnabled[16] = 2;
+							modifyEnabled[16] = 2;
 						}
 					}
 					else if (item_modify_selected == 6)
 					{
-						if (miscEnabled[17] == 2)
+						if (modifyEnabled[17] == 2)
 						{
 							SET_CAR_VISIBLE(v_modding, false);
-							miscEnabled[17] = 0;
+							modifyEnabled[17] = 0;
 						}
 						else
 						{
 							SET_CAR_VISIBLE(v_modding, true);
-							miscEnabled[17] = 2;
+							modifyEnabled[17] = 2;
 						}
 					}
 					else if (item_modify_selected == 7)
@@ -1405,6 +1447,7 @@ void EnterMenu(int item_selected)
 					}
 
 				}
+				item_modify_selected = 0;
 			}
 			else if (inVehCol)
 			{
@@ -1456,22 +1499,100 @@ void EnterMenu(int item_selected)
 						item_col_selected = 0;
 					}
 				}
-				else if (item_colnum_selected >= 5)
+				else if (item_colnum_selected == 5)
 				{
-					if (item_colnum_selected == 5)
+					if (item_col_selected == 0)
+					{
+						float v_attach_x, v_attach_y, v_attach_z;
+						GET_CAR_COORDINATES(v_modding, &v_attach_x, &v_attach_y, &v_attach_z);
+						G_drawVNeon[2398].intensity = 10.0000;
+						G_drawVNeon[2398].range = 50.0000;
+						G_drawVNeon[2398].height = v_attach_z;
+
+						draw_menu_set = false;
+						G_drewrect[2398] = true;
+					}
+					else if (item_col_selected != 0 && item_neon_selected == 0)
+					{
+						if (G_scriptloadedpalette[2398])
+						{
+							draw_menu_set = true;
+							G_drewrect[2398] = false;
+
+							G_scriptloadedpalette[2398] = false;
+							TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("garage_menu_palette");
+						}
+
+						menu_item[1].name = "Enable/Disable";
+						menu_item[2].name = "Height";
+						menu_item[3].name = "Intensity";
+						menu_item[4].name = "Range";
+						menu_len = 4;
+						G_inVNeon[2398] = true;
+
+						veh_change_set = false;
+						num_item_highlighted = 0;
+						inNumberSelector = false;
+						inFloatSelector = false;
+
+						if (G_item_highlighted[2398] == 2)
+						{
+							num_item_highlighted = 2;
+							inFloatSelector = true;
+							num_len = 10;
+						}
+						else if (G_item_highlighted[2398] == 3)
+						{
+							num_item_highlighted = 3;
+							inNumberSelector = true;
+							num_len = 15;
+						}
+						else if (G_item_highlighted[2398] == 4)
+						{
+							num_item_highlighted = 4;
+							inNumberSelector = true;
+							num_len = 100;
+						}						
+					}
+					else if (item_neon_selected != 0)
+					{
+						if (item_neon_selected == 1)
+						{
+							if (G_drawVNeon[2398].enabled)
+							{
+								G_drawVNeon[2398].enabled = false;
+							}
+							else
+							{
+								G_drawVNeon[2398].enabled = true;
+							}
+						}
+						else if (item_neon_selected == 2)
+						{
+							G_drawVNeon[2398].height = floatnum_selected;
+						}
+						else if (item_neon_selected == 3)
+						{
+							G_drawVNeon[2398].intensity = num_selected;
+						}
+						else if (item_neon_selected == 4)
+						{
+							G_drawVNeon[2398].range = num_selected;
+						}
+					}
+				}
+				else if (item_colnum_selected >= 6)
+				{
+					if (item_colnum_selected == 6)
 					{
 						SET_CAR_COLOUR_COMBINATION(v_modding, num_selected - 1);
 					}
-					else if (item_colnum_selected == 6)
+					else if (item_colnum_selected == 7)
 					{
 						SET_CAR_LIVERY(v_modding, -1);
 					}
 					menu_level = 4;
 					item_colnum_selected = 0;
-					//item_selected = 5;
-					//item_col_selected = 0;
-					//item_colnum_selected = 0;
-					//veh_change_set = false;
 				}
 			}
 			veh_change_set = true;
@@ -1637,10 +1758,10 @@ void DoMenu(void)
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 		draw_text("STRING", 0.58700000, 0.24800000, "inNumberSelector");
 	}
-	if (inVehCol)
+	if (inFloatSelector)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-		draw_text("STRING", 0.58700000, 0.28800000, "inVehCol");
+		draw_text("STRING", 0.58700000, 0.28800000, "inFloatSelector");
 	}/*
 	if (inModVeh)
 	{
@@ -1666,7 +1787,13 @@ void DoMenu(void)
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.48800000, num_highlighted);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.51800000, num_selected);
+	draw_number("NUMBR", 0.58700000, 0.52800000, num_selected);
+	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
+	draw_float("NUMBR", 0.58700000, 0.56800000, floatnum_highlighted);
+	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
+	draw_float("NUMBR", 0.58700000, 0.60800000, floatnum_selected);
+	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
+	draw_number("NUMBR", 0.58700000, 0.64800000, num_item_highlighted);
 
 	//DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
 
@@ -1695,6 +1822,7 @@ void DoMenu(void)
 		num_highlighted = 1;
 		item_selected = 0;
 		num_selected = 0;
+		floatnum_selected = 0;
 
 		if (menu_level == 3)
 		{
@@ -1763,6 +1891,9 @@ void DoMenu(void)
 				item_modifytype_selected = 0;
 				VehModifyMode = 1;
 				veh_change_set = false;
+				inNumberSelector = false;
+				inFloatSelector = false;
+				num_item_highlighted = 0;
 				//JumpOutVehicle(exit_x, exit_y, exit_z);
 				if (inVModifyDoors)
 				{
@@ -1772,6 +1903,18 @@ void DoMenu(void)
 				{
 					inVModifyWindows = false;
 				}
+				else if (inVModifyHandling)
+				{
+					inVModifyHandling = false;
+				}
+				else if (inVModifyLights)
+				{
+					inVModifyLights = false;
+				}
+				else if (inVModifyHealth)
+				{
+					inVModifyHealth = false;
+				}
 				else if (inVModifyMisc)
 				{
 					inVModifyMisc = false;
@@ -1779,6 +1922,10 @@ void DoMenu(void)
 			}
 			else if (inVehCol)
 			{
+				if (G_inVNeon[2398])
+				{
+					G_inVNeon[2398] = false;
+				}
 				menu_level = 3;
 				item_selected = 5;
 				item_col_selected = 0;
@@ -1821,6 +1968,19 @@ void DoMenu(void)
 			}
 			veh_change_set = false;
 		}
+		else if (G_inVNeon[2398] && item_col_selected != 0)
+		{
+			if (inNumberSelector)
+			{
+				num_selected = num_highlighted;
+			}
+			else if (inFloatSelector)
+			{
+				floatnum_selected = floatnum_highlighted;
+			}
+			item_neon_selected = G_item_highlighted[2398];
+			veh_change_set = false;
+		}
 		else if (inVModifyDoors && item_modifytype_selected != 0)
 		{
 			item_modify_selected = G_item_highlighted[2398];
@@ -1839,11 +1999,66 @@ void DoMenu(void)
 		}
 		else if (inVModifyWindows && item_modifytype_selected != 0)
 		{
+			if (inNumberSelector)
+			{
+				num_selected = num_highlighted;
+			}
+			else if (inFloatSelector)
+			{
+				floatnum_selected = floatnum_highlighted;
+			}
+			item_modify_selected = G_item_highlighted[2398];
+			veh_change_set = false;
+		}
+		else if (inVModifyHandling && item_modifytype_selected != 0)
+		{
+			if (inNumberSelector)
+			{
+				num_selected = num_highlighted;
+			}
+			else if (inFloatSelector)
+			{
+				floatnum_selected = floatnum_highlighted;
+			}
+			item_modify_selected = G_item_highlighted[2398];
+			veh_change_set = false;
+		}
+		else if (inVModifyLights && item_modifytype_selected != 0)
+		{
+			if (inNumberSelector)
+			{
+				num_selected = num_highlighted;
+			}
+			else if (inFloatSelector)
+			{
+				floatnum_selected = floatnum_highlighted;
+			}
+			item_modify_selected = G_item_highlighted[2398];
+			veh_change_set = false;
+		}
+		else if (inVModifyHealth && item_modifytype_selected != 0)
+		{
+			if (inNumberSelector)
+			{
+				num_selected = num_highlighted;
+			}
+			else if (inFloatSelector)
+			{
+				floatnum_selected = floatnum_highlighted;
+			}
 			item_modify_selected = G_item_highlighted[2398];
 			veh_change_set = false;
 		}
 		else if (inVModifyMisc && item_modifytype_selected != 0)
 		{
+			if (inNumberSelector)
+			{
+				num_selected = num_highlighted;
+			}
+			else if (inFloatSelector)
+			{
+				floatnum_selected = floatnum_highlighted;
+			}
 			item_modify_selected = G_item_highlighted[2398];
 			veh_change_set = false;
 		}

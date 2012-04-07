@@ -90,6 +90,7 @@ uint item_vehspawn_selected = 0;
 uint item_up_selected = 0;
 uint item_colnum_selected = 0;
 uint item_col_selected = 0;
+uint item_neon_selected = 0;
 uint item_modifytype_selected = 0;
 uint item_modify_selected = 0;
 uint VehModifyMode = 1;
@@ -126,6 +127,8 @@ bool veh_change_set = false;
 bool inNumberSelector = false;
 bool inFloatSelector = false;
 
+bool inVehSaveLoad = false;
+
 //char *menu_items[16];
 
 typedef struct _menu
@@ -140,7 +143,7 @@ typedef struct _menu
  name: Display name
 
  type: 
-   1 = toggle
+   2 = toggle
 
  extraI: Extra identifier
  extraVar: Extra var
@@ -155,7 +158,7 @@ uint spawn_cars[15];
 
 uint NumColours = 0;
 uint window_notintact[5], door_damaged[7], door_opened[7];
-uint miscEnabled[18];
+uint modifyEnabled[18];
 bool modifyBulletProof = false;
 bool modifyFireProof = false;
 bool modifyExplosionProof = false;
