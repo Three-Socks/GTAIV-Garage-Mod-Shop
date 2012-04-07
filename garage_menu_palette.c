@@ -577,9 +577,9 @@ void DrawPalette(void)
 	float Ipos_y = 0.0635;
 	uint r, g, b, a;
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT) && G_item_highlighted[2398] != 1)
+	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT) && G_item_highlighted[23] != 1)
 	{
-		G_item_highlighted[2398] = G_item_highlighted[2398] - 1;
+		G_item_highlighted[23] = G_item_highlighted[23] - 1;
 	}
 
 	uint end_col = 134, last_down = 134;
@@ -590,25 +590,25 @@ void DrawPalette(void)
 		last_down = 131;
 	}
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT) && G_item_highlighted[2398] != end_col)
+	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT) && G_item_highlighted[23] != end_col)
 	{
-		G_item_highlighted[2398] = G_item_highlighted[2398] + 1;
+		G_item_highlighted[23] = G_item_highlighted[23] + 1;
 	}
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_UP))
 	{
-		if (G_item_highlighted[2398] <= 7)
-			G_item_highlighted[2398] = end_col;
-		else if (G_item_highlighted[2398] > 7)
-			G_item_highlighted[2398] = G_item_highlighted[2398] - 7;
+		if (G_item_highlighted[23] <= 7)
+			G_item_highlighted[23] = end_col;
+		else if (G_item_highlighted[23] > 7)
+			G_item_highlighted[23] = G_item_highlighted[23] - 7;
 	}
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_DOWN))
 	{
-		if (G_item_highlighted[2398] < last_down)
-			G_item_highlighted[2398] = G_item_highlighted[2398] + 7;
-		else if (G_item_highlighted[2398] >= last_down)
-			G_item_highlighted[2398] = 1;
+		if (G_item_highlighted[23] < last_down)
+			G_item_highlighted[23] = G_item_highlighted[23] + 7;
+		else if (G_item_highlighted[23] >= last_down)
+			G_item_highlighted[23] = 1;
 	}
 
 	DRAW_RECT(0.1500, 0.3680, 0.2300, 0.6640, 0, 0, 0, 230);
@@ -628,7 +628,7 @@ void DrawPalette(void)
 			}
 		}
 
-		if (G_item_highlighted[2398] == I)
+		if (G_item_highlighted[23] == I)
 		{
 			DRAW_RECT(Ipos_x, Ipos_y, 0.0340, 0.0340, 255, 255, 255, a);
 		}
@@ -648,11 +648,11 @@ void main(void)
 	{
 		WAIT(0);
 		DrawPalette();
-		if (G_inVNeonCol[2398] && IS_BUTTON_JUST_PRESSED(0, BUTTON_X))
+		if (G_inVNeonCol[23] && IS_BUTTON_JUST_PRESSED(0, BUTTON_X))
 		{
-			G_drawVNeon[23].colour_r = car_colours_r[G_item_highlighted[2398] - 1];
-			G_drawVNeon[23].colour_g = car_colours_g[G_item_highlighted[2398] - 1];
-			G_drawVNeon[23].colour_b = car_colours_b[G_item_highlighted[2398] - 1];
+			G_drawVNeon[1].colour_r = car_colours_r[G_item_highlighted[23]];
+			G_drawVNeon[1].colour_g = car_colours_g[G_item_highlighted[23]];
+			G_drawVNeon[1].colour_b = car_colours_b[G_item_highlighted[23]];
 		}
 	}
 }

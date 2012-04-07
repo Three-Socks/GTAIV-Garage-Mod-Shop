@@ -11,13 +11,13 @@ void DrawMenu(int array_len)
 			floatnum_highlighted = 0;
 		}
 
-		if (G_item_highlighted[2398] == array_len)
+		if (G_item_highlighted[23] == array_len)
 		{
-			G_item_highlighted[2398] = 1;
+			G_item_highlighted[23] = 1;
 		}
 		else
 		{
-			G_item_highlighted[2398]++;
+			G_item_highlighted[23]++;
 		}
 	}
 
@@ -29,13 +29,13 @@ void DrawMenu(int array_len)
 			floatnum_highlighted = 0;
 		}
 
-		if (G_item_highlighted[2398] == 1)
+		if (G_item_highlighted[23] == 1)
 		{
-			G_item_highlighted[2398] = array_len;
+			G_item_highlighted[23] = array_len;
 		}
 		else
 		{
-			G_item_highlighted[2398]--;
+			G_item_highlighted[23]--;
 		}
 	}
 	
@@ -111,7 +111,7 @@ void DrawMenu(int array_len)
 				b = d_b;
 				Ipos_y = Ipos_y + menu_spacing;
 
-				if (G_item_highlighted[2398] == I)
+				if (G_item_highlighted[23] == I)
 				{
 					r =  h_r;
 					g =  h_g;
@@ -162,7 +162,7 @@ void DrawMenu(int array_len)
 			b = d_b;
 			Ipos_y = Ipos_y + menu_spacing;
 
-			if (G_item_highlighted[2398] == I)
+			if (G_item_highlighted[23] == I)
 			{
 				r =  h_r;
 				g =  h_g;
@@ -235,7 +235,7 @@ void DrawMenu(int array_len)
 			b = d_b;
 			Ipos_y = Ipos_y + menu_spacing;
 
-			if (G_item_highlighted[2398] == I)
+			if (G_item_highlighted[23] == I)
 			{
 				r =  h_r;
 				g =  h_g;
@@ -288,7 +288,7 @@ void DrawMenu(int array_len)
 				draw_text("STRING", 0.2400, Ipos_y, ">");
 			}
 
-			if (G_item_highlighted[2398] == I)
+			if (G_item_highlighted[23] == I)
 			{
 				r =  h_r;
 				g =  h_g;
@@ -321,9 +321,9 @@ void DrawMenu(int array_len)
 
 void ExitMenu(void)
 {
-	G_activateMenu[2398] = false;
-	G_scriptloaded[2398] = false;
-	G_justexitmenu[2398] = G_garageId[2398];
+	G_activateMenu[23] = false;
+	G_scriptloaded[23] = false;
+	G_justexitmenu[23] = G_garageId[23];
 
 	SET_PLAYER_CONTROL(GetPlayerIndex(), true);
 	SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
@@ -331,7 +331,7 @@ void ExitMenu(void)
 	SET_CHAR_COORDINATES_NO_OFFSET(GetPlayerPed(), quit_x, quit_y, quit_z);
 	SET_CHAR_HEADING(GetPlayerPed(), quit_h);
 
-	if (G_garageId[2398] == 6)
+	if (G_garageId[23] == 6)
 	{
 		CLEAR_WANTED_LEVEL(GetPlayerIndex());
 	}
@@ -395,7 +395,7 @@ void EnterMenu(int item_selected)
 			{
 				menu_len = 9;
 				inVehUpgrade = true;
-				G_item_highlighted[2398] = 1;
+				G_item_highlighted[23] = 1;
 				menu_level = 5;
 			}
 			return;
@@ -413,7 +413,7 @@ void EnterMenu(int item_selected)
 				menu_item[7].name = "Neon";
 				menu_len = 7;
 				inVehModify = true;
-				G_item_highlighted[2398] = 1;
+				G_item_highlighted[23] = 1;
 				menu_level = 4;
 			}
 			return;
@@ -446,7 +446,7 @@ void EnterMenu(int item_selected)
 				menu_len++;
 
 				menu_level = 4;
-				G_item_highlighted[2398] = 1;
+				G_item_highlighted[23] = 1;
 				num_highlighted = 1;
 				inVehCol = true;
 			}
@@ -461,7 +461,7 @@ void EnterMenu(int item_selected)
 				menu_item[1].name = "Save";
 				menu_item[2].name = "Load";
 				menu_len = 2;
-				G_item_highlighted[2398] = 1;
+				G_item_highlighted[23] = 1;
 				menu_level = 4;
 				inVehSaveLoad = true;
 			}
@@ -486,7 +486,7 @@ void EnterMenu(int item_selected)
 			num_item_highlighted = 0;
 			inNumberSelector = false;
 
-			if (G_item_highlighted[2398] == 5 && NumColours > 0)
+			if (G_item_highlighted[23] == 5 && NumColours > 0)
 			{
 				num_item_highlighted = 5;
 				inNumberSelector = true;
@@ -737,19 +737,19 @@ void EnterMenu(int item_selected)
 				inNumberSelector = false;
 				inFloatSelector = false;
 
-				if (G_item_highlighted[2398] == 1)
+				if (G_item_highlighted[23] == 1)
 				{
 					num_item_highlighted = 1;
 					inFloatSelector = true;
 					num_len = 10;
 				}
-				else if (G_item_highlighted[2398] == 2)
+				else if (G_item_highlighted[23] == 2)
 				{
 					num_item_highlighted = 2;
 					inFloatSelector = true;
 					num_len = 10;
 				}
-				else if (G_item_highlighted[2398] == 4)
+				else if (G_item_highlighted[23] == 4)
 				{
 					num_item_highlighted = 4;
 					inFloatSelector = true;
@@ -797,7 +797,7 @@ void EnterMenu(int item_selected)
 				inNumberSelector = false;
 				inFloatSelector = false;
 
-				if (G_item_highlighted[2398] == 8)
+				if (G_item_highlighted[23] == 8)
 				{
 					num_item_highlighted = 8;
 					inFloatSelector = true;
@@ -861,13 +861,13 @@ void EnterMenu(int item_selected)
 				inNumberSelector = false;
 				inFloatSelector = false;
 
-				if (G_item_highlighted[2398] == 1)
+				if (G_item_highlighted[23] == 1)
 				{
 					num_item_highlighted = 1;
 					inNumberSelector = true;
 					num_len = 1000;
 				}
-				else if (G_item_highlighted[2398] == 2)
+				else if (G_item_highlighted[23] == 2)
 				{
 					num_item_highlighted = 2;
 					inNumberSelector = true;
@@ -905,19 +905,19 @@ void EnterMenu(int item_selected)
 				inNumberSelector = false;
 				inFloatSelector = false;
 
-				if (G_item_highlighted[2398] == 1)
+				if (G_item_highlighted[23] == 1)
 				{
 					num_item_highlighted = 1;
 					inFloatSelector = true;
 					num_len = 15.9;
 				}
-				else if (G_item_highlighted[2398] == 3)
+				else if (G_item_highlighted[23] == 3)
 				{
 					num_item_highlighted = 3;
 					inNumberSelector = true;
 					num_len = 255;
 				}
-				else if (G_item_highlighted[2398] == 4)
+				else if (G_item_highlighted[23] == 4)
 				{
 					num_item_highlighted = 4;
 					inNumberSelector = true;
@@ -926,9 +926,9 @@ void EnterMenu(int item_selected)
 			}
 			else if (item_modifytype_selected == 7)
 			{
-				menu_item[1].name = "Toggle";
+				menu_item[1].name = "Enable/Disable";
 				menu_item[2].name = "Color";
-				menu_item[3].name = "Height";
+				menu_item[3].name = "Height Offset";
 				menu_item[4].name = "Intensity";
 				menu_item[5].name = "Range";
 				menu_len = 5;
@@ -939,19 +939,19 @@ void EnterMenu(int item_selected)
 				inNumberSelector = false;
 				inFloatSelector = false;
 
-				if (G_item_highlighted[2398] == 3)
+				if (G_item_highlighted[23] == 3)
 				{
 					num_item_highlighted = 3;
 					inFloatSelector = true;
 					num_len = 10;
 				}
-				else if (G_item_highlighted[2398] == 4)
+				else if (G_item_highlighted[23] == 4)
 				{
 					num_item_highlighted = 4;
 					inNumberSelector = true;
 					num_len = 15;
 				}
-				else if (G_item_highlighted[2398] == 5)
+				else if (G_item_highlighted[23] == 5)
 				{
 					num_item_highlighted = 5;
 					inNumberSelector = true;
@@ -1481,36 +1481,36 @@ void EnterMenu(int item_selected)
 					}
 
 				}
-				else if (inVNeon && !G_inVNeonCol[2398])
+				else if (inVNeon && !G_inVNeonCol[23])
 				{
-					if (item_neon_selected == 1)
+					if (item_modify_selected == 1)
 					{
-						if (G_drawVNeon[23].enabled)
+						if (G_drawVNeon[1].toggle == 2)
 						{
-							G_drawVNeon[23].enabled = false;
+							G_drawVNeon[1].toggle = 0;
 						}
 						else
 						{
-							G_drawVNeon[23].enabled = true;
+							G_drawVNeon[1].toggle = 2;
 						}
 					}
-					else if (item_neon_selected == 2)
+					else if (item_modify_selected == 2)
 					{
 						draw_menu_set = false;
-						G_drewrect[2398] = true;
-						G_inVNeonCol[2398] = true;
+						G_drewrect[23] = true;
+						G_inVNeonCol[23] = true;
 					}
-					else if (item_neon_selected == 3)
+					else if (item_modify_selected == 3)
 					{
-						G_drawVNeon[23].height = floatnum_selected;
+						G_drawVNeon[1].height = floatnum_selected;
 					}
-					else if (item_neon_selected == 4)
+					else if (item_modify_selected == 4)
 					{
-						G_drawVNeon[23].intensity = num_selected;
+						G_drawVNeon[1].intensity = num_selected;
 					}
-					else if (item_neon_selected == 5)
+					else if (item_modify_selected == 5)
 					{
-						G_drawVNeon[23].range = num_selected;
+						G_drawVNeon[1].range = num_selected;
 					}
 				}
 				item_modify_selected = 0;
@@ -1522,19 +1522,19 @@ void EnterMenu(int item_selected)
 					if (item_col_selected == 0)
 					{
 						draw_menu_set = false;
-						G_drewrect[2398] = true;
+						G_drewrect[23] = true;
 						ColourIndex colour_normal1, colour_normal2, colour_extra1, colour_extra2;
 						GET_CAR_COLOURS(v_modding, &colour_normal1, &colour_normal2);
 						GET_EXTRA_CAR_COLOURS(v_modding, &colour_extra1, &colour_extra2);
 
 						if (item_colnum_selected == 1)
-							G_item_highlighted[2398] = colour_normal1 + 1;
+							G_item_highlighted[23] = colour_normal1 + 1;
 						else if (item_selected == 2)
-							G_item_highlighted[2398] = colour_normal2 + 1;
+							G_item_highlighted[23] = colour_normal2 + 1;
 						else if (item_colnum_selected == 3)
-							G_item_highlighted[2398] = colour_extra1 + 1;
+							G_item_highlighted[23] = colour_extra1 + 1;
 						else if (item_colnum_selected == 4)
-							G_item_highlighted[2398] = colour_extra2 + 1;
+							G_item_highlighted[23] = colour_extra2 + 1;
 					}
 					else if (item_col_selected != 0)
 					{
@@ -1732,7 +1732,7 @@ void DoMenu(void)
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.08800000, menu_level);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.12800000, G_item_highlighted[2398]);
+	draw_number("NUMBR", 0.58700000, 0.12800000, G_item_highlighted[23]);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.16800000, item_selected);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -1769,15 +1769,15 @@ void DoMenu(void)
 		draw_text("STRING", 0.58700000, 0.44800000, "inVehMenu");
 	}*/
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.48800000, num_highlighted);
+	draw_number("NUMBR", 0.58700000, 0.48800000, G_drawVNeon[1].toggle);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.52800000, num_selected);
+	draw_number("NUMBR", 0.58700000, 0.52800000, G_drawVNeon[1].intensity);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_float("NUMBR", 0.58700000, 0.56800000, floatnum_highlighted);
+	draw_float("NUMBR", 0.58700000, 0.56800000, G_drawVNeon[1].range);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_float("NUMBR", 0.58700000, 0.60800000, floatnum_selected);
+	draw_float("NUMBR", 0.58700000, 0.60800000, G_drawVNeon[1].height);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.64800000, num_item_highlighted);
+	draw_number("NUMBR", 0.58700000, 0.64800000, G_drawVNeon[1].colour_r);
 
 	//DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
 
@@ -1802,7 +1802,7 @@ void DoMenu(void)
 			//spawn_cars[I] = ;
 		}
 
-		G_item_highlighted[2398] = 1;
+		G_item_highlighted[23] = 1;
 		num_highlighted = 1;
 		item_selected = 0;
 		num_selected = 0;
@@ -1907,12 +1907,13 @@ void DoMenu(void)
 				{
 					inVNeon = false;
 
-					if (G_inVNeonCol[2398])
+					if (G_inVNeonCol[23])
 					{
+						G_inVNeonCol[23] = false;
 						draw_menu_set = true;
-						G_drewrect[2398] = false;
+						G_drewrect[23] = false;
 
-						G_scriptloadedpalette[2398] = false;
+						G_scriptloadedpalette[23] = false;
 						TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("garage_menu_palette");
 					}
 				}
@@ -1925,9 +1926,9 @@ void DoMenu(void)
 				item_colnum_selected = 0;
 				veh_change_set = false;
 				draw_menu_set = true;
-				G_drewrect[2398] = false;
+				G_drewrect[23] = false;
 
-				G_scriptloadedpalette[2398] = false;
+				G_scriptloadedpalette[23] = false;
 				TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("garage_menu_palette");
 			}
 		}
@@ -1950,14 +1951,14 @@ void DoMenu(void)
 	{
 		if (inVehMenu && item_vehcat_selected != 0)
 		{
-			item_vehspawn_selected = G_item_highlighted[2398];
+			item_vehspawn_selected = G_item_highlighted[23];
 			veh_change_set = false;
 		}
 		else if (inVehCol && (item_colnum_selected != 0 || inNumberSelector || item_colnum_selected == 6))
 		{
 			if (!inNumberSelector && item_colnum_selected != 6)
 			{
-				item_col_selected = G_item_highlighted[2398];
+				item_col_selected = G_item_highlighted[23];
 			}
 			veh_change_set = false;
 		}
@@ -1971,12 +1972,12 @@ void DoMenu(void)
 			{
 				floatnum_selected = floatnum_highlighted;
 			}
-			item_neon_selected = G_item_highlighted[2398];
+			item_modify_selected = G_item_highlighted[23];
 			veh_change_set = false;
 		}
 		else if (inVModifyDoors && item_modifytype_selected != 0)
 		{
-			item_modify_selected = G_item_highlighted[2398];
+			item_modify_selected = G_item_highlighted[23];
 			if (item_modify_selected == 1)
 			{
 				if (VehModifyMode == 1)
@@ -2000,7 +2001,7 @@ void DoMenu(void)
 			{
 				floatnum_selected = floatnum_highlighted;
 			}
-			item_modify_selected = G_item_highlighted[2398];
+			item_modify_selected = G_item_highlighted[23];
 			veh_change_set = false;
 		}
 		else if (inVModifyHandling && item_modifytype_selected != 0)
@@ -2013,7 +2014,7 @@ void DoMenu(void)
 			{
 				floatnum_selected = floatnum_highlighted;
 			}
-			item_modify_selected = G_item_highlighted[2398];
+			item_modify_selected = G_item_highlighted[23];
 			veh_change_set = false;
 		}
 		else if (inVModifyLights && item_modifytype_selected != 0)
@@ -2026,7 +2027,7 @@ void DoMenu(void)
 			{
 				floatnum_selected = floatnum_highlighted;
 			}
-			item_modify_selected = G_item_highlighted[2398];
+			item_modify_selected = G_item_highlighted[23];
 			veh_change_set = false;
 		}
 		else if (inVModifyHealth && item_modifytype_selected != 0)
@@ -2039,7 +2040,7 @@ void DoMenu(void)
 			{
 				floatnum_selected = floatnum_highlighted;
 			}
-			item_modify_selected = G_item_highlighted[2398];
+			item_modify_selected = G_item_highlighted[23];
 			veh_change_set = false;
 		}
 		else if (inVModifyMisc && item_modifytype_selected != 0)
@@ -2052,17 +2053,17 @@ void DoMenu(void)
 			{
 				floatnum_selected = floatnum_highlighted;
 			}
-			item_modify_selected = G_item_highlighted[2398];
+			item_modify_selected = G_item_highlighted[23];
 			veh_change_set = false;
 		}
 		else if (inVehUpgrade)
 		{
-			item_up_selected = G_item_highlighted[2398];
+			item_up_selected = G_item_highlighted[23];
 			veh_change_set = false;
 		}
 		else
 		{
-			item_selected = G_item_highlighted[2398];
+			item_selected = G_item_highlighted[23];
 		}
 
 		if (menu_level == 2)
@@ -2077,24 +2078,15 @@ void DoMenu(void)
 		{
 			if (inVehSpawn)
 			{
-				item_vehcat_selected = G_item_highlighted[2398];
-				G_item_highlighted[2398] = 1;
+				item_vehcat_selected = G_item_highlighted[23];
+				G_item_highlighted[23] = 1;
 				menu_level = 5;
 			}
 			else if (inVehModify)
 			{
-				item_modifytype_selected = G_item_highlighted[2398];
-				G_item_highlighted[2398] = 1;
+				item_modifytype_selected = G_item_highlighted[23];
+				G_item_highlighted[23] = 1;
 				menu_level = 5;
-				
-				if (item_modifytype_selected == 7)
-				{
-					float v_attach_x, v_attach_y, v_attach_z;
-					GET_CAR_COORDINATES(v_modding, &v_attach_x, &v_attach_y, &v_attach_z);
-					G_drawVNeon[23].intensity = 10.0000;
-					G_drawVNeon[23].range = 50.0000;
-					G_drawVNeon[23].height = v_attach_z;
-				}
 			}
 			else if (inVehCol)
 			{
@@ -2103,7 +2095,7 @@ void DoMenu(void)
 					num_selected = num_highlighted;
 				}
 
-				item_colnum_selected = G_item_highlighted[2398];
+				item_colnum_selected = G_item_highlighted[23];
 				menu_level = 5;
 			}
 		}
@@ -2111,8 +2103,8 @@ void DoMenu(void)
 		{
 			if (inVehSpawnDLC)
 			{
-				item_vehcat_selected = G_item_highlighted[2398];
-				G_item_highlighted[2398] = 1;
+				item_vehcat_selected = G_item_highlighted[23];
+				G_item_highlighted[23] = 1;
 				menu_level = 7;
 			}
 		}
@@ -2122,13 +2114,13 @@ void DoMenu(void)
 	{
 		DrawMenu(menu_len);
 	}
-	else if (G_drewrect[2398])
+	else if (G_drewrect[23])
 	{
-		if (!G_scriptloadedpalette[2398])
+		if (!G_scriptloadedpalette[23])
 		{
 			if ((GET_NUMBER_OF_INSTANCES_OF_STREAMED_SCRIPT("garage_menu_palette")) >= 1)
 			{
-				G_scriptloadedpalette[2398] = true;
+				G_scriptloadedpalette[23] = true;
 			}
 			else
 			{
@@ -2140,7 +2132,7 @@ void DoMenu(void)
 				}
 				START_NEW_SCRIPT("garage_menu_palette", 1024);
 				MARK_SCRIPT_AS_NO_LONGER_NEEDED("garage_menu_palette");
-				G_scriptloadedpalette[2398] = true;
+				G_scriptloadedpalette[23] = true;
 			}
 		}
 	}
