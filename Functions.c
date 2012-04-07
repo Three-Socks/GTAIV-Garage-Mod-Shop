@@ -3,7 +3,7 @@ bool isButtonPressedLong(uint button)
 
 	if (IS_BUTTON_PRESSED(0, button))
 	{
-		if (longPress == 50 || longPress == 100)
+		if (longPress == 5 || longPress == 100)
 		{
 			longPress = 100;
 			return true;
@@ -34,12 +34,20 @@ void StoreModify(bool notwindow, bool notbreak, bool notopen, uint itemwindow, u
 			{
 				window_notintact[window_I] = 1;
 			}
+			else
+			{
+				window_notintact[window_I] = 0;
+			}
 		}
 		else
 		{
 			if (!IS_VEH_WINDOW_INTACT(v_modding, window_I))
 			{
 				window_notintact[window_I] = 1;
+			}
+			else
+			{
+				window_notintact[window_I] = 0;
 			}
 		}
 	}
@@ -53,12 +61,20 @@ void StoreModify(bool notwindow, bool notbreak, bool notopen, uint itemwindow, u
 			{
 				door_damaged[door_I] = 1;
 			}
+			else
+			{
+				door_damaged[door_I] = 0;
+			}
 		}
 		else
 		{
 			if (IS_CAR_DOOR_DAMAGED(v_modding, door_I))
 			{
 				door_damaged[door_I] = 1;
+			}
+			else
+			{
+				door_damaged[door_I] = 0;
 			}
 		}
 		
@@ -71,12 +87,20 @@ void StoreModify(bool notwindow, bool notbreak, bool notopen, uint itemwindow, u
 			{
 				door_opened[door_I] = 1;
 			}
+			else
+			{
+				door_opened[door_I] = 0;
+			}
 		}
 		else
 		{
 			if (!IS_CAR_DOOR_DAMAGED(v_modding, door_I) && doorangle >= 0.5000)
 			{
 				door_opened[door_I] = 1;
+			}
+			else
+			{
+				door_opened[door_I] = 0;
 			}
 		}
 	}

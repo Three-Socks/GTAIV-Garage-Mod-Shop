@@ -11,6 +11,7 @@ uint car_colours_r[138], car_colours_g[138], car_colours_b[138];
 #define BUTTON_DPAD_DOWN  0x9
 #define BUTTON_DPAD_LEFT  0xA
 #define BUTTON_DPAD_RIGHT  0xB
+#define BUTTON_X  0x10
 
 void Init(void)
 {
@@ -646,5 +647,11 @@ void main(void)
 	{
 		WAIT(0);
 		DrawPalette();
+		if (G_inVNeon[2398] && IS_BUTTON_JUST_PRESSED(0, BUTTON_X))
+		{
+			G_drawVNeon[2398].colour_r = car_colours_r[G_item_highlighted[2398] - 1];
+			G_drawVNeon[2398].colour_g = car_colours_g[G_item_highlighted[2398] - 1];
+			G_drawVNeon[2398].colour_b = car_colours_b[G_item_highlighted[2398] - 1];
+		}
 	}
 }

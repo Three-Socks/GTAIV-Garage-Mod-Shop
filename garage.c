@@ -29,6 +29,8 @@ RefGet
 
 uint soundID = 2;
 
+Vehicle v_do;
+
 float garagesBlipCoords_x[8], garagesBlipCoords_y[8], garagesBlipCoords_z[8];
 
 void Init(void)
@@ -39,6 +41,7 @@ void Init(void)
 	G_justexitmenu[2398] = 0;
 	G_doneExitCheck[2398] = false;
 	G_drewrect[2398] = false;
+	G_inVNeon[2398] = false;
 	G_garageId[2398] = 0;
 	G_item_highlighted[2398] = 0;
 
@@ -118,6 +121,21 @@ void Init(void)
 	FLASH_BLIP(blipgarage2, false);
 	CHANGE_BLIP_PRIORITY(blipgarage2, 0);
 	SET_BLIP_AS_SHORT_RANGE(blipgarage2, true);*/
+}
+
+void DoVehicleMods(void)
+{
+	float v_attach_x, v_attach_y, v_attach_z;
+
+	if (G_drawVNeon[2398].enabled)
+	{
+		if (!DOES_VEHICLE_EXIST(v_do))
+		{
+			GET_CAR_CHAR_IS_USING(GetPlayerPed(), &v_do);
+		}
+		GET_CAR_COORDINATES(v_do, &v_attach_x, &v_attach_y, &v_attach_z);
+		DRAW_LIGHT_WITH_RANGE(v_attach_x, v_attach_y, G_drawVNeon[2398].height, G_drawVNeon[2398].colour_r, G_drawVNeon[2398].colour_g, G_drawVNeon[2398].colour_b, G_drawVNeon[2398].intensity, G_drawVNeon[2398].range);
+	}
 }
 
 void DoActivators(void)
@@ -272,5 +290,9 @@ void main(void)
 			}
 		}
 		DoActivators();
+		if (IS_CHAR_IN_ANY_CAR(GetPlayerPed()))
+		{
+			DoVehicleMods();
+		}
 	}
 }
