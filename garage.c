@@ -30,21 +30,27 @@ RefGet
 
 uint soundID = 2;
 
-Vehicle v_do;
-
 float garagesBlipCoords_x[8], garagesBlipCoords_y[8], garagesBlipCoords_z[8];
 
 void Init(void)
 {
-	G_scriptloaded[2398] = false;
-	G_scriptloadedpalette[2398] = false;
-	G_activateMenu[2398] = false;
-	G_justexitmenu[2398] = 0;
-	G_doneExitCheck[2398] = false;
-	G_drewrect[2398] = false;
-	G_inVNeonCol[2398] = false;
-	G_garageId[2398] = 0;
-	G_item_highlighted[2398] = 0;
+	G_scriptloaded[23] = false;
+	G_scriptloadedpalette[23] = false;
+	G_activateMenu[23] = false;
+	G_justexitmenu[23] = 0;
+	G_doneExitCheck[23] = false;
+	G_drewrect[23] = false;
+	G_inVNeonCol[23] = false;
+	G_garageId[23] = 0;
+	G_item_highlighted[23] = 0;
+
+	G_drawVNeon[1].toggle = 0;
+	G_drawVNeon[1].colour_r = 255;
+	G_drawVNeon[1].colour_g = 255;
+	G_drawVNeon[1].colour_b = 255;
+	G_drawVNeon[1].intensity = 10.0000;
+	G_drawVNeon[1].range = 50.0000;
+	G_drawVNeon[1].height = 1.0000;
 
 	// Brucie Garage
 	garagesBlipCoords_x[1] = 869.0119;
@@ -77,9 +83,9 @@ void Init(void)
 	garagesBlipCoords_z[6] = 23.2138 - 1;
 	
 	// tudor MAIN
-		garagesBlipCoords_x[7] = -1364.3031;
-		garagesBlipCoords_y[7] = 11.7368;
-		garagesBlipCoords_z[7] = 7.2487 - 1;
+	garagesBlipCoords_x[7] = -1364.3031;
+	garagesBlipCoords_y[7] = 11.7368;
+	garagesBlipCoords_z[7] = 7.2487 - 1;
 
 	int i;
 	for (i = 1; i < 8; i++)
@@ -126,16 +132,14 @@ void Init(void)
 
 void DoVehicleMods(void)
 {
+	Vehicle v_domod;
 	float v_attach_x, v_attach_y, v_attach_z;
 
-	if (G_drawVNeon[23].enabled)
+	if (G_drawVNeon[1].toggle == 2)
 	{
-		if (!DOES_VEHICLE_EXIST(v_do))
-		{
-			GET_CAR_CHAR_IS_USING(GetPlayerPed(), &v_do);
-		}
-		GET_CAR_COORDINATES(v_do, &v_attach_x, &v_attach_y, &v_attach_z);
-		DRAW_LIGHT_WITH_RANGE(v_attach_x, v_attach_y, G_drawVNeon[23].height, G_drawVNeon[23].colour_r, G_drawVNeon[23].colour_g, G_drawVNeon[23].colour_b, G_drawVNeon[23].intensity, G_drawVNeon[23].range);
+		GET_CAR_CHAR_IS_USING(GetPlayerPed(), &v_domod);
+		GET_CAR_COORDINATES(v_domod, &v_attach_x, &v_attach_y, &v_attach_z);
+		DRAW_LIGHT_WITH_RANGE(v_attach_x, v_attach_y, v_attach_z - G_drawVNeon[1].height, G_drawVNeon[1].colour_r, G_drawVNeon[1].colour_g, G_drawVNeon[1].colour_b, G_drawVNeon[1].intensity, G_drawVNeon[1].range);
 	}
 }
 
@@ -144,23 +148,23 @@ void DoActivators(void)
 	int i;
 	for (i = 1; i < 8; i++)
 	{
-		if (G_justexitmenu[2398] == i && !LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 5.00000000, 5.00000000, 6.00000000, 0))
+		if (G_justexitmenu[23] == i && !LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 5.00000000, 5.00000000, 6.00000000, 0))
 		{
-			G_justexitmenu[2398] = 0;
+			G_justexitmenu[23] = 0;
 		}
 
-		if (G_justexitmenu[2398] == 0 && !G_activateMenu[2398])
+		if (G_justexitmenu[23] == 0 && !G_activateMenu[23])
 		{
 			DRAW_COLOURED_CYLINDER(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 2.50000000, 2.50000000, 0, 132, 202, 255);
 			if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 2.50000000, 2.50000000, 4.00000000, 0))
 			{
-					G_activateMenu[2398] = true;
-					G_garageId[2398] = i;
+					G_activateMenu[23] = true;
+					G_garageId[23] = i;
 			}
 		}
 	}
 
-	Vector3 upGarageCoords, downGarageCoords, currentGarageCoords, currentCharCoords;
+	/*Vector3 upGarageCoords, downGarageCoords, currentGarageCoords, currentCharCoords;
 	upGarageCoords.x = 864.32000000;
 	upGarageCoords.y = -121.64500000;
 	upGarageCoords.z = 12.00000000;
@@ -252,7 +256,7 @@ void DoActivators(void)
 				LOAD_SCENE(heliup_x, heliup_y, heliup_z);
 				SET_CAM_BEHIND_PED(GetPlayerPed());
 		}
-	}
+	}*/
 
 }
 
@@ -263,18 +267,18 @@ void main(void)
 	while(true)
 	{
 		WAIT(0);
-		if (G_activateMenu[2398])
+		if (G_activateMenu[23])
 		{
-			if (!G_drewrect[2398])
+			if (!G_drewrect[23])
 			{
 				DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
 			}
 			HIDE_HUD_AND_RADAR_THIS_FRAME();
-			if (!G_scriptloaded[2398])
+			if (!G_scriptloaded[23])
 			{
 				if ((GET_NUMBER_OF_INSTANCES_OF_STREAMED_SCRIPT("garage_menu")) >= 1)
 				{
-					G_scriptloaded[2398] = true;
+					G_scriptloaded[23] = true;
 				}
 				else
 				{
@@ -286,7 +290,7 @@ void main(void)
 					}
 					START_NEW_SCRIPT("garage_menu", 1024);
 					MARK_SCRIPT_AS_NO_LONGER_NEEDED("garage_menu");
-					G_scriptloaded[2398] = true;
+					G_scriptloaded[23] = true;
 				}
 			}
 		}

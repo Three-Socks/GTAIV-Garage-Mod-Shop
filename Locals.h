@@ -90,7 +90,6 @@ uint item_vehspawn_selected = 0;
 uint item_up_selected = 0;
 uint item_colnum_selected = 0;
 uint item_col_selected = 0;
-uint item_neon_selected = 0;
 uint item_modifytype_selected = 0;
 uint item_modify_selected = 0;
 uint VehModifyMode = 1;
