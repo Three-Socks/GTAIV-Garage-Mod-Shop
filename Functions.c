@@ -1,6 +1,5 @@
 bool isButtonPressedLong(uint button)
 {
-
 	if (IS_BUTTON_PRESSED(0, button))
 	{
 		if (longPress == 5 || longPress == 100)
@@ -294,7 +293,7 @@ void draw_number(char *gxtName, float x, float y, int val)
 	DISPLAY_TEXT_WITH_NUMBER(x, y, gxtName, val);
 }
 
-void draw_float(char *gxtName, float x, float y, float val)
+void draw_float(char *gxtName, float x, float y, float val, uint dp)
 {
-	DISPLAY_TEXT_WITH_FLOAT(x, y, gxtName, val, 4);
+	DISPLAY_TEXT_WITH_FLOAT(x, y, gxtName, val, dp);
 }

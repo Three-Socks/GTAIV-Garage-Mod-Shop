@@ -44,13 +44,13 @@ void Init(void)
 	G_garageId[23] = 0;
 	G_item_highlighted[23] = 0;
 
-	G_drawVNeon[1].toggle = 0;
-	G_drawVNeon[1].colour_r = 255;
-	G_drawVNeon[1].colour_g = 255;
-	G_drawVNeon[1].colour_b = 255;
-	G_drawVNeon[1].intensity = 10.0000;
-	G_drawVNeon[1].range = 50.0000;
-	G_drawVNeon[1].height = 1.0000;
+	G_drawVNeon[99].toggle = 0;
+	G_drawVNeon[99].colour_r = 71;
+	G_drawVNeon[99].colour_g = 120;
+	G_drawVNeon[99].colour_b = 60;
+	G_drawVNeon[99].intensity = 3;
+	G_drawVNeon[99].range = 80.0000;
+	G_drawVNeon[99].height = -0.0;
 
 	// Brucie Garage
 	garagesBlipCoords_x[1] = 869.0119;
@@ -132,14 +132,25 @@ void Init(void)
 
 void DoVehicleMods(void)
 {
-	Vehicle v_domod;
 	float v_attach_x, v_attach_y, v_attach_z;
 
-	if (G_drawVNeon[1].toggle == 2)
+	if (G_drawVNeon[99].toggle == 2)
 	{
-		GET_CAR_CHAR_IS_USING(GetPlayerPed(), &v_domod);
-		GET_CAR_COORDINATES(v_domod, &v_attach_x, &v_attach_y, &v_attach_z);
-		DRAW_LIGHT_WITH_RANGE(v_attach_x, v_attach_y, v_attach_z - G_drawVNeon[1].height, G_drawVNeon[1].colour_r, G_drawVNeon[1].colour_g, G_drawVNeon[1].colour_b, G_drawVNeon[1].intensity, G_drawVNeon[1].range);
+		if (DOES_VEHICLE_EXIST(G_v_domod[1]))
+		{
+			GET_CAR_COORDINATES(G_v_domod[1], &v_attach_x, &v_attach_y, &v_attach_z);
+			DRAW_LIGHT_WITH_RANGE(v_attach_x, v_attach_y, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].intensity, G_drawVNeon[99].range);
+			if (G_drawVNeon[99].togglefb == 2)
+			{
+				DRAW_LIGHT_WITH_RANGE(v_attach_x, v_attach_y + G_drawVNeon[99].frontoff, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].intensity, G_drawVNeon[99].range);
+				DRAW_LIGHT_WITH_RANGE(v_attach_x, v_attach_y - G_drawVNeon[99].backoff, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].intensity, G_drawVNeon[99].range);
+			}
+		}
+		else
+		{
+			G_drawVNeon[99].toggle = 0;
+			MARK_CAR_AS_NO_LONGER_NEEDED(&G_v_domod[1]);
+		}
 	}
 }
 
@@ -295,9 +306,6 @@ void main(void)
 			}
 		}
 		DoActivators();
-		if (IS_CHAR_IN_ANY_CAR(GetPlayerPed()))
-		{
-			DoVehicleMods();
-		}
+		DoVehicleMods();
 	}
 }
