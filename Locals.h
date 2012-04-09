@@ -135,7 +135,7 @@ typedef struct _menu
 {
 	char *name;
 	uint type;
-	uint extraI;
+	uint enabled;
 	bool extraVar;
 } menu;
 
@@ -158,7 +158,6 @@ uint spawn_cars[15];
 
 uint NumColours = 0;
 uint window_notintact[5], door_damaged[7], door_opened[7];
-uint modifyEnabled[18];
 bool modifyBulletProof = false;
 bool modifyFireProof = false;
 bool modifyExplosionProof = false;
@@ -166,3 +165,4 @@ bool modifyCollisionProof = false;
 bool modifyMeleeProof = false;
 
 int longPress = 0;
+bool allow_negative_high = false;

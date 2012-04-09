@@ -650,9 +650,9 @@ void main(void)
 		DrawPalette();
 		if (G_inVNeonCol[23] && IS_BUTTON_JUST_PRESSED(0, BUTTON_X))
 		{
-			G_drawVNeon[1].colour_r = car_colours_r[G_item_highlighted[23]];
-			G_drawVNeon[1].colour_g = car_colours_g[G_item_highlighted[23]];
-			G_drawVNeon[1].colour_b = car_colours_b[G_item_highlighted[23]];
+			G_drawVNeon[99].colour_r = car_colours_r[G_item_highlighted[23]];
+			G_drawVNeon[99].colour_g = car_colours_g[G_item_highlighted[23]];
+			G_drawVNeon[99].colour_b = car_colours_b[G_item_highlighted[23]];
 		}
 	}
 }
