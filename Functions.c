@@ -1,21 +1,16 @@
-bool isButtonPressedLong(uint button)
+bool isAnoPressedLong(void)
 {
-	if (IS_BUTTON_PRESSED(0, button))
-	{
-		if (longPress == 5 || longPress == 100)
-		{
-			longPress = 100;
-			return true;
-		}
+	uint padleft_x, padleft_y, padright_x, padright_y;
+	GET_POSITION_OF_ANALOGUE_STICKS(0, &padleft_x, &padleft_y, &padright_x, &padright_y);
 
-		longPress++;
+	if (padleft_x > 100 || padleft_y < -100)
+	{
+		return true;
 	}
 	else
 	{
-		longPress = 0;
+		return false;
 	}
-	
-	return false;
 }
 
 void StoreModify(bool notwindow, bool notbreak, bool notopen, uint itemwindow, uint itembreak, uint itemopen)
