@@ -48,9 +48,15 @@ void Init(void)
 	G_drawVNeon[99].colour_r = 71;
 	G_drawVNeon[99].colour_g = 120;
 	G_drawVNeon[99].colour_b = 60;
+	G_drawVNeon[99].fxoff = -20.0;
+	G_drawVNeon[99].fyoff = 1.5;
+	G_drawVNeon[99].bxoff = -20.0;
+	G_drawVNeon[99].byoff = -1.5;
+	G_drawVNeon[99].mxoff = -0.0;
+	G_drawVNeon[99].myoff = -0.0;
+	G_drawVNeon[99].height = -0.0;
 	G_drawVNeon[99].intensity = 3;
 	G_drawVNeon[99].range = 80.0000;
-	G_drawVNeon[99].height = -0.0;
 
 	// Brucie Garage
 	garagesBlipCoords_x[1] = 869.0119;
@@ -132,18 +138,60 @@ void Init(void)
 
 void DoVehicleMods(void)
 {
-	float v_attach_x, v_attach_y, v_attach_z;
+
+//-0.00500000, -5.12500000, 1.41900000
+
+
+/*
+car front
+-502.4153
+1740.6450
+7.9195
+211.6515
+
+car side
+-501.4482  (spot -504.4058)
+1739.0349
+7.9641
+300.3261
+
+spot +5.0off
+-505.3729
+1740.7686
+8.6050
+211.6515
+
+
+
+x = cos(heading) * distance + start_pos_x
+y = sin(heading) * distance + start_pos_y
+
+*/
 
 	if (G_drawVNeon[99].toggle == 2)
 	{
 		if (DOES_VEHICLE_EXIST(G_v_domod[1]))
 		{
+			float v_attach_x, v_attach_y, v_attach_z, v_attach_h;
+			GET_CAR_HEADING(G_v_domod[1], &v_attach_h);
 			GET_CAR_COORDINATES(G_v_domod[1], &v_attach_x, &v_attach_y, &v_attach_z);
-			DRAW_LIGHT_WITH_RANGE(v_attach_x, v_attach_y, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].intensity, G_drawVNeon[99].range);
+			DRAW_LIGHT_WITH_RANGE(v_attach_x + G_drawVNeon[99].mxoff, v_attach_y + G_drawVNeon[99].myoff, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].intensity, G_drawVNeon[99].range);
 			if (G_drawVNeon[99].togglefb == 2)
 			{
-				DRAW_LIGHT_WITH_RANGE(v_attach_x, v_attach_y + G_drawVNeon[99].frontoff, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].intensity, G_drawVNeon[99].range);
-				DRAW_LIGHT_WITH_RANGE(v_attach_x, v_attach_y - G_drawVNeon[99].backoff, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].intensity, G_drawVNeon[99].range);
+				float v_foff_x, v_foff_y, v_foff_z;
+				GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(G_v_domod[1], G_drawVNeon[99].fxoff, G_drawVNeon[99].fyoff, G_drawVNeon[99].height, &v_foff_x, &v_foff_y, &v_foff_z);
+				float v_boff_x, v_boff_y, v_boff_z;
+				GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(G_v_domod[1], G_drawVNeon[99].bxoff, G_drawVNeon[99].byoff, G_drawVNeon[99].height, &v_boff_x, &v_boff_y, &v_boff_z);
+				float fdist;
+				GET_DISTANCE_BETWEEN_COORDS_2D(v_attach_x + G_drawVNeon[99].fxoff, v_attach_y + G_drawVNeon[99].fyoff, v_attach_x, v_attach_y, &fdist);
+				float bdist;
+				GET_DISTANCE_BETWEEN_COORDS_2D(v_attach_x - G_drawVNeon[99].bxoff, v_attach_y - G_drawVNeon[99].byoff, v_attach_x, v_attach_y, &bdist);
+				float fx = COS(v_attach_h) * fdist + v_foff_x;
+				float fy = SIN(v_attach_h) * fdist + v_foff_y;
+				float bx = COS(v_attach_h) * bdist + v_boff_x;
+				float by = SIN(v_attach_h) * bdist + v_boff_y;
+				DRAW_LIGHT_WITH_RANGE(fx, fy, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].intensity, G_drawVNeon[99].range);
+				DRAW_LIGHT_WITH_RANGE(bx, by, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].intensity, G_drawVNeon[99].range);
 			}
 		}
 		else

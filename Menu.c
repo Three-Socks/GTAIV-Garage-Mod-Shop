@@ -41,7 +41,7 @@ void DrawMenu(int array_len)
 	
 	if ((inNumberSelector || inFloatSelector) && num_item_highlighted != 0)
 	{
-		if (isButtonPressedLong(BUTTON_DPAD_LEFT) || IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT))
+		if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT))
 		{
 			if (inFloatSelector)
 			{
@@ -67,7 +67,7 @@ void DrawMenu(int array_len)
 			}
 		}
 
-		if (isButtonPressedLong(BUTTON_DPAD_RIGHT) || IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT))
+		if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT))
 		{
 			if (inFloatSelector)
 			{
@@ -943,7 +943,6 @@ void EnterMenu(int item_selected)
 			}
 			else if (item_modifytype_selected == 7)
 			{
-				int Iplus = 0;
 				menu_item[1].name = "Toggle";
 				menu_item[1].type = 2;
 				if (G_drawVNeon[99].toggle == 2)
@@ -957,24 +956,16 @@ void EnterMenu(int item_selected)
 				{
 					menu_item[3].enabled = 2;
 				}
-
-				if (menu_item[3].enabled == 2)
-				{
-					menu_item[4].name = "Front Offset";
-					menu_item[5].name = "Back Offset";
-					menu_item[6].name = "Height Offset";
-					menu_item[7].name = "Intensity";
-					menu_item[8].name = "Range";
-					menu_len = 8;
-					Iplus = 2;
-				}
-				else
-				{
-					menu_item[4].name = "Height Offset";
-					menu_item[5].name = "Intensity";
-					menu_item[6].name = "Range";
-					menu_len = 6;
-				}
+				menu_item[4].name = "Front X Offset";
+				menu_item[5].name = "Front Y Offset";
+				menu_item[6].name = "Back X Offset";
+				menu_item[7].name = "Back Y Offset";
+				menu_item[8].name = "Main X Offset";
+				menu_item[9].name = "Main Y Offset";
+				menu_item[10].name = "Height Offset";
+				menu_item[11].name = "Intensity";
+				menu_item[12].name = "Range";
+				menu_len = 12;
 				inVNeon = true;
 
 				veh_change_set = false;
@@ -983,40 +974,64 @@ void EnterMenu(int item_selected)
 				inFloatSelector = false;
 				allow_negative_high = false;
 
-				if (menu_item[3].enabled == 2)
+				if (G_item_highlighted[23] == 4)
 				{
-					if (G_item_highlighted[23] == 4)
-					{
-						num_item_highlighted = 4;
-						inFloatSelector = true;
-						num_len = 5;
-						allow_negative_high = true;
-					}
-					else if (G_item_highlighted[23] == 5)
-					{
-						num_item_highlighted = 5;
-						inFloatSelector = true;
-						num_len = 5;
-						allow_negative_high = true;
-					}
-				}
-
-				if (G_item_highlighted[23] == 4 + Iplus)
-				{
-					num_item_highlighted = 4 + Iplus;
+					num_item_highlighted = 4;
 					inFloatSelector = true;
 					num_len = 5;
 					allow_negative_high = true;
 				}
-				else if (G_item_highlighted[23] == 5 + Iplus)
+				else if (G_item_highlighted[23] == 5)
 				{
-					num_item_highlighted = 5 + Iplus;
+					num_item_highlighted = 5;
+					inFloatSelector = true;
+					num_len = 5;
+					allow_negative_high = true;
+				}
+				else if (G_item_highlighted[23] == 6)
+				{
+					num_item_highlighted = 6;
+					inFloatSelector = true;
+					num_len = 5;
+					allow_negative_high = true;
+				}
+				else if (G_item_highlighted[23] == 7)
+				{
+					num_item_highlighted = 7;
+					inFloatSelector = true;
+					num_len = 5;
+					allow_negative_high = true;
+				}
+				else if (G_item_highlighted[23] == 8)
+				{
+					num_item_highlighted = 8;
+					inFloatSelector = true;
+					num_len = 5;
+					allow_negative_high = true;
+				}
+				else if (G_item_highlighted[23] == 9)
+				{
+					num_item_highlighted = 9;
+					inFloatSelector = true;
+					num_len = 5;
+					allow_negative_high = true;
+				}
+				else if (G_item_highlighted[23] == 10)
+				{
+					num_item_highlighted = 10;
+					inFloatSelector = true;
+					num_len = 5;
+					allow_negative_high = true;
+				}
+				else if (G_item_highlighted[23] == 11)
+				{
+					num_item_highlighted = 11;
 					inNumberSelector = true;
 					num_len = 20;
 				}
-				else if (G_item_highlighted[23] == 6 + Iplus)
+				else if (G_item_highlighted[23] == 12)
 				{
-					num_item_highlighted = 6 + Iplus;
+					num_item_highlighted = 12;
 					inNumberSelector = true;
 					num_len = 100;
 				}
@@ -1590,35 +1605,39 @@ void EnterMenu(int item_selected)
 							G_drawVNeon[99].togglefb = 2;
 						}
 					}
-					else if (item_modify_selected == 4 && G_drawVNeon[99].togglefb == 0)
+					else if (item_modify_selected == 4)
+					{
+						G_drawVNeon[99].fxoff = floatnum_selected;
+					}
+					else if (item_modify_selected == 5)
+					{
+						G_drawVNeon[99].fyoff = floatnum_selected;
+					}
+					else if (item_modify_selected == 6)
+					{
+						G_drawVNeon[99].bxoff = floatnum_selected;
+					}
+					else if (item_modify_selected == 7)
+					{
+						G_drawVNeon[99].byoff = floatnum_selected;
+					}
+					else if (item_modify_selected == 8)
+					{
+						G_drawVNeon[99].mxoff = floatnum_selected;
+					}
+					else if (item_modify_selected == 9)
+					{
+						G_drawVNeon[99].myoff = floatnum_selected;
+					}
+					else if (item_modify_selected == 10)
 					{
 						G_drawVNeon[99].height = floatnum_selected;
 					}
-					else if (item_modify_selected == 5 && G_drawVNeon[99].togglefb == 0)
+					else if (item_modify_selected == 11)
 					{
 						G_drawVNeon[99].intensity = num_selected;
 					}
-					else if (item_modify_selected == 6 && G_drawVNeon[99].togglefb == 0)
-					{
-						G_drawVNeon[99].range = num_selected;
-					}
-					else if (item_modify_selected == 4 && G_drawVNeon[99].togglefb == 2)
-					{
-						G_drawVNeon[99].frontoff = floatnum_selected;
-					}
-					else if (item_modify_selected == 5 && G_drawVNeon[99].togglefb == 2)
-					{
-						G_drawVNeon[99].backoff = floatnum_selected;
-					}
-					else if (item_modify_selected == 6 && G_drawVNeon[99].togglefb == 2)
-					{
-						G_drawVNeon[99].height = floatnum_selected;
-					}
-					else if (item_modify_selected == 7 && G_drawVNeon[99].togglefb == 2)
-					{
-						G_drawVNeon[99].intensity = num_selected;
-					}
-					else if (item_modify_selected == 8 && G_drawVNeon[99].togglefb == 2)
+					else if (item_modify_selected == 12)
 					{
 						G_drawVNeon[99].range = num_selected;
 					}
@@ -1828,16 +1847,16 @@ void DoMenu(void)
 		set_up_draw(2, width, height, r, g, b, a);
 		draw_float("NUMBR", start_pos_x, 0.16000000, game_cam_z);
 	}*/
-	/*
+	
 	// Ano pad
-	float pos_x = 0.05000000, width = 0.30000000, height = 0.30000000;
+	float pos_x = 0.05400000, width = 0.30000000, height = 0.30000000;
 	uint r = 255, g = 255, b = 255, a = 110, padleft_x, padleft_y, padright_x, padright_y;
+	// LEFT -128.0000  RIGHT 127.0000
 	GET_POSITION_OF_ANALOGUE_STICKS(0, &padleft_x, &padleft_y, &padright_x, &padright_y);
 	set_up_draw(2, width, height, r, g, b, a);
-	draw_float("NUMBR", pos_x, 0.10000000, padleft_x);
+	draw_number("NUMBR", pos_x, 0.10000000, padleft_x);
 	set_up_draw(2, width, height, r, g, b, a);
-	draw_float("NUMBR", pos_x, 0.13000000, padleft_y);
-	*/
+	draw_number("NUMBR", pos_x, 0.13000000, padleft_y);
 	
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.08800000, menu_level);
