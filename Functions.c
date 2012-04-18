@@ -3,7 +3,7 @@ bool isAnoPressedLong(void)
 	uint padleft_x, padleft_y, padright_x, padright_y;
 	GET_POSITION_OF_ANALOGUE_STICKS(0, &padleft_x, &padleft_y, &padright_x, &padright_y);
 
-	if (padleft_x > 100 || padleft_y < -100)
+	if (padleft_x > 100)
 	{
 		return true;
 	}
