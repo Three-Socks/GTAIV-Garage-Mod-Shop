@@ -41,7 +41,7 @@ void DrawMenu(int array_len)
 	
 	if ((inNumberSelector || inFloatSelector) && num_item_highlighted != 0)
 	{
-		if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT))
+		if (isAnoPressedLong() || IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT))
 		{
 			if (inFloatSelector)
 			{
@@ -67,7 +67,7 @@ void DrawMenu(int array_len)
 			}
 		}
 
-		if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT))
+		if (isAnoPressedLong() || IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT))
 		{
 			if (inFloatSelector)
 			{
@@ -956,16 +956,15 @@ void EnterMenu(int item_selected)
 				{
 					menu_item[3].enabled = 2;
 				}
-				menu_item[4].name = "Front X Offset";
-				menu_item[5].name = "Front Y Offset";
-				menu_item[6].name = "Back X Offset";
-				menu_item[7].name = "Back Y Offset";
-				menu_item[8].name = "Main X Offset";
-				menu_item[9].name = "Main Y Offset";
-				menu_item[10].name = "Height Offset";
-				menu_item[11].name = "Intensity";
-				menu_item[12].name = "Range";
-				menu_len = 12;
+				menu_item[4].name = "Front Offset";
+				menu_item[5].name = "Back Offset";
+				menu_item[6].name = "F/B Range";
+				menu_item[7].name = "F/B Intensity";
+				menu_item[8].name = "Main Offset";
+				menu_item[9].name = "Main Range";
+				menu_item[10].name = "Main Intensity";
+				menu_item[11].name = "Height Offset";
+				menu_len = 11;
 				inVNeon = true;
 
 				veh_change_set = false;
@@ -991,16 +990,14 @@ void EnterMenu(int item_selected)
 				else if (G_item_highlighted[23] == 6)
 				{
 					num_item_highlighted = 6;
-					inFloatSelector = true;
-					num_len = 5;
-					allow_negative_high = true;
+					inNumberSelector = true;
+					num_len = 20;
 				}
 				else if (G_item_highlighted[23] == 7)
 				{
 					num_item_highlighted = 7;
-					inFloatSelector = true;
-					num_len = 5;
-					allow_negative_high = true;
+					inNumberSelector = true;
+					num_len = 100;
 				}
 				else if (G_item_highlighted[23] == 8)
 				{
@@ -1012,28 +1009,21 @@ void EnterMenu(int item_selected)
 				else if (G_item_highlighted[23] == 9)
 				{
 					num_item_highlighted = 9;
-					inFloatSelector = true;
-					num_len = 5;
-					allow_negative_high = true;
+					inNumberSelector = true;
+					num_len = 20;
 				}
 				else if (G_item_highlighted[23] == 10)
 				{
 					num_item_highlighted = 10;
-					inFloatSelector = true;
-					num_len = 5;
-					allow_negative_high = true;
+					inNumberSelector = true;
+					num_len = 100;
 				}
 				else if (G_item_highlighted[23] == 11)
 				{
 					num_item_highlighted = 11;
-					inNumberSelector = true;
-					num_len = 20;
-				}
-				else if (G_item_highlighted[23] == 12)
-				{
-					num_item_highlighted = 12;
-					inNumberSelector = true;
-					num_len = 100;
+					inFloatSelector = true;
+					num_len = 5;
+					allow_negative_high = true;
 				}
 			}
 		}
@@ -1607,39 +1597,35 @@ void EnterMenu(int item_selected)
 					}
 					else if (item_modify_selected == 4)
 					{
-						G_drawVNeon[99].fxoff = floatnum_selected;
+						G_drawVNeon[99].fyoff = floatnum_selected;
 					}
 					else if (item_modify_selected == 5)
 					{
-						G_drawVNeon[99].fyoff = floatnum_selected;
+						G_drawVNeon[99].byoff = floatnum_selected;
 					}
 					else if (item_modify_selected == 6)
 					{
-						G_drawVNeon[99].bxoff = floatnum_selected;
+						G_drawVNeon[99].fbrange = num_selected;
 					}
 					else if (item_modify_selected == 7)
 					{
-						G_drawVNeon[99].byoff = floatnum_selected;
+						G_drawVNeon[99].fbintensity = num_selected;
 					}
 					else if (item_modify_selected == 8)
 					{
-						G_drawVNeon[99].mxoff = floatnum_selected;
+						G_drawVNeon[99].myoff = floatnum_selected;
 					}
 					else if (item_modify_selected == 9)
 					{
-						G_drawVNeon[99].myoff = floatnum_selected;
+						G_drawVNeon[99].mrange = num_selected;
 					}
 					else if (item_modify_selected == 10)
 					{
-						G_drawVNeon[99].height = floatnum_selected;
+						G_drawVNeon[99].mintensity = num_selected;
 					}
 					else if (item_modify_selected == 11)
 					{
-						G_drawVNeon[99].intensity = num_selected;
-					}
-					else if (item_modify_selected == 12)
-					{
-						G_drawVNeon[99].range = num_selected;
+						G_drawVNeon[99].height = floatnum_selected;
 					}
 				}
 				item_modify_selected = 0;
@@ -1847,7 +1833,7 @@ void DoMenu(void)
 		set_up_draw(2, width, height, r, g, b, a);
 		draw_float("NUMBR", start_pos_x, 0.16000000, game_cam_z);
 	}*/
-	
+	/*
 	// Ano pad
 	float pos_x = 0.05400000, width = 0.30000000, height = 0.30000000;
 	uint r = 255, g = 255, b = 255, a = 110, padleft_x, padleft_y, padright_x, padright_y;
@@ -1857,7 +1843,7 @@ void DoMenu(void)
 	draw_number("NUMBR", pos_x, 0.10000000, padleft_x);
 	set_up_draw(2, width, height, r, g, b, a);
 	draw_number("NUMBR", pos_x, 0.13000000, padleft_y);
-	
+	*/
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.08800000, menu_level);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -1865,7 +1851,7 @@ void DoMenu(void)
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.16800000, item_selected);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.20800000, longPress);
+	draw_number("NUMBR", 0.58700000, 0.20800000, item_modify_selected);
 	if (inNumberSelector)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -1900,9 +1886,9 @@ void DoMenu(void)
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.48800000, G_drawVNeon[99].toggle);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.52800000, G_drawVNeon[99].intensity);
+	draw_number("NUMBR", 0.58700000, 0.52800000, G_drawVNeon[99].mintensity);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_float("NUMBR", 0.58700000, 0.56800000, G_drawVNeon[99].range, 4);
+	draw_float("NUMBR", 0.58700000, 0.56800000, G_drawVNeon[99].mrange, 4);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_float("NUMBR", 0.58700000, 0.60800000, G_drawVNeon[99].height, 4);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -2041,6 +2027,7 @@ void DoMenu(void)
 
 					if (G_inVNeonCol[23])
 					{
+						menu_level = 5;
 						item_modifytype_selected = 7;
 						G_inVNeonCol[23] = false;
 						draw_menu_set = true;

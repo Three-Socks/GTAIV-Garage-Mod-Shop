@@ -164,5 +164,4 @@ bool modifyExplosionProof = false;
 bool modifyCollisionProof = false;
 bool modifyMeleeProof = false;
 
-int longPress = 0;
 bool allow_negative_high = false;

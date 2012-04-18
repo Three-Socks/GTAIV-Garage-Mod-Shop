@@ -52,11 +52,13 @@ void Init(void)
 	G_drawVNeon[99].fyoff = 1.5;
 	G_drawVNeon[99].bxoff = -20.0;
 	G_drawVNeon[99].byoff = -1.5;
-	G_drawVNeon[99].mxoff = -0.0;
+	G_drawVNeon[99].mxoff = -0.1;
 	G_drawVNeon[99].myoff = -0.0;
 	G_drawVNeon[99].height = -0.0;
-	G_drawVNeon[99].intensity = 3;
-	G_drawVNeon[99].range = 80.0000;
+	G_drawVNeon[99].fbrange = 2;
+	G_drawVNeon[99].fbintensity = 85.0000;
+	G_drawVNeon[99].mrange = 3;
+	G_drawVNeon[99].mintensity = 85.0000;
 
 	// Brucie Garage
 	garagesBlipCoords_x[1] = 869.0119;
@@ -170,12 +172,12 @@ y = sin(heading) * distance + start_pos_y
 
 	if (G_drawVNeon[99].toggle == 2)
 	{
-		if (DOES_VEHICLE_EXIST(G_v_domod[1]))
+		if (DOES_VEHICLE_EXIST(G_v_domod[1]) && IS_VEH_DRIVEABLE(G_v_domod[1]))
 		{
 			float v_attach_x, v_attach_y, v_attach_z, v_attach_h;
 			GET_CAR_HEADING(G_v_domod[1], &v_attach_h);
 			GET_CAR_COORDINATES(G_v_domod[1], &v_attach_x, &v_attach_y, &v_attach_z);
-			DRAW_LIGHT_WITH_RANGE(v_attach_x + G_drawVNeon[99].mxoff, v_attach_y + G_drawVNeon[99].myoff, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].intensity, G_drawVNeon[99].range);
+			DRAW_LIGHT_WITH_RANGE(v_attach_x + G_drawVNeon[99].mxoff, v_attach_y + G_drawVNeon[99].myoff, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].mrange, G_drawVNeon[99].mintensity);
 			if (G_drawVNeon[99].togglefb == 2)
 			{
 				float v_foff_x, v_foff_y, v_foff_z;
@@ -190,8 +192,8 @@ y = sin(heading) * distance + start_pos_y
 				float fy = SIN(v_attach_h) * fdist + v_foff_y;
 				float bx = COS(v_attach_h) * bdist + v_boff_x;
 				float by = SIN(v_attach_h) * bdist + v_boff_y;
-				DRAW_LIGHT_WITH_RANGE(fx, fy, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].intensity, G_drawVNeon[99].range);
-				DRAW_LIGHT_WITH_RANGE(bx, by, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].intensity, G_drawVNeon[99].range);
+				DRAW_LIGHT_WITH_RANGE(fx, fy, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].fbrange, G_drawVNeon[99].fbintensity);
+				DRAW_LIGHT_WITH_RANGE(bx, by, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].fbrange, G_drawVNeon[99].fbintensity);
 			}
 		}
 		else
