@@ -9,11 +9,11 @@ typedef struct _drawVNeonS
 	float fyoff;
 	//float bxoff;
 	float byoff;
-	float fbintensity;
+	uint fbintensity;
 	float fbrange;
 	float mxoff;
 	float myoff;
-	float mintensity;
+	uint mintensity;
 	float mrange;
 	float height;
 } drawVNeonS;
