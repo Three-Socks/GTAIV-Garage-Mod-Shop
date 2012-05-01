@@ -48,17 +48,17 @@ void Init(void)
 	G_drawVNeon[99].colour_r = 71;
 	G_drawVNeon[99].colour_g = 120;
 	G_drawVNeon[99].colour_b = 60;
-	G_drawVNeon[99].fxoff = -20.0;
+	//G_drawVNeon[99].fxoff = -20.0;
 	G_drawVNeon[99].fyoff = 1.5;
-	G_drawVNeon[99].bxoff = -20.0;
+	//G_drawVNeon[99].bxoff = -20.0;
 	G_drawVNeon[99].byoff = -1.5;
 	G_drawVNeon[99].mxoff = -0.1;
 	G_drawVNeon[99].myoff = -0.0;
 	G_drawVNeon[99].height = -0.0;
 	G_drawVNeon[99].fbrange = 2;
-	G_drawVNeon[99].fbintensity = 85.0000;
+	G_drawVNeon[99].fbintensity = 85;
 	G_drawVNeon[99].mrange = 3;
-	G_drawVNeon[99].mintensity = 85.0000;
+	G_drawVNeon[99].mintensity = 85;
 
 	// Brucie Garage
 	garagesBlipCoords_x[1] = 869.0119;
@@ -181,13 +181,13 @@ y = sin(heading) * distance + start_pos_y
 			if (G_drawVNeon[99].togglefb == 2)
 			{
 				float v_foff_x, v_foff_y, v_foff_z;
-				GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(G_v_domod[1], G_drawVNeon[99].fxoff, G_drawVNeon[99].fyoff, G_drawVNeon[99].height, &v_foff_x, &v_foff_y, &v_foff_z);
+				GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(G_v_domod[1], -20.0, G_drawVNeon[99].fyoff, G_drawVNeon[99].height, &v_foff_x, &v_foff_y, &v_foff_z);
 				float v_boff_x, v_boff_y, v_boff_z;
-				GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(G_v_domod[1], G_drawVNeon[99].bxoff, G_drawVNeon[99].byoff, G_drawVNeon[99].height, &v_boff_x, &v_boff_y, &v_boff_z);
+				GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(G_v_domod[1], -20.0, G_drawVNeon[99].byoff, G_drawVNeon[99].height, &v_boff_x, &v_boff_y, &v_boff_z);
 				float fdist;
-				GET_DISTANCE_BETWEEN_COORDS_2D(v_attach_x + G_drawVNeon[99].fxoff, v_attach_y + G_drawVNeon[99].fyoff, v_attach_x, v_attach_y, &fdist);
+				GET_DISTANCE_BETWEEN_COORDS_2D(v_attach_x + -20.0, v_attach_y + G_drawVNeon[99].fyoff, v_attach_x, v_attach_y, &fdist);
 				float bdist;
-				GET_DISTANCE_BETWEEN_COORDS_2D(v_attach_x - G_drawVNeon[99].bxoff, v_attach_y - G_drawVNeon[99].byoff, v_attach_x, v_attach_y, &bdist);
+				GET_DISTANCE_BETWEEN_COORDS_2D(v_attach_x - -20.0, v_attach_y - G_drawVNeon[99].byoff, v_attach_x, v_attach_y, &bdist);
 				float fx = COS(v_attach_h) * fdist + v_foff_x;
 				float fy = SIN(v_attach_h) * fdist + v_foff_y;
 				float bx = COS(v_attach_h) * bdist + v_boff_x;
@@ -206,6 +206,7 @@ y = sin(heading) * distance + start_pos_y
 
 void DoActivators(void)
 {
+
 	int i;
 	for (i = 1; i < 8; i++)
 	{
@@ -224,6 +225,15 @@ void DoActivators(void)
 			}
 		}
 	}
+	
+	/*if (IS_BUTTON_PRESSED(0, 6) && IS_BUTTON_PRESSED(0, 8))
+	{
+		if (!G_activateMenu[23])
+		{
+			G_activateMenu[23] = true;
+			G_garageId[23] = 8;
+		}
+	}*/
 
 	/*Vector3 upGarageCoords, downGarageCoords, currentGarageCoords, currentCharCoords;
 	upGarageCoords.x = 864.32000000;
