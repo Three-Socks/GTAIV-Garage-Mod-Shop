@@ -39,58 +39,56 @@ void DrawMenu(int array_len)
 		}
 	}
 	
-	if ((inNumberSelector || inFloatSelector) && num_item_highlighted != 0)
-	{
+	if (menu_item[item_high].type == 3 || menu_item[item_high].type == 4)
+	{	
 		if (isAnoPressedLong() || IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT))
 		{
-			uint item_high = G_item_highlighted[23];
-			if (inFloatSelector)
+			if (menu_item[item_high].type == 3)
 			{
-				if (menu_item[item_high].dfval == 1.0 && !allow_negative_high)
+				if (menu_item[item_high].dfval == 1.0 && !menu_item[item_high].allow_neg)
 				{
-					menu_item[item_high].dfval = num_len;
+					menu_item[item_high].dfval = menu_item[item_high].num_len;
 				}
 				else
 				{
-					menu_item[item_high].dfval = menu_item[item_high].dfval - menu_item[item_high].dfval;
+					menu_item[item_high].dfval = menu_item[item_high].dfval - 0.100;
 				}
 			}
 			else
 			{
 				if (menu_item[item_high].numval == 1)
 				{
-					menu_item[item_high].numval = num_len;
+					menu_item[item_high].numval = menu_item[item_high].num_len;
 				}
 				else
 				{
-					menu_item[item_high].numval = menu_item[item_high].numval - menu_item[item_high].numval;
+					menu_item[item_high].numval = menu_item[item_high].numval - 1;
 				}
 			}
 		}
 
 		if (isAnoPressedLong() || IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT))
 		{
-			uint item_high = G_item_highlighted[23];
-			if (inFloatSelector)
+			if (menu_item[item_high].type == 3)
 			{
-				if (menu_item[item_high].dfval == num_len)
+				if (menu_item[item_high].dfval == menu_item[item_high].num_len)
 				{
 					menu_item[item_high].dfval = 1.0;
 				}
 				else
 				{
-					menu_item[item_high].dfval = menu_item[item_high].dfval + menu_item[item_high].dfval;
+					menu_item[item_high].dfval = menu_item[item_high].dfval + 0.100;
 				}
 			}
 			else
 			{
-				if (menu_item[item_high].numval == num_len)
+				if (menu_item[item_high].numval == menu_item[item_high].num_len)
 				{
 					menu_item[item_high].numval = 1;
 				}
 				else
 				{
-					menu_item[item_high].numval = menu_item[item_high].numval + menu_item[item_high].numval;
+					menu_item[item_high].numval = menu_item[item_high].numval + 1;
 				}
 			}
 		}
@@ -269,39 +267,56 @@ void DrawMenu(int array_len)
 			b = d_b;
 			Ipos_y = Ipos_y + menu_spacing;
 
-			if ((inNumberSelector || inFloatSelector) && num_item_highlighted == I)
+			if (menu_item[I].type == 3 || menu_item[I].type == 4)
 			{
-
-				if (inFloatSelector)
+				if (!menu_item[I].allow_neg)
 				{
+					if (menu_item[I].dfval == 0)
+					{
+						menu_item[I].dfval = 1;
+					}
+					else if (menu_item[I].numval == 0)
+					{
+						menu_item[I].numval = 1;
+					}
+				}
 
+				if (menu_item[I].type == 3)
+				{
 					if (menu_item[I].dfval <= -0.0)
 					{
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
-						draw_text("STRING", 0.1850, Ipos_y, "<");
+						draw_text("STRING", 0.2000, Ipos_y - 0.0010, "<");
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
-						draw_float("NUMBR", 0.2050, Ipos_y, menu_item[I].dfval, 1);
+						draw_float("NUMBR", 0.2150, Ipos_y, menu_item[I].dfval, 1);
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
-						draw_text("STRING", 0.2450, Ipos_y, ">");
+						draw_text("STRING", 0.2450, Ipos_y - 0.0010, ">");
 					}
 					else
 					{
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
-						draw_text("STRING", 0.2050, Ipos_y, "<");
+						draw_text("STRING", 0.2050, Ipos_y - 0.0010, "<");
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
-						draw_float("NUMBR", 0.2300, Ipos_y, menu_item[I].dfval, 1);
+						draw_float("NUMBR", 0.2200, Ipos_y, menu_item[I].dfval, 1);
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
-						draw_text("STRING", 0.2450, Ipos_y, ">");
+						draw_text("STRING", 0.2450, Ipos_y - 0.0010, ">");
 					}
 				}
 				else
 				{
 					set_up_draw(0, menu_width, menu_height, r, g, b, a);
-					draw_text("STRING", 0.2000, Ipos_y, "<");
+					draw_text("STRING", 0.2050, Ipos_y - 0.0010, "<");
 					set_up_draw(0, menu_width, menu_height, r, g, b, a);
-					draw_number("NUMBR", 0.2150, Ipos_y, menu_item[I].numval);
+					if (menu_item[I].numval < 10)
+					{
+						draw_number("NUMBR", 0.2300, Ipos_y, menu_item[I].numval);
+					}
+					else
+					{
+						draw_number("NUMBR", 0.2200, Ipos_y, menu_item[I].numval);
+					}
 					set_up_draw(0, menu_width, menu_height, r, g, b, a);
-					draw_text("STRING", 0.2400, Ipos_y, ">");
+					draw_text("STRING", 0.2450, Ipos_y - 0.0010, ">");
 				}
 			}
 
@@ -328,12 +343,12 @@ void DrawMenu(int array_len)
 				if (menu_item[I].enabled == 2)
 				{
 					set_up_draw(0, menu_width, menu_height, h_r, h_g, h_b, a);
-					draw_text("STRING", toggle_pos_x + 0.0400, Ipos_y, "On");
+					draw_text("STRING", toggle_pos_x + 0.0600, Ipos_y, "On");
 				}
 				else
 				{
 					set_up_draw(0, menu_width, menu_height, d_r, d_g, d_b, a);
-					draw_text("STRING", toggle_pos_x + 0.0400, Ipos_y, "Off");
+					draw_text("STRING", toggle_pos_x + 0.0600, Ipos_y, "Off");
 				}
 			}
 
@@ -456,10 +471,13 @@ void EnterMenu(int item_selected)
 				menu_item[4].name = "Specular Color 2";
 				menu_len = 4;
 
+				uint NumColours = 0;
 				GET_NUM_CAR_COLOURS(v_modding, &NumColours);
 				if (NumColours > 0)
 				{
 					menu_item[5].name = "Color Variation";
+					menu_item[5].type = 4;
+					menu_item[5].num_len = NumColours;
 					menu_item[5].numval = 1;
 					menu_len++;
 				}
@@ -470,7 +488,6 @@ void EnterMenu(int item_selected)
 
 				menu_level = 4;
 				G_item_highlighted[23] = 1;
-				//num_highlighted = 1;
 				inVehCol = true;
 			}
 			return;
@@ -506,16 +523,6 @@ void EnterMenu(int item_selected)
 		if (inVehCol)
 		{
 			veh_change_set = false;
-			num_item_highlighted = 0;
-			inNumberSelector = false;
-
-			if (G_item_highlighted[23] == 5 && NumColours > 0)
-			{
-				num_item_highlighted = 5;
-				inNumberSelector = true;
-
-				num_len = NumColours;
-			}
 		}
 		return;
 	}
@@ -741,209 +748,173 @@ void EnterMenu(int item_selected)
 			}
 			else if (item_modifytype_selected == 3)
 			{
-				// HANDLING
-				//void SET_CAR_FORWARD_SPEED(Vehicle vehicle, float speed);
-				menu_item[1].name = "Speed";
-				//void SET_VEHICLE_STEER_BIAS(Vehicle veh, float val);
-				menu_item[2].name = "Steer Bias";
-				//void SET_CAR_ALWAYS_CREATE_SKIDS(Car car, boolean set);
-				menu_item[3].name = "Always Skid";
-				menu_item[3].type = 2;
-				//void SET_CAR_TRACTION(Car car, float traction);
-				menu_item[4].name = "Traction";
-				menu_len = 4;
-				inVModifyHandling = true;
+				if (!menu_items_set)
+				{
+					// HANDLING
+					//void SET_CAR_FORWARD_SPEED(Vehicle vehicle, float speed);
+					menu_item[1].name = "Speed";
+					menu_item[1].type = 3;
+					menu_item[1].num_len = 10;
+					//void SET_VEHICLE_STEER_BIAS(Vehicle veh, float val);
+					menu_item[2].name = "Steer Bias";
+					menu_item[2].type = 3;
+					menu_item[2].num_len = 10;
+					//void SET_CAR_ALWAYS_CREATE_SKIDS(Car car, boolean set);
+					menu_item[3].name = "Always Skid";
+					menu_item[3].type = 2;
+					//void SET_CAR_TRACTION(Car car, float traction);
+					menu_item[4].name = "Traction";
+					menu_item[4].type = 3;
+					menu_item[4].num_len = 10;
+					menu_len = 4;
+					inVModifyHandling = true;
+					menu_items_set = true;
+				}
 
 				veh_change_set = false;
-				num_item_highlighted = 0;
-				inNumberSelector = false;
-				inFloatSelector = false;
-
-				if (G_item_highlighted[23] == 1)
-				{
-					num_item_highlighted = 1;
-					inFloatSelector = true;
-					num_len = 10;
-				}
-				else if (G_item_highlighted[23] == 2)
-				{
-					num_item_highlighted = 2;
-					inFloatSelector = true;
-					num_len = 10;
-				}
-				else if (G_item_highlighted[23] == 4)
-				{
-					num_item_highlighted = 4;
-					inFloatSelector = true;
-					num_len = 10;
-				}
 			}
 			else if (item_modifytype_selected == 4)
 			{
-				// LIGHTS
-				//void FORCE_CAR_LIGHTS(Car car, int lights);
-				menu_item[1].name = "Head Lights";
-				menu_item[1].type = 2;
-				//void SET_VEH_HAZARDLIGHTS(Vehicle vehicle, boolean on);
-				menu_item[2].name = "Hazard Lights";
-				menu_item[2].type = 2;
-				
-				//void SET_VEH_INDICATORLIGHTS(Vehicle veh, boolean set);
-				menu_item[3].name = "Indicator Lights";
-				menu_item[3].type = 2;
-				
-				//void SET_VEH_INTERIORLIGHT(Vehicle veh, boolean set);
-				menu_item[4].name = "Interior Light";
-				menu_item[4].type = 2;
-				
-				//void SWITCH_CAR_SIREN(Car car, boolean siren);
-				menu_item[5].name = "Siren";
-				menu_item[5].type = 2;
-				
-				//void void SET_SIREN_WITH_NO_DRIVER(Car car, boolean set);
-				menu_item[6].name = "Always Siren";
-				menu_item[6].type = 2;
-				
-				//void SET_TAXI_LIGHTS(Car car, boolean set);
-				menu_item[7].name = "Taxi Light";
-				menu_item[7].type = 2;
-				
-				//void SET_CAR_LIGHT_MULTIPLIER(Car car, float multiplier);
-				menu_item[8].name = "Light Multiplier";
-				menu_len = 8;
-				inVModifyLights = true;
+				if (!menu_items_set)
+				{
+					// LIGHTS
+					//void FORCE_CAR_LIGHTS(Car car, int lights);
+					menu_item[1].name = "Head Lights";
+					menu_item[1].type = 2;
+					//void SET_VEH_HAZARDLIGHTS(Vehicle vehicle, boolean on);
+					menu_item[2].name = "Hazard Lights";
+					menu_item[2].type = 2;
+					
+					//void SET_VEH_INDICATORLIGHTS(Vehicle veh, boolean set);
+					menu_item[3].name = "Indicator Lights";
+					menu_item[3].type = 2;
+					
+					//void SET_VEH_INTERIORLIGHT(Vehicle veh, boolean set);
+					menu_item[4].name = "Interior Light";
+					menu_item[4].type = 2;
+					
+					//void SWITCH_CAR_SIREN(Car car, boolean siren);
+					menu_item[5].name = "Siren";
+					menu_item[5].type = 2;
+					
+					//void void SET_SIREN_WITH_NO_DRIVER(Car car, boolean set);
+					menu_item[6].name = "Always Siren";
+					menu_item[6].type = 2;
+					
+					//void SET_TAXI_LIGHTS(Car car, boolean set);
+					menu_item[7].name = "Taxi Light";
+					menu_item[7].type = 2;
+					
+					//void SET_CAR_LIGHT_MULTIPLIER(Car car, float multiplier);
+					menu_item[8].name = "Light Multiplier";
+					menu_item[8].type = 3;
+					menu_item[8].num_len = 10;
+					menu_len = 8;
+					inVModifyLights = true;
+					menu_items_set = true;
+				}
 
 				veh_change_set = false;
-				num_item_highlighted = 0;
-				inNumberSelector = false;
-				inFloatSelector = false;
-
-				if (G_item_highlighted[23] == 8)
-				{
-					num_item_highlighted = 8;
-					inFloatSelector = true;
-					num_len = 10;
-				}
 			}
 			else if (item_modifytype_selected == 5)
 			{
-				// HEALTH
-				//void SET_CAR_HEALTH(Vehicle vehicle, uint Value);
-				menu_item[1].name = "Health";
-				//void SET_ENGINE_HEALTH(Vehicle vehicle, float health);
-				menu_item[2].name = "Engine Health";
-				//void SET_CAR_PROOFS(Vehicle vehicle, boolean bulletProof, boolean fireProof, boolean explosionProof, boolean collisionProof, boolean meleeProof);
-				menu_item[3].name = "Bullet Proof";
-				menu_item[3].type = 2;
-				menu_item[3].extraVar = modifyBulletProof;
-				menu_item[4].name = "Fire Proof";
-				menu_item[4].type = 2;
-				menu_item[4].extraVar = modifyFireProof;
-				menu_item[5].name = "Explosion Proof";
-				menu_item[5].type = 2;
-				menu_item[5].extraVar = modifyExplosionProof;
-				menu_item[6].name = "Collision Proof";
-				menu_item[6].type = 2;
-				menu_item[6].extraVar = modifyCollisionProof;
-				menu_item[7].name = "Melee Proof";
-				menu_item[7].type = 2;
-				menu_item[7].extraVar = modifyMeleeProof;
-				//void SET_CAR_STRONG(Vehicle vehicle, boolean strong);
-				menu_item[8].name = "Strong";
-				menu_item[8].type = 2;
-				
-				//void SET_VEH_HAS_STRONG_AXLES(Vehicle veh, boolean set);
-				menu_item[9].name = "Strong Axles";
-				menu_item[9].type = 2;
-				
-				//void SET_CAR_COLLISION(Car car, boolean set);
-				menu_item[10].name = "Collision";
-				menu_item[10].type = 2;
-				
-				//void SET_CAR_CAN_BE_DAMAGED(Vehicle vehicle, boolean value);
-				menu_item[11].name = "Damage";
-				menu_item[11].type = 2;
-				
-				//void SET_CAR_CAN_BE_VISIBLY_DAMAGED(Vehicle vehicle, boolean value);
-				menu_item[12].name = "Visible Damage";
-				menu_item[12].type = 2;
-				
-				//void SET_VEHICLE_DEFORMATION_MULT(Vehicle veh, float multiplier);
-				//menu_item[13].name = "Deformation Multiplier";
-				//void SET_CAR_WATERTIGHT(Car car, boolean set);
-				menu_item[13].name = "Watertight";
-				menu_item[13].type = 2;
-				
-				menu_len = 13;
-				inVModifyHealth = true;
-				
-				veh_change_set = false;
-				num_item_highlighted = 0;
-				inNumberSelector = false;
-				inFloatSelector = false;
+				if (!menu_items_set)
+				{
+					// HEALTH
+					//void SET_CAR_HEALTH(Vehicle vehicle, uint Value);
+					menu_item[1].name = "Health";
+					menu_item[1].type = 4;
+					menu_item[1].num_len = 1000;
+					//void SET_ENGINE_HEALTH(Vehicle vehicle, float health);
+					menu_item[2].name = "Engine Health";
+					menu_item[2].type = 4;
+					menu_item[2].num_len = 1000;
+					//void SET_CAR_PROOFS(Vehicle vehicle, boolean bulletProof, boolean fireProof, boolean explosionProof, boolean collisionProof, boolean meleeProof);
+					menu_item[3].name = "Bullet Proof";
+					menu_item[3].type = 2;
+					menu_item[3].extraVar = modifyBulletProof;
+					menu_item[4].name = "Fire Proof";
+					menu_item[4].type = 2;
+					menu_item[4].extraVar = modifyFireProof;
+					menu_item[5].name = "Explosion Proof";
+					menu_item[5].type = 2;
+					menu_item[5].extraVar = modifyExplosionProof;
+					menu_item[6].name = "Collision Proof";
+					menu_item[6].type = 2;
+					menu_item[6].extraVar = modifyCollisionProof;
+					menu_item[7].name = "Melee Proof";
+					menu_item[7].type = 2;
+					menu_item[7].extraVar = modifyMeleeProof;
+					//void SET_CAR_STRONG(Vehicle vehicle, boolean strong);
+					menu_item[8].name = "Strong";
+					menu_item[8].type = 2;
+					
+					//void SET_VEH_HAS_STRONG_AXLES(Vehicle veh, boolean set);
+					menu_item[9].name = "Strong Axles";
+					menu_item[9].type = 2;
+					
+					//void SET_CAR_COLLISION(Car car, boolean set);
+					menu_item[10].name = "Collision";
+					menu_item[10].type = 2;
+					
+					//void SET_CAR_CAN_BE_DAMAGED(Vehicle vehicle, boolean value);
+					menu_item[11].name = "Damage";
+					menu_item[11].type = 2;
+					
+					//void SET_CAR_CAN_BE_VISIBLY_DAMAGED(Vehicle vehicle, boolean value);
+					menu_item[12].name = "Visible Damage";
+					menu_item[12].type = 2;
+					
+					//void SET_VEHICLE_DEFORMATION_MULT(Vehicle veh, float multiplier);
+					//menu_item[13].name = "Deformation Multiplier";
+					//void SET_CAR_WATERTIGHT(Car car, boolean set);
+					menu_item[13].name = "Watertight";
+					menu_item[13].type = 2;
+					
+					menu_len = 13;
+					inVModifyHealth = true;
+					menu_items_set = true;
+				}
 
-				if (G_item_highlighted[23] == 1)
-				{
-					num_item_highlighted = 1;
-					inNumberSelector = true;
-					num_len = 1000;
-				}
-				else if (G_item_highlighted[23] == 2)
-				{
-					num_item_highlighted = 2;
-					inNumberSelector = true;
-					num_len = 1000;
-				}
+				veh_change_set = false;
 			}
 			else if (item_modifytype_selected == 6)
 			{
-				// MISC
-				//void SET_VEHICLE_DIRT_LEVEL(Vehicle vehicle, float intensity);
-				menu_item[1].name = "Dirt Level";
-				//void SET_VEHICLE_CAN_BE_TARGETTED(Vehicle veh, boolean set);
-				menu_item[2].name = "Can be Targetted";
-				menu_item[2].type = 2;
-				
-				//void SET_VEHICLE_ALPHA(Vehicle veh, int alpha);
-				menu_item[3].name = "Transparency";
-				//void SET_VEH_ALARM_DURATION(Vehicle veh, int duration);
-				menu_item[4].name = "Alarm Duration";
-				//void SET_VEH_ALARM(Vehicle veh, boolean set);
-				menu_item[5].name = "Alarm";
-				menu_item[5].type = 2;
-				
-				//void SET_CAR_VISIBLE(Vehicle vehicle, boolean value);
-				menu_item[6].name = "Visible";
-				menu_item[6].type = 2;
-				
-				//void SET_CAR_AS_MISSION_CAR(Car car);
-				menu_item[7].name = "Mission";
-				menu_len = 7;
-				inVModifyMisc = true;
+				if (!menu_items_set)
+				{
+					// MISC
+					//void SET_VEHICLE_DIRT_LEVEL(Vehicle vehicle, float intensity);
+					menu_item[1].name = "Dirt Level";
+					menu_item[1].type = 3;
+					menu_item[1].num_len = 15.9;
+					//void SET_VEHICLE_CAN_BE_TARGETTED(Vehicle veh, boolean set);
+					menu_item[2].name = "Can be Targetted";
+					menu_item[2].type = 2;
+					
+					//void SET_VEHICLE_ALPHA(Vehicle veh, int alpha);
+					menu_item[3].name = "Transparency";
+					menu_item[3].type = 4;
+					menu_item[3].num_len = 255;
+					//void SET_VEH_ALARM_DURATION(Vehicle veh, int duration);
+					menu_item[4].name = "Alarm Duration";
+					menu_item[4].type = 4;
+					menu_item[4].num_len = 30;
+					//void SET_VEH_ALARM(Vehicle veh, boolean set);
+					menu_item[5].name = "Alarm";
+					menu_item[5].type = 2;
+					
+					//void SET_CAR_VISIBLE(Vehicle vehicle, boolean value);
+					menu_item[6].name = "Visible";
+					menu_item[6].type = 2;
+					
+					//void SET_CAR_AS_MISSION_CAR(Car car);
+					menu_item[7].name = "Mission";
+					menu_len = 7;
+					inVModifyMisc = true;
+					menu_items_set = true;
+				}
 
 				veh_change_set = false;
-				num_item_highlighted = 0;
-				inNumberSelector = false;
-				inFloatSelector = false;
-
-				if (G_item_highlighted[23] == 1)
-				{
-					num_item_highlighted = 1;
-					inFloatSelector = true;
-					num_len = 15.9;
-				}
-				else if (G_item_highlighted[23] == 3)
-				{
-					num_item_highlighted = 3;
-					inNumberSelector = true;
-					num_len = 255;
-				}
-				else if (G_item_highlighted[23] == 4)
-				{
-					num_item_highlighted = 4;
-					inNumberSelector = true;
-					num_len = 30;
-				}
 			}
 			else if (item_modifytype_selected == 7)
 			{
@@ -963,20 +934,51 @@ void EnterMenu(int item_selected)
 						menu_item[3].enabled = 2;
 					}
 					menu_item[4].name = "Front Offset";
+					menu_item[4].type = 3;
+					menu_item[4].num_len = 5;
+					menu_item[4].allow_neg = true;
 					menu_item[4].dfval = G_drawVNeon[99].fyoff;
+
 					menu_item[5].name = "Back Offset";
+					menu_item[5].type = 3;
+					menu_item[5].num_len = 5;
+					menu_item[5].allow_neg = true;
 					menu_item[5].dfval = G_drawVNeon[99].byoff;
+
 					menu_item[6].name = "F/B Range";
+					menu_item[6].type = 3;
+					menu_item[6].num_len = 20;
+					menu_item[6].allow_neg = false;
 					menu_item[6].dfval = G_drawVNeon[99].fbrange;
+
 					menu_item[7].name = "F/B Intensity";
-					menu_item[7].dfval = G_drawVNeon[99].fbintensity;
+					menu_item[7].type = 4;
+					menu_item[7].num_len = 100;
+					menu_item[7].allow_neg = false;
+					menu_item[7].numval = G_drawVNeon[99].fbintensity;
+
 					menu_item[8].name = "Main Offset";
+					menu_item[8].type = 3;
+					menu_item[8].num_len = 5;
+					menu_item[8].allow_neg = true;
 					menu_item[8].dfval = G_drawVNeon[99].myoff;
+
 					menu_item[9].name = "Main Range";
+					menu_item[9].type = 3;
+					menu_item[9].num_len = 20;
+					menu_item[9].allow_neg = false;
 					menu_item[9].dfval = G_drawVNeon[99].mrange;
+
 					menu_item[10].name = "Main Intensity";
-					menu_item[10].dfval = G_drawVNeon[99].mintensity;
+					menu_item[10].type = 4;
+					menu_item[10].num_len = 100;
+					menu_item[10].allow_neg = false;
+					menu_item[10].numval = G_drawVNeon[99].mintensity;
+
 					menu_item[11].name = "Height Offset";
+					menu_item[11].type = 3;
+					menu_item[11].num_len = 5;
+					menu_item[11].allow_neg = true;
 					menu_item[11].dfval = G_drawVNeon[99].height;
 
 					menu_len = 11;
@@ -985,65 +987,6 @@ void EnterMenu(int item_selected)
 				}
 
 				veh_change_set = false;
-				num_item_highlighted = 0;
-				inNumberSelector = false;
-				inFloatSelector = false;
-				allow_negative_high = false;
-
-				if (G_item_highlighted[23] == 4)
-				{
-					num_item_highlighted = 4;
-					inFloatSelector = true;
-					num_len = 5;
-					allow_negative_high = true;
-				}
-				else if (G_item_highlighted[23] == 5)
-				{
-					num_item_highlighted = 5;
-					inFloatSelector = true;
-					num_len = 5;
-					allow_negative_high = true;
-				}
-				else if (G_item_highlighted[23] == 6)
-				{
-					num_item_highlighted = 6;
-					inFloatSelector = true;
-					num_len = 20;
-					allow_negative_high = true;
-				}
-				else if (G_item_highlighted[23] == 7)
-				{
-					num_item_highlighted = 7;
-					inNumberSelector = true;
-					num_len = 100;
-				}
-				else if (G_item_highlighted[23] == 8)
-				{
-					num_item_highlighted = 8;
-					inFloatSelector = true;
-					num_len = 5;
-					allow_negative_high = true;
-				}
-				else if (G_item_highlighted[23] == 9)
-				{
-					num_item_highlighted = 9;
-					inFloatSelector = true;
-					num_len = 20;
-					allow_negative_high = true;
-				}
-				else if (G_item_highlighted[23] == 10)
-				{
-					num_item_highlighted = 10;
-					inNumberSelector = true;
-					num_len = 100;
-				}
-				else if (G_item_highlighted[23] == 11)
-				{
-					num_item_highlighted = 11;
-					inFloatSelector = true;
-					num_len = 5;
-					allow_negative_high = true;
-				}
 			}
 		}
 
@@ -1624,7 +1567,7 @@ void EnterMenu(int item_selected)
 					}
 					else if (item_modify_selected == 6)
 					{
-						G_drawVNeon[99].fbrange = num_selected;
+						G_drawVNeon[99].fbrange = floatnum_selected;
 					}
 					else if (item_modify_selected == 7)
 					{
@@ -1636,7 +1579,7 @@ void EnterMenu(int item_selected)
 					}
 					else if (item_modify_selected == 9)
 					{
-						G_drawVNeon[99].mrange = num_selected;
+						G_drawVNeon[99].mrange = floatnum_selected;
 					}
 					else if (item_modify_selected == 10)
 					{
@@ -1871,7 +1814,7 @@ void DoMenu(void)
 	draw_number("NUMBR", 0.58700000, 0.16800000, item_selected);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.20800000, item_modify_selected);
-	if (inNumberSelector)
+	/*if (inNumberSelector)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 		draw_text("STRING", 0.58700000, 0.24800000, "inNumberSelector");
@@ -1880,7 +1823,7 @@ void DoMenu(void)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 		draw_text("STRING", 0.58700000, 0.28800000, "inFloatSelector");
-	}/*
+	}
 	if (inModVeh)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -1925,6 +1868,8 @@ void DoMenu(void)
 		menu_cam_set = true;
 	}
 
+	item_high = G_item_highlighted[23];
+
 	EnterMenu(item_selected);
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_O))
@@ -1935,11 +1880,14 @@ void DoMenu(void)
 			menu_item[I].name = " ";
 			menu_item[I].type = 0;
 			menu_item[I].enabled = 0;
+			menu_item[I].dfval = 0.0000;
+			menu_item[I].num_len = 0;
+			menu_item[I].allow_neg = false;
+			menu_item[I].numval = 0;
 			//spawn_cars[I] = ;
 		}
 
 		G_item_highlighted[23] = 1;
-		//num_highlighted = 1;
 		item_selected = 0;
 		num_selected = 0;
 		floatnum_selected = 0;
@@ -1968,8 +1916,6 @@ void DoMenu(void)
 			{
 				menu_level = 2;
 				inVehCol = false;
-				inNumberSelector = false;
-				num_item_highlighted = 0;
 				JumpOutVehicle(exit_x, exit_y, exit_z);
 			}
 		}
@@ -2012,9 +1958,6 @@ void DoMenu(void)
 				item_modifytype_selected = 0;
 				VehModifyMode = 1;
 				veh_change_set = false;
-				inNumberSelector = false;
-				inFloatSelector = false;
-				num_item_highlighted = 0;
 				//JumpOutVehicle(exit_x, exit_y, exit_z);
 				if (inVModifyDoors)
 				{
@@ -2043,7 +1986,7 @@ void DoMenu(void)
 				else if (inVNeon)
 				{
 					inVNeon = false;
-					allow_negative_high = false;
+					//allow_negative_high = false;
 
 					if (G_inVNeonCol[23])
 					{
@@ -2094,9 +2037,9 @@ void DoMenu(void)
 			item_vehspawn_selected = G_item_highlighted[23];
 			veh_change_set = false;
 		}
-		else if (inVehCol && (item_colnum_selected != 0 || inNumberSelector || item_colnum_selected == 6))
+		else if (inVehCol && (item_colnum_selected != 0 || menu_item[item_high].type == 4 || item_colnum_selected == 6))
 		{
-			if (!inNumberSelector && item_colnum_selected != 6)
+			if (menu_item[item_high].type != 4 && item_colnum_selected != 6)
 			{
 				item_col_selected = G_item_highlighted[23];
 			}
@@ -2105,11 +2048,11 @@ void DoMenu(void)
 		else if (inVehModify && item_modifytype_selected != 0)
 		{
 			item_modify_selected = G_item_highlighted[23];
-			if (inNumberSelector)
+			if (menu_item[item_modify_selected].type == 4)
 			{
 				num_selected = menu_item[item_modify_selected].numval;
 			}
-			else if (inFloatSelector)
+			else if (menu_item[item_modify_selected].type == 3)
 			{
 				floatnum_selected = menu_item[item_modify_selected].dfval;
 			}
@@ -2151,7 +2094,7 @@ void DoMenu(void)
 			{
 				item_colnum_selected = G_item_highlighted[23];
 
-				if (inNumberSelector)
+				if (menu_item[item_colnum_selected].type == 4)
 				{
 					num_selected = menu_item[item_colnum_selected].numval;
 				}
