@@ -3,7 +3,8 @@ bool isAnoPressedLong(void)
 	uint padleft_x, padleft_y, padright_x, padright_y;
 	GET_POSITION_OF_ANALOGUE_STICKS(0, &padleft_x, &padleft_y, &padright_x, &padright_y);
 
-	if (padleft_x > 100)
+	// < 65436
+	if (padleft_x > 10)
 	{
 		return true;
 	}
@@ -245,6 +246,17 @@ void JumpOutVehicle(float warp_x, float warp_y, float warp_z)
 		veh_cam_set = false;
 	}
 }
+
+/*
+deathmatch_cr
+
+l_U501[0] = GET_TEXTURE_FROM_STREAMED_TXD( "network", "ICON_W_ARROW_RIGHT" );
+DRAW_SPRITE( l_U501[0], sub_40620() - (0.01400000 / 2), l_U1232 - (0.02000000 / 2), 0.01400000, 0.02000000, 0.00000000, 255, 255, 255, 255 );
+SET_TEXT_SCALE( 0.31500000, 0.43000000 );
+set_up_drawnum();
+    uVar6 = GET_STRING_WIDTH( ref cVar2 );
+
+*/
 
 void set_up_draw(int type, float width, float height, uint r, uint g, uint b, uint a)
 {

@@ -94,9 +94,9 @@ uint item_modifytype_selected = 0;
 uint item_modify_selected = 0;
 uint VehModifyMode = 1;
 uint num_item_highlighted = 0;
-uint num_highlighted = 1;
+//uint num_highlighted = 1;
 uint num_selected = 0;
-float floatnum_highlighted = 1;
+//float floatnum_highlighted = 1;
 float floatnum_selected = 0;
 
 float spawn_x, spawn_y, spawn_z, spawn_h;
@@ -135,6 +135,8 @@ typedef struct _menu
 {
 	char *name;
 	uint type;
+	float dfval;
+	uint numval;
 	uint enabled;
 	bool extraVar;
 } menu;
@@ -151,6 +153,7 @@ typedef struct _menu
 
 
 menu menu_item[16];
+bool menu_items_set = false;
 
 uint menu_len;
 uint num_len;

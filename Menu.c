@@ -5,11 +5,11 @@ void DrawMenu(int array_len)
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_DOWN))
 	{
-		if ((inNumberSelector || inFloatSelector) && (num_highlighted > 1 || floatnum_highlighted > 1))
+		/*if ((inNumberSelector || inFloatSelector) && (num_highlighted > 1 || floatnum_highlighted > 1))
 		{
 			num_highlighted = 1;
 			floatnum_highlighted = 1;
-		}
+		}*/
 
 		if (G_item_highlighted[23] == array_len)
 		{
@@ -23,11 +23,11 @@ void DrawMenu(int array_len)
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_UP))
 	{
-		if ((inNumberSelector || inFloatSelector) && (num_highlighted > 1 || floatnum_highlighted > 1))
+		/*if ((inNumberSelector || inFloatSelector) && (num_highlighted > 1 || floatnum_highlighted > 1))
 		{
 			num_highlighted = 1;
 			floatnum_highlighted = 1;
-		}
+		}*/
 
 		if (G_item_highlighted[23] == 1)
 		{
@@ -43,52 +43,54 @@ void DrawMenu(int array_len)
 	{
 		if (isAnoPressedLong() || IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT))
 		{
+			uint item_high = G_item_highlighted[23];
 			if (inFloatSelector)
 			{
-				if (floatnum_highlighted == 1.0 && !allow_negative_high)
+				if (menu_item[item_high].dfval == 1.0 && !allow_negative_high)
 				{
-					floatnum_highlighted = num_len;
+					menu_item[item_high].dfval = num_len;
 				}
 				else
 				{
-					floatnum_highlighted -= 0.100;
+					menu_item[item_high].dfval = menu_item[item_high].dfval - menu_item[item_high].dfval;
 				}
 			}
 			else
 			{
-				if (num_highlighted == 1)
+				if (menu_item[item_high].numval == 1)
 				{
-					num_highlighted = num_len;
+					menu_item[item_high].numval = num_len;
 				}
 				else
 				{
-					num_highlighted--;
+					menu_item[item_high].numval = menu_item[item_high].numval - menu_item[item_high].numval;
 				}
 			}
 		}
 
 		if (isAnoPressedLong() || IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT))
 		{
+			uint item_high = G_item_highlighted[23];
 			if (inFloatSelector)
 			{
-				if (floatnum_highlighted == num_len)
+				if (menu_item[item_high].dfval == num_len)
 				{
-					floatnum_highlighted = 1.0;
+					menu_item[item_high].dfval = 1.0;
 				}
 				else
 				{
-					floatnum_highlighted += 0.100;
+					menu_item[item_high].dfval = menu_item[item_high].dfval + menu_item[item_high].dfval;
 				}
 			}
 			else
 			{
-				if (num_highlighted == num_len)
+				if (menu_item[item_high].numval == num_len)
 				{
-					num_highlighted = 1;
+					menu_item[item_high].numval = 1;
 				}
 				else
 				{
-					num_highlighted++;
+					menu_item[item_high].numval = menu_item[item_high].numval + menu_item[item_high].numval;
 				}
 			}
 		}
@@ -237,9 +239,9 @@ void DrawMenu(int array_len)
 
 			if (G_item_highlighted[23] == I)
 			{
-				r =  h_r;
-				g =  h_g;
-				b =  h_b;
+				r = h_r;
+				g = h_g;
+				b = h_b;
 			}
 
 			set_up_draw(0, menu_width, menu_height, r, g, b, a);
@@ -272,12 +274,13 @@ void DrawMenu(int array_len)
 
 				if (inFloatSelector)
 				{
-					if (floatnum_highlighted <= -0.0)
+
+					if (menu_item[I].dfval <= -0.0)
 					{
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
 						draw_text("STRING", 0.1850, Ipos_y, "<");
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
-						draw_float("NUMBR", 0.2050, Ipos_y, floatnum_highlighted, 1);
+						draw_float("NUMBR", 0.2050, Ipos_y, menu_item[I].dfval, 1);
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
 						draw_text("STRING", 0.2450, Ipos_y, ">");
 					}
@@ -286,7 +289,7 @@ void DrawMenu(int array_len)
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
 						draw_text("STRING", 0.2050, Ipos_y, "<");
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
-						draw_float("NUMBR", 0.2300, Ipos_y, floatnum_highlighted, 1);
+						draw_float("NUMBR", 0.2300, Ipos_y, menu_item[I].dfval, 1);
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
 						draw_text("STRING", 0.2450, Ipos_y, ">");
 					}
@@ -296,7 +299,7 @@ void DrawMenu(int array_len)
 					set_up_draw(0, menu_width, menu_height, r, g, b, a);
 					draw_text("STRING", 0.2000, Ipos_y, "<");
 					set_up_draw(0, menu_width, menu_height, r, g, b, a);
-					draw_number("NUMBR", 0.2150, Ipos_y, num_highlighted);
+					draw_number("NUMBR", 0.2150, Ipos_y, menu_item[I].numval);
 					set_up_draw(0, menu_width, menu_height, r, g, b, a);
 					draw_text("STRING", 0.2400, Ipos_y, ">");
 				}
@@ -325,12 +328,12 @@ void DrawMenu(int array_len)
 				if (menu_item[I].enabled == 2)
 				{
 					set_up_draw(0, menu_width, menu_height, h_r, h_g, h_b, a);
-					draw_text("STRING", toggle_pos_x, Ipos_y, "On");
+					draw_text("STRING", toggle_pos_x + 0.0400, Ipos_y, "On");
 				}
 				else
 				{
 					set_up_draw(0, menu_width, menu_height, d_r, d_g, d_b, a);
-					draw_text("STRING", toggle_pos_x, Ipos_y, "Off");
+					draw_text("STRING", toggle_pos_x + 0.0400, Ipos_y, "Off");
 				}
 			}
 
@@ -457,16 +460,17 @@ void EnterMenu(int item_selected)
 				if (NumColours > 0)
 				{
 					menu_item[5].name = "Color Variation";
+					menu_item[5].numval = 1;
 					menu_len++;
 				}
 
 				//void GET_NUM_CAR_LIVERIES(Car car, int *num);
-				menu_item[6].name = "Livery";
+				menu_item[6].name = "Cycle Livery";
 				menu_len++;
 
 				menu_level = 4;
 				G_item_highlighted[23] = 1;
-				num_highlighted = 1;
+				//num_highlighted = 1;
 				inVehCol = true;
 			}
 			return;
@@ -943,29 +947,42 @@ void EnterMenu(int item_selected)
 			}
 			else if (item_modifytype_selected == 7)
 			{
-				menu_item[1].name = "Toggle";
-				menu_item[1].type = 2;
-				if (G_drawVNeon[99].toggle == 2)
+				if (!menu_items_set)
 				{
-					menu_item[1].enabled = 2;
+					menu_item[1].name = "Toggle";
+					menu_item[1].type = 2;
+					if (G_drawVNeon[99].toggle == 2)
+					{
+						menu_item[1].enabled = 2;
+					}
+					menu_item[2].name = "Color";
+					menu_item[3].name = "Front & Back";
+					menu_item[3].type = 2;
+					if (G_drawVNeon[99].togglefb == 2)
+					{
+						menu_item[3].enabled = 2;
+					}
+					menu_item[4].name = "Front Offset";
+					menu_item[4].dfval = G_drawVNeon[99].fyoff;
+					menu_item[5].name = "Back Offset";
+					menu_item[5].dfval = G_drawVNeon[99].byoff;
+					menu_item[6].name = "F/B Range";
+					menu_item[6].dfval = G_drawVNeon[99].fbrange;
+					menu_item[7].name = "F/B Intensity";
+					menu_item[7].dfval = G_drawVNeon[99].fbintensity;
+					menu_item[8].name = "Main Offset";
+					menu_item[8].dfval = G_drawVNeon[99].myoff;
+					menu_item[9].name = "Main Range";
+					menu_item[9].dfval = G_drawVNeon[99].mrange;
+					menu_item[10].name = "Main Intensity";
+					menu_item[10].dfval = G_drawVNeon[99].mintensity;
+					menu_item[11].name = "Height Offset";
+					menu_item[11].dfval = G_drawVNeon[99].height;
+
+					menu_len = 11;
+					inVNeon = true;
+					menu_items_set = true;
 				}
-				menu_item[2].name = "Color";
-				menu_item[3].name = "Front & Back";
-				menu_item[3].type = 2;
-				if (G_drawVNeon[99].togglefb == 2)
-				{
-					menu_item[3].enabled = 2;
-				}
-				menu_item[4].name = "Front Offset";
-				menu_item[5].name = "Back Offset";
-				menu_item[6].name = "F/B Range";
-				menu_item[7].name = "F/B Intensity";
-				menu_item[8].name = "Main Offset";
-				menu_item[9].name = "Main Range";
-				menu_item[10].name = "Main Intensity";
-				menu_item[11].name = "Height Offset";
-				menu_len = 11;
-				inVNeon = true;
 
 				veh_change_set = false;
 				num_item_highlighted = 0;
@@ -990,8 +1007,9 @@ void EnterMenu(int item_selected)
 				else if (G_item_highlighted[23] == 6)
 				{
 					num_item_highlighted = 6;
-					inNumberSelector = true;
+					inFloatSelector = true;
 					num_len = 20;
+					allow_negative_high = true;
 				}
 				else if (G_item_highlighted[23] == 7)
 				{
@@ -1009,8 +1027,9 @@ void EnterMenu(int item_selected)
 				else if (G_item_highlighted[23] == 9)
 				{
 					num_item_highlighted = 9;
-					inNumberSelector = true;
+					inFloatSelector = true;
 					num_len = 20;
+					allow_negative_high = true;
 				}
 				else if (G_item_highlighted[23] == 10)
 				{
@@ -1920,10 +1939,11 @@ void DoMenu(void)
 		}
 
 		G_item_highlighted[23] = 1;
-		num_highlighted = 1;
+		//num_highlighted = 1;
 		item_selected = 0;
 		num_selected = 0;
 		floatnum_selected = 0;
+		menu_items_set = false;
 
 		if (menu_level == 3)
 		{
@@ -2082,98 +2102,17 @@ void DoMenu(void)
 			}
 			veh_change_set = false;
 		}
-		else if (inVNeon && item_modifytype_selected != 0)
+		else if (inVehModify && item_modifytype_selected != 0)
 		{
+			item_modify_selected = G_item_highlighted[23];
 			if (inNumberSelector)
 			{
-				num_selected = num_highlighted;
+				num_selected = menu_item[item_modify_selected].numval;
 			}
 			else if (inFloatSelector)
 			{
-				floatnum_selected = floatnum_highlighted;
+				floatnum_selected = menu_item[item_modify_selected].dfval;
 			}
-			item_modify_selected = G_item_highlighted[23];
-			veh_change_set = false;
-		}
-		else if (inVModifyDoors && item_modifytype_selected != 0)
-		{
-			item_modify_selected = G_item_highlighted[23];
-			if (item_modify_selected == 1)
-			{
-				if (VehModifyMode == 1)
-				{
-					VehModifyMode = 2;
-				}
-				else
-				{
-					VehModifyMode = 1;
-				}
-			}
-			veh_change_set = false;
-		}
-		else if (inVModifyWindows && item_modifytype_selected != 0)
-		{
-			if (inNumberSelector)
-			{
-				num_selected = num_highlighted;
-			}
-			else if (inFloatSelector)
-			{
-				floatnum_selected = floatnum_highlighted;
-			}
-			item_modify_selected = G_item_highlighted[23];
-			veh_change_set = false;
-		}
-		else if (inVModifyHandling && item_modifytype_selected != 0)
-		{
-			if (inNumberSelector)
-			{
-				num_selected = num_highlighted;
-			}
-			else if (inFloatSelector)
-			{
-				floatnum_selected = floatnum_highlighted;
-			}
-			item_modify_selected = G_item_highlighted[23];
-			veh_change_set = false;
-		}
-		else if (inVModifyLights && item_modifytype_selected != 0)
-		{
-			if (inNumberSelector)
-			{
-				num_selected = num_highlighted;
-			}
-			else if (inFloatSelector)
-			{
-				floatnum_selected = floatnum_highlighted;
-			}
-			item_modify_selected = G_item_highlighted[23];
-			veh_change_set = false;
-		}
-		else if (inVModifyHealth && item_modifytype_selected != 0)
-		{
-			if (inNumberSelector)
-			{
-				num_selected = num_highlighted;
-			}
-			else if (inFloatSelector)
-			{
-				floatnum_selected = floatnum_highlighted;
-			}
-			item_modify_selected = G_item_highlighted[23];
-			veh_change_set = false;
-		}
-		else if (inVModifyMisc && item_modifytype_selected != 0)
-		{
-			if (inNumberSelector)
-			{
-				num_selected = num_highlighted;
-			}
-			else if (inFloatSelector)
-			{
-				floatnum_selected = floatnum_highlighted;
-			}
-			item_modify_selected = G_item_highlighted[23];
 			veh_change_set = false;
 		}
 		else if (inVehUpgrade)
@@ -2210,12 +2149,13 @@ void DoMenu(void)
 			}
 			else if (inVehCol)
 			{
+				item_colnum_selected = G_item_highlighted[23];
+
 				if (inNumberSelector)
 				{
-					num_selected = num_highlighted;
+					num_selected = menu_item[item_colnum_selected].numval;
 				}
 
-				item_colnum_selected = G_item_highlighted[23];
 				menu_level = 5;
 			}
 		}

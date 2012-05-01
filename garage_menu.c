@@ -17,72 +17,138 @@ void Init(void)
 	CLEAR_PRINTS();
 	CLEAR_HELP();
 
-	// Brucie Garage
-	// Brucie MAIN
-	garage_main_spawn_x = 874.8120;
-	garage_main_spawn_y = -114.2031;
-	garage_main_spawn_z = 6.0054;
-	garage_main_spawn_h = 180.0000;
+	float x, y, z, h;
+	GET_CHAR_COORDINATES(GetPlayerPed(), &x, &y, &z);
+	GET_CHAR_HEADING(GetPlayerPed(), &h);
 
-	garage_main_exit_x = 869.0119;
-	garage_main_exit_y = -114.6501;
-	garage_main_exit_z = 6.0054;
-	garage_main_exit_h = 270.0000;
+	garage_main_spawn_x = x;
+	garage_main_spawn_y = y;
+	garage_main_spawn_z = z;
+	garage_main_spawn_h = h;
 
-	garage_main_quit_x = 866.3309;
-	garage_main_quit_y = -116.7025;
-	garage_main_quit_z = 6.0054;
-	garage_main_quit_h = 181.0000;
+	garage_main_exit_x = x;
+	garage_main_exit_y = y;
+	garage_main_exit_z = z;
+	garage_main_exit_h = h;
 
-	// Brucie BIG
-	garage_big_spawn_x = 807.7111;
-	garage_big_spawn_y = -161.0524;
-	garage_big_spawn_z = 6.4449;
-	garage_big_spawn_h = 335.8888;
+	garage_main_quit_x = x;
+	garage_main_quit_y = y;
+	garage_main_quit_z = z;
+	garage_main_quit_h = h;
 
-	garage_big_exit_x = 799.8708;
-	garage_big_exit_y = -161.9819;
-	garage_big_exit_z = 5.8214;
-	garage_big_exit_h = 291.4525;
+	garage_big_spawn_x = x;
+	garage_big_spawn_y = y;
+	garage_big_spawn_z = z;
+	garage_big_spawn_h = h;
 
-	garage_big_quit_x = garage_big_exit_x;
-	garage_big_quit_y = garage_big_exit_y;
-	garage_big_quit_z = garage_big_exit_z;
-	garage_big_quit_h = garage_big_exit_h;
+	garage_big_exit_x = x;
+	garage_big_exit_y = y;
+	garage_big_exit_z = z;
+	garage_big_exit_h = h;
 
-	// Brucie BOAT
-	garage_boat_spawn_x = 698.8500;
-	garage_boat_spawn_y = -153.6000;
-	garage_boat_spawn_z = 0.0000;
-	garage_boat_spawn_h = 61.3000;
+	garage_big_quit_x = x;
+	garage_big_quit_y = y;
+	garage_big_quit_z = z;
+	garage_big_quit_h = h;
+
+	garage_boat_spawn_x = x;
+	garage_boat_spawn_y = y;
+	garage_boat_spawn_z = z;
+	garage_boat_spawn_h = h;
+
+	garage_boat_exit_x = x;
+	garage_boat_exit_y = y;
+	garage_boat_exit_z = z;
+	garage_boat_exit_h = h;
+
+	garage_boat_quit_x = x;
+	garage_boat_quit_y = y;
+	garage_boat_quit_z = z;
+	garage_boat_quit_h = h;
 	
-	garage_boat_exit_x = 696.3401;
-	garage_boat_exit_y = -147.7382;
-	garage_boat_exit_z = 1.2833;
-	garage_boat_exit_h = 154.9767;
+	garage_heli_spawn_x = x;
+	garage_heli_spawn_y = y;
+	garage_heli_spawn_z = z;
+	garage_heli_spawn_h = h;
 
-	garage_boat_quit_x = garage_boat_exit_x;
-	garage_boat_quit_y = garage_boat_exit_y;
-	garage_boat_quit_z = garage_boat_exit_z;
-	garage_boat_quit_h = garage_boat_exit_h;
+	garage_heli_exit_x = x;
+	garage_heli_exit_y = y;
+	garage_heli_exit_z = z;
+	garage_heli_exit_h = h;
 
-// Brucie HELI
-	garage_heli_spawn_x = 786.5347;
-	garage_heli_spawn_y = 150.7447;
-	garage_heli_spawn_z = 27.7479;
-	garage_heli_spawn_h = 180.0000;
+	garage_heli_quit_x = x;
+	garage_heli_quit_y = y;
+	garage_heli_quit_z = z;
+	garage_heli_quit_h = h;
 
-	garage_heli_exit_x = 778.4066;
-	garage_heli_exit_y = 152.2448;
-	garage_heli_exit_z = 27.4394;
-	garage_heli_exit_h = 268.0000;
+	if (G_garageId[23] == 1)
+	{
+		// Brucie Garage
+		// Brucie MAIN
+		garage_main_spawn_x = 874.8120;
+		garage_main_spawn_y = -114.2031;
+		garage_main_spawn_z = 6.0054;
+		garage_main_spawn_h = 180.0000;
 
-	garage_heli_quit_x = garage_heli_exit_x;
-	garage_heli_quit_y = garage_heli_exit_y;
-	garage_heli_quit_z = garage_heli_exit_z;
-	garage_heli_quit_h = garage_heli_exit_h;
-	
-	if (G_garageId[23] == 2)
+		garage_main_exit_x = 869.0119;
+		garage_main_exit_y = -114.6501;
+		garage_main_exit_z = 6.0054;
+		garage_main_exit_h = 270.0000;
+
+		garage_main_quit_x = 866.3309;
+		garage_main_quit_y = -116.7025;
+		garage_main_quit_z = 6.0054;
+		garage_main_quit_h = 181.0000;
+
+		// Brucie BIG
+		garage_big_spawn_x = 807.7111;
+		garage_big_spawn_y = -161.0524;
+		garage_big_spawn_z = 6.4449;
+		garage_big_spawn_h = 335.8888;
+
+		garage_big_exit_x = 799.8708;
+		garage_big_exit_y = -161.9819;
+		garage_big_exit_z = 5.8214;
+		garage_big_exit_h = 291.4525;
+
+		garage_big_quit_x = garage_big_exit_x;
+		garage_big_quit_y = garage_big_exit_y;
+		garage_big_quit_z = garage_big_exit_z;
+		garage_big_quit_h = garage_big_exit_h;
+
+		// Brucie BOAT
+		garage_boat_spawn_x = 698.8500;
+		garage_boat_spawn_y = -153.6000;
+		garage_boat_spawn_z = 0.0000;
+		garage_boat_spawn_h = 61.3000;
+		
+		garage_boat_exit_x = 696.3401;
+		garage_boat_exit_y = -147.7382;
+		garage_boat_exit_z = 1.2833;
+		garage_boat_exit_h = 154.9767;
+
+		garage_boat_quit_x = garage_boat_exit_x;
+		garage_boat_quit_y = garage_boat_exit_y;
+		garage_boat_quit_z = garage_boat_exit_z;
+		garage_boat_quit_h = garage_boat_exit_h;
+
+	// Brucie HELI
+		garage_heli_spawn_x = 786.5347;
+		garage_heli_spawn_y = 150.7447;
+		garage_heli_spawn_z = 27.7479;
+		garage_heli_spawn_h = 180.0000;
+
+		garage_heli_exit_x = 778.4066;
+		garage_heli_exit_y = 152.2448;
+		garage_heli_exit_z = 27.4394;
+		garage_heli_exit_h = 268.0000;
+
+		garage_heli_quit_x = garage_heli_exit_x;
+		garage_heli_quit_y = garage_heli_exit_y;
+		garage_heli_quit_z = garage_heli_exit_z;
+		garage_heli_quit_h = garage_heli_exit_h;
+	}
+	else if (G_garageId[23] == 2)
 	{
 		// Meadows park (1st island)
 		// Meadows MAIN
@@ -490,7 +556,6 @@ void Init(void)
 	spawn_x = garage_main_spawn_x; spawn_y = garage_main_spawn_y; spawn_z = garage_main_spawn_z; spawn_h = garage_main_spawn_h;
 
 	G_item_highlighted[23] = 1;
-
 }
 
 void main(void)
