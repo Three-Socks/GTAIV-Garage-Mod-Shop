@@ -359,7 +359,7 @@ void main(void)
 						REQUEST_SCRIPT("garage_menu");
 						WAIT(0);
 					}
-					START_NEW_SCRIPT("garage_menu", 1024);
+					START_NEW_SCRIPT("garage_menu", 8192);
 					MARK_SCRIPT_AS_NO_LONGER_NEEDED("garage_menu");
 					G_scriptloaded[23] = true;
 				}

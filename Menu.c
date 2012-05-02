@@ -40,7 +40,7 @@ void DrawMenu(int array_len)
 	}
 	
 	if (menu_item[item_high].type == 3 || menu_item[item_high].type == 4)
-	{	
+	{
 		if (isAnoPressedLong() || IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT))
 		{
 			if (menu_item[item_high].type == 3)
@@ -304,17 +304,31 @@ void DrawMenu(int array_len)
 				}
 				else
 				{
-					set_up_draw(0, menu_width, menu_height, r, g, b, a);
-					draw_text("STRING", 0.2050, Ipos_y - 0.0010, "<");
-					set_up_draw(0, menu_width, menu_height, r, g, b, a);
-					if (menu_item[I].numval < 10)
+					float left_pos_x, main_pos_x;
+
+					left_pos_x = 0.2300;
+					main_pos_x = 0.2230;
+
+					if (menu_item[I].numval >= 1000)
 					{
-						draw_number("NUMBR", 0.2300, Ipos_y, menu_item[I].numval);
+						left_pos_x = 0.1900;
+						main_pos_x = 0.2150;
 					}
-					else
+					else	if (menu_item[I].numval >= 100)
 					{
-						draw_number("NUMBR", 0.2200, Ipos_y, menu_item[I].numval);
+						left_pos_x = 0.2050;
+						main_pos_x = 0.2250;
 					}
+					else if (menu_item[I].numval < 10)
+					{
+						left_pos_x = 0.2300;
+						main_pos_x = 0.2270;
+					}
+
+					set_up_draw(0, menu_width, menu_height, r, g, b, a);
+					draw_text("STRING", left_pos_x, Ipos_y - 0.0010, "<");
+					set_up_draw(0, menu_width, menu_height, r, g, b, a);
+					draw_number("NUMBR", main_pos_x, Ipos_y, menu_item[I].numval);
 					set_up_draw(0, menu_width, menu_height, r, g, b, a);
 					draw_text("STRING", 0.2450, Ipos_y - 0.0010, ">");
 				}
@@ -1868,26 +1882,35 @@ void DoMenu(void)
 		menu_cam_set = true;
 	}
 
-	item_high = G_item_highlighted[23];
+	// In case where coming out of menu_palette
+	// and general error catching
+	//if (item_high <= menu_len)
+	//{
+		item_high = G_item_highlighted[23];
+	//}
 
 	EnterMenu(item_selected);
 
 	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_O))
 	{
-		int I;
-		for (I = 1; I < (menu_len + 1); I++)
+		if (draw_menu_set)
 		{
-			menu_item[I].name = " ";
-			menu_item[I].type = 0;
-			menu_item[I].enabled = 0;
-			menu_item[I].dfval = 0.0000;
-			menu_item[I].num_len = 0;
-			menu_item[I].allow_neg = false;
-			menu_item[I].numval = 0;
-			//spawn_cars[I] = ;
+			int I;
+			for (I = 1; I < (menu_len + 1); I++)
+			{
+				menu_item[I].name = " ";
+				menu_item[I].type = 0;
+				menu_item[I].enabled = 0;
+				menu_item[I].dfval = 0.0000;
+				menu_item[I].num_len = 0;
+				menu_item[I].allow_neg = false;
+				menu_item[I].numval = 0;
+				//spawn_cars[I] = ;
+			}
 		}
 
 		G_item_highlighted[23] = 1;
+		item_high = 1;
 		item_selected = 0;
 		num_selected = 0;
 		floatnum_selected = 0;
@@ -2030,91 +2053,91 @@ void DoMenu(void)
 		}
 	}
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_X))
-	{
-		if (inVehMenu && item_vehcat_selected != 0)
-		{
-			item_vehspawn_selected = G_item_highlighted[23];
-			veh_change_set = false;
-		}
-		else if (inVehCol && (item_colnum_selected != 0 || menu_item[item_high].type == 4 || item_colnum_selected == 6))
-		{
-			if (menu_item[item_high].type != 4 && item_colnum_selected != 6)
-			{
-				item_col_selected = G_item_highlighted[23];
-			}
-			veh_change_set = false;
-		}
-		else if (inVehModify && item_modifytype_selected != 0)
-		{
-			item_modify_selected = G_item_highlighted[23];
-			if (menu_item[item_modify_selected].type == 4)
-			{
-				num_selected = menu_item[item_modify_selected].numval;
-			}
-			else if (menu_item[item_modify_selected].type == 3)
-			{
-				floatnum_selected = menu_item[item_modify_selected].dfval;
-			}
-			veh_change_set = false;
-		}
-		else if (inVehUpgrade)
-		{
-			item_up_selected = G_item_highlighted[23];
-			veh_change_set = false;
-		}
-		else
-		{
-			item_selected = G_item_highlighted[23];
-		}
-
-		if (menu_level == 2)
-		{
-			menu_level = 3;
-		}
-		//else if (menu_level == 3)
-		//{
-			//menu_level = 4;
-		//}
-		else if (menu_level == 4)
-		{
-			if (inVehSpawn)
-			{
-				item_vehcat_selected = G_item_highlighted[23];
-				G_item_highlighted[23] = 1;
-				menu_level = 5;
-			}
-			else if (inVehModify)
-			{
-				item_modifytype_selected = G_item_highlighted[23];
-				G_item_highlighted[23] = 1;
-				menu_level = 5;
-			}
-			else if (inVehCol)
-			{
-				item_colnum_selected = G_item_highlighted[23];
-
-				if (menu_item[item_colnum_selected].type == 4)
-				{
-					num_selected = menu_item[item_colnum_selected].numval;
-				}
-
-				menu_level = 5;
-			}
-		}
-		else if (menu_level == 6)
-		{
-			if (inVehSpawnDLC)
-			{
-				item_vehcat_selected = G_item_highlighted[23];
-				G_item_highlighted[23] = 1;
-				menu_level = 7;
-			}
-		}
-	}
-
 	if (draw_menu_set)
 	{
+		if (IS_BUTTON_JUST_PRESSED(0, BUTTON_X))
+		{
+			if (inVehMenu && item_vehcat_selected != 0)
+			{
+				item_vehspawn_selected = G_item_highlighted[23];
+				veh_change_set = false;
+			}
+			else if (inVehCol && (item_colnum_selected != 0 || menu_item[item_high].type == 4 || item_colnum_selected == 6))
+			{
+				if (menu_item[item_high].type != 4 && item_colnum_selected != 6)
+				{
+					item_col_selected = G_item_highlighted[23];
+				}
+				veh_change_set = false;
+			}
+			else if (inVehModify && item_modifytype_selected != 0)
+			{
+				item_modify_selected = G_item_highlighted[23];
+				if (menu_item[item_modify_selected].type == 4)
+				{
+					num_selected = menu_item[item_modify_selected].numval;
+				}
+				else if (menu_item[item_modify_selected].type == 3)
+				{
+					floatnum_selected = menu_item[item_modify_selected].dfval;
+				}
+				veh_change_set = false;
+			}
+			else if (inVehUpgrade)
+			{
+				item_up_selected = G_item_highlighted[23];
+				veh_change_set = false;
+			}
+			else
+			{
+				item_selected = G_item_highlighted[23];
+			}
+
+			if (menu_level == 2)
+			{
+				menu_level = 3;
+			}
+			//else if (menu_level == 3)
+			//{
+				//menu_level = 4;
+			//}
+			else if (menu_level == 4)
+			{
+				if (inVehSpawn)
+				{
+					item_vehcat_selected = G_item_highlighted[23];
+					G_item_highlighted[23] = 1;
+					menu_level = 5;
+				}
+				else if (inVehModify)
+				{
+					item_modifytype_selected = G_item_highlighted[23];
+					G_item_highlighted[23] = 1;
+					menu_level = 5;
+				}
+				else if (inVehCol)
+				{
+					item_colnum_selected = G_item_highlighted[23];
+
+					if (menu_item[item_colnum_selected].type == 4)
+					{
+						num_selected = menu_item[item_colnum_selected].numval;
+					}
+
+					menu_level = 5;
+				}
+			}
+			else if (menu_level == 6)
+			{
+				if (inVehSpawnDLC)
+				{
+					item_vehcat_selected = G_item_highlighted[23];
+					G_item_highlighted[23] = 1;
+					menu_level = 7;
+				}
+			}
+		}
+
 		DrawMenu(menu_len);
 	}
 	else if (G_drewrect[23])
@@ -2138,6 +2161,16 @@ void DoMenu(void)
 				G_scriptloadedpalette[23] = true;
 			}
 		}
+		
+		if (IS_BUTTON_JUST_PRESSED(0, BUTTON_X))
+		{
+			if (inVehCol)
+			{
+				item_col_selected = G_item_highlighted[23];
+				veh_change_set = false;
+			}
+		}
+
 	}
 
 	// Not sure if it will stop the main while loop.
