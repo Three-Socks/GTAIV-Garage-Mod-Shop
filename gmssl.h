@@ -5,13 +5,14 @@ typedef struct _drawVNeonS
 	uint colour_r;
 	uint colour_g;
 	uint colour_b;
+	uint colour_n;
 	//float fxoff;
 	float fyoff;
 	//float bxoff;
 	float byoff;
 	uint fbintensity;
 	float fbrange;
-	float mxoff;
+	//float mxoff;
 	float myoff;
 	uint mintensity;
 	float mrange;

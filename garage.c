@@ -48,17 +48,34 @@ void Init(void)
 	G_drawVNeon[99].colour_r = 71;
 	G_drawVNeon[99].colour_g = 120;
 	G_drawVNeon[99].colour_b = 60;
+	G_drawVNeon[99].colour_n = 60;
 	//G_drawVNeon[99].fxoff = -20.0;
 	G_drawVNeon[99].fyoff = 1.5;
 	//G_drawVNeon[99].bxoff = -20.0;
 	G_drawVNeon[99].byoff = -1.5;
-	G_drawVNeon[99].mxoff = -0.1;
+	//G_drawVNeon[99].mxoff = -0.1;
 	G_drawVNeon[99].myoff = -0.0;
 	G_drawVNeon[99].height = -0.0;
 	G_drawVNeon[99].fbrange = 2;
 	G_drawVNeon[99].fbintensity = 85;
 	G_drawVNeon[99].mrange = 3;
 	G_drawVNeon[99].mintensity = 85;
+
+	G_savedVehicles_1_model_name = 0;
+	G_savedVehicles_2_model_name = 0;
+	G_savedVehicles_3_model_name = 0;
+	G_savedVehicles_4_model_name = 0;
+	G_savedVehicles_5_model_name = 0;
+	G_savedVehicles_6_model_name = 0;
+	G_savedVehicles_7_model_name = 0;
+	G_savedVehicles_8_model_name = 0;
+	G_savedVehicles_9_model_name = 0;
+	G_savedVehicles_10_model_name = 0;
+	G_savedVehicles_11_model_name = 0;
+	G_savedVehicles_12_model_name = 0;
+	G_savedVehicles_13_model_name = 0;
+	G_savedVehicles_14_model_name = 0;
+	G_savedVehicles_15_model_name = 0;
 
 	// Brucie Garage
 	garagesBlipCoords_x[1] = 869.0119;
@@ -177,7 +194,7 @@ y = sin(heading) * distance + start_pos_y
 			float v_attach_x, v_attach_y, v_attach_z, v_attach_h;
 			GET_CAR_HEADING(G_v_domod[1], &v_attach_h);
 			GET_CAR_COORDINATES(G_v_domod[1], &v_attach_x, &v_attach_y, &v_attach_z);
-			DRAW_LIGHT_WITH_RANGE(v_attach_x + G_drawVNeon[99].mxoff, v_attach_y + G_drawVNeon[99].myoff, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].mrange, G_drawVNeon[99].mintensity);
+			DRAW_LIGHT_WITH_RANGE(v_attach_x + -0.1, v_attach_y + G_drawVNeon[99].myoff, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].mrange, G_drawVNeon[99].mintensity);
 			if (G_drawVNeon[99].togglefb == 2)
 			{
 				float v_foff_x, v_foff_y, v_foff_z;
@@ -359,7 +376,7 @@ void main(void)
 						REQUEST_SCRIPT("garage_menu");
 						WAIT(0);
 					}
-					START_NEW_SCRIPT("garage_menu", 8192);
+					START_NEW_SCRIPT("garage_menu", 1024);
 					MARK_SCRIPT_AS_NO_LONGER_NEEDED("garage_menu");
 					G_scriptloaded[23] = true;
 				}

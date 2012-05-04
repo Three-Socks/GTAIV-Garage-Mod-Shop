@@ -247,6 +247,105 @@ void JumpOutVehicle(float warp_x, float warp_y, float warp_z)
 	}
 }
 
+void SpawnCar(uint vehspawn_selected)
+{
+	LocateVehicle(spawn_x, spawn_y, spawn_z);
+
+	if (DOES_VEHICLE_EXIST(v_modding))
+	{
+		DELETE_CAR(&v_modding);
+	}
+
+	if (DOES_VEHICLE_EXIST(v_spawn))
+	{
+		DELETE_CAR(&v_spawn);
+	}
+	REQUEST_MODEL(spawn_cars[vehspawn_selected]);
+	while (!HAS_MODEL_LOADED(spawn_cars[vehspawn_selected])) WAIT(0);
+
+	CREATE_CAR(spawn_cars[vehspawn_selected], 0, 0, 0, &v_spawn, false);
+	MARK_MODEL_AS_NO_LONGER_NEEDED(spawn_cars[vehspawn_selected]);
+
+	float last_spawn_x = spawn_x, last_spawn_y = spawn_y;
+
+	if ((IS_BIG_VEHICLE(v_spawn) || spawn_cars[vehspawn_selected] == MODEL_RIPLEY)
+		&& spawn_cars[vehspawn_selected] != MODEL_MERIT 
+		&& spawn_cars[vehspawn_selected] != MODEL_PRES 
+		&& spawn_cars[vehspawn_selected] != MODEL_WASHINGTON
+		&& spawn_cars[vehspawn_selected] != MODEL_MINIVAN
+		&& spawn_cars[vehspawn_selected] != MODEL_MOONBEAM
+		&& spawn_cars[vehspawn_selected] != MODEL_PERENNIAL
+		&& spawn_cars[vehspawn_selected] != MODEL_PERENNIAL2
+		&& spawn_cars[vehspawn_selected] != MODEL_POLICE4
+	)
+	{
+		// Warehouse
+		exit_x = garage_big_exit_x; exit_y = garage_big_exit_y; exit_z = garage_big_exit_z; exit_h = garage_big_exit_h;
+		quit_x = garage_big_quit_x; quit_y = garage_big_quit_y; quit_z = garage_big_quit_z; quit_h = garage_big_quit_h;
+		spawn_x = garage_big_spawn_x; spawn_y = garage_big_spawn_y; spawn_z = garage_big_spawn_z; spawn_h = garage_big_spawn_h;
+	}
+	else if (IS_THIS_MODEL_A_BOAT(spawn_cars[vehspawn_selected]))
+	{
+		// Jetty
+		exit_x = garage_boat_exit_x; exit_y = garage_boat_exit_y; exit_z = garage_boat_exit_z; exit_h = garage_boat_exit_h;
+		quit_x = garage_boat_quit_x; quit_y = garage_boat_quit_y; quit_z = garage_boat_quit_z; quit_h = garage_boat_quit_h;
+		spawn_x = garage_boat_spawn_x; spawn_y = garage_boat_spawn_y; spawn_z = garage_boat_spawn_z; spawn_h = garage_boat_spawn_h;
+	}
+	else if(IS_THIS_MODEL_A_HELI(spawn_cars[vehspawn_selected]))
+	{
+		// Helipad
+		exit_x = garage_heli_exit_x; exit_y = garage_heli_exit_y; exit_z = garage_heli_exit_z; exit_h = garage_heli_exit_h;
+		quit_x = garage_heli_quit_x; quit_y = garage_heli_quit_y; quit_z = garage_heli_quit_z; quit_h = garage_heli_quit_h;
+		spawn_x = garage_heli_spawn_x; spawn_y = garage_heli_spawn_y; spawn_z = garage_heli_spawn_z; spawn_h = garage_heli_spawn_h;
+	}
+	else
+	{
+		// Garage
+		exit_x = garage_main_exit_x; exit_y = garage_main_exit_y; exit_z = garage_main_exit_z; exit_h = garage_main_exit_h;
+		quit_x = garage_main_quit_x; quit_y = garage_main_quit_y; quit_z = garage_main_quit_z; quit_h = garage_main_quit_h;
+		spawn_x = garage_main_spawn_x; spawn_y = garage_main_spawn_y; spawn_z = garage_main_spawn_z; spawn_h = garage_main_spawn_h;
+	}
+
+	if (last_spawn_x != spawn_x && last_spawn_y != spawn_y)
+	{
+		float distfromlast;
+		GET_DISTANCE_BETWEEN_COORDS_2D(last_spawn_x, last_spawn_y, spawn_x, spawn_y, &distfromlast);
+
+		if (distfromlast > 50.0000)
+		{
+			while (IS_SCREEN_FADING())
+			{
+				WAIT(0);
+			}
+			DO_SCREEN_FADE_OUT(10);
+			while (IS_SCREEN_FADING())
+			{
+				WAIT(0);
+			}
+			LOAD_SCENE(spawn_x, spawn_y, spawn_z);
+		}
+		CLEAR_AREA(spawn_x, spawn_y, spawn_z, 3.0000, true);
+		veh_cam_set = false;
+		JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, true);
+		if (distfromlast > 50.0000)
+		{
+			while (IS_SCREEN_FADING())
+			{
+				WAIT(0);
+			}
+			DO_SCREEN_FADE_IN(10);
+			while (IS_SCREEN_FADING())
+			{
+				WAIT(0);
+			}
+		}
+	}
+	else
+	{
+		JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false);
+	}
+}
+
 /*
 deathmatch_cr
 
