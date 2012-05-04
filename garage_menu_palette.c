@@ -653,6 +653,7 @@ void main(void)
 			G_drawVNeon[99].colour_r = car_colours_r[G_item_highlighted[23]];
 			G_drawVNeon[99].colour_g = car_colours_g[G_item_highlighted[23]];
 			G_drawVNeon[99].colour_b = car_colours_b[G_item_highlighted[23]];
+			G_drawVNeon[99].colour_n = G_item_highlighted[23];
 		}
 	}
 }

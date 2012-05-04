@@ -93,6 +93,8 @@ uint item_colnum_selected = 0;
 uint item_col_selected = 0;
 uint item_modifytype_selected = 0;
 uint item_modify_selected = 0;
+uint item_saveloadtype_selected = 0;
+uint item_saveload_selected = 0;
 uint VehModifyMode = 1;
 //uint num_item_highlighted = 0;
 //uint num_highlighted = 1;
@@ -129,6 +131,7 @@ bool veh_change_set = false;
 //bool inFloatSelector = false;
 
 bool inVehSaveLoad = false;
+bool inVehLoad = false;
 
 typedef struct _menu
 {
@@ -159,7 +162,7 @@ bool menu_items_set = false;
 
 uint menu_len;
 //uint num_len;
-uint spawn_cars[15];
+uint spawn_cars[16];
 
 uint window_notintact[5], door_damaged[7], door_opened[7];
 bool modifyBulletProof = false;

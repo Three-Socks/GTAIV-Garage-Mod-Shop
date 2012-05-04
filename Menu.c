@@ -306,23 +306,23 @@ void DrawMenu(int array_len)
 				{
 					float left_pos_x, main_pos_x;
 
-					left_pos_x = 0.2300;
+					left_pos_x = 0.2130;
 					main_pos_x = 0.2230;
 
 					if (menu_item[I].numval >= 1000)
 					{
-						left_pos_x = 0.1900;
-						main_pos_x = 0.2150;
+						left_pos_x = 0.2000;
+						main_pos_x = 0.2100;
 					}
 					else	if (menu_item[I].numval >= 100)
 					{
-						left_pos_x = 0.2050;
-						main_pos_x = 0.2250;
+						left_pos_x = 0.2000;
+						main_pos_x = 0.2170;
 					}
 					else if (menu_item[I].numval < 10)
 					{
-						left_pos_x = 0.2300;
-						main_pos_x = 0.2270;
+						left_pos_x = 0.2200;
+						main_pos_x = 0.2330;
 					}
 
 					set_up_draw(0, menu_width, menu_height, r, g, b, a);
@@ -345,6 +345,17 @@ void DrawMenu(int array_len)
 			if (inVehMenu)
 			{
 				draw_text("STRING", start_pos_x, Ipos_y, GET_STRING_FROM_TEXT_FILE(GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(spawn_cars[I])));
+			}
+			else if (inVehSaveLoad && item_saveloadtype_selected != 0)
+			{
+				if (spawn_cars[I] == 0)
+				{
+					draw_text("STRING", start_pos_x, Ipos_y, "Empty Slot");
+				}
+				else
+				{
+					draw_text("STRING", start_pos_x, Ipos_y, GET_STRING_FROM_TEXT_FILE(GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(spawn_cars[I])));
+				}
 			}
 			else
 			{
@@ -508,21 +519,12 @@ void EnterMenu(int item_selected)
 		}
 		else if (item_selected == 6)
 		{
-			LocateVehicle(spawn_x, spawn_y, spawn_z);
-				
-			if (DOES_VEHICLE_EXIST(v_modding))
-			{
-				menu_item[1].name = "Save";
-				menu_item[2].name = "Load";
-				menu_len = 2;
-				G_item_highlighted[23] = 1;
-				menu_level = 4;
-				inVehSaveLoad = true;
-			}
-			else
-			{
-				PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 2500, 1);
-			}
+			menu_item[1].name = "Save";
+			menu_item[2].name = "Load";
+			menu_len = 2;
+			G_item_highlighted[23] = 1;
+			menu_level = 4;
+			inVehSaveLoad = true;
 			return;
 		}
 		else if (item_selected == 7)
@@ -1003,111 +1005,247 @@ void EnterMenu(int item_selected)
 				veh_change_set = false;
 			}
 		}
+		else if (inVehSaveLoad && item_saveloadtype_selected != 0)
+		{
+		
+			/*if (IS_BUTTON_JUST_PRESSED(0, BUTTON_T))
+			{
+				spawn_cars[item_high] = 0;
+			}*/
+
+			if (!menu_items_set)
+			{
+				if (G_savedVehicles_1_model_name == 0)
+				{
+					spawn_cars[1] = 0;
+				}
+				else
+				{
+					spawn_cars[1] = G_savedVehicles_1_model_name;
+				}
+
+				if (G_savedVehicles_2_model_name == 0)
+				{
+					spawn_cars[2] = 0;
+				}
+				else
+				{
+					spawn_cars[2] = G_savedVehicles_2_model_name;
+				}
+
+				if (G_savedVehicles_3_model_name == 0)
+				{
+					spawn_cars[3] = 0;
+				}
+				else
+				{
+					spawn_cars[3] = G_savedVehicles_3_model_name;
+				}
+
+				if (G_savedVehicles_4_model_name == 0)
+				{
+					spawn_cars[4] = 0;
+				}
+				else
+				{
+					spawn_cars[4] = G_savedVehicles_4_model_name;
+				}
+
+				if (G_savedVehicles_5_model_name == 0)
+				{
+					spawn_cars[5] = 0;
+				}
+				else
+				{
+					spawn_cars[5] = G_savedVehicles_5_model_name;
+				}
+
+				if (G_savedVehicles_6_model_name == 0)
+				{
+					spawn_cars[6] = 0;
+				}
+				else
+				{
+					spawn_cars[6] = G_savedVehicles_6_model_name;
+				}
+
+				if (G_savedVehicles_7_model_name == 0)
+				{
+					spawn_cars[7] = 0;
+				}
+				else
+				{
+					spawn_cars[7] = G_savedVehicles_7_model_name;
+				}
+
+				if (G_savedVehicles_8_model_name == 0)
+				{
+					spawn_cars[8] = 0;
+				}
+				else
+				{
+					spawn_cars[8] = G_savedVehicles_8_model_name;
+				}
+
+				if (G_savedVehicles_9_model_name == 0)
+				{
+					spawn_cars[9] = 0;
+				}
+				else
+				{
+					spawn_cars[9] = G_savedVehicles_9_model_name;
+				}
+
+				if (G_savedVehicles_10_model_name == 0)
+				{
+					spawn_cars[10] = 0;
+				}
+				else
+				{
+					spawn_cars[10] = G_savedVehicles_10_model_name;
+				}
+
+				if (G_savedVehicles_11_model_name == 0)
+				{
+					spawn_cars[11] = 0;
+				}
+				else
+				{
+					spawn_cars[11] = G_savedVehicles_11_model_name;
+				}
+
+				if (G_savedVehicles_12_model_name == 0)
+				{
+					spawn_cars[12] = 0;
+				}
+				else
+				{
+					spawn_cars[12] = G_savedVehicles_12_model_name;
+				}
+
+				if (G_savedVehicles_13_model_name == 0)
+				{
+					spawn_cars[13] = 0;
+				}
+				else
+				{
+					spawn_cars[13] = G_savedVehicles_13_model_name;
+				}
+
+				if (G_savedVehicles_14_model_name == 0)
+				{
+					spawn_cars[14] = 0;
+				}
+				else
+				{
+					spawn_cars[14] = G_savedVehicles_14_model_name;
+				}
+
+				if (G_savedVehicles_15_model_name == 0)
+				{
+					spawn_cars[15] = 0;
+				}
+				else
+				{
+					spawn_cars[15] = G_savedVehicles_15_model_name;
+				}
+
+				menu_len = 15;
+				menu_items_set = true;
+			}
+
+			if (item_saveloadtype_selected == 2)
+			{
+				inVehLoad = true;
+			}
+		}
 
 		if (!veh_change_set && (DOES_VEHICLE_EXIST(v_modding) || inVehMenu))
 		{
-			if (inVehMenu && item_vehspawn_selected != 0)
+			if (inVehSaveLoad && item_saveload_selected != 0)
 			{
-		    SET_CAR_GENERATORS_ACTIVE_IN_AREA(-9999.90000000, -9999.90000000, -9999.90000000, 9999.90000000, 9999.90000000, 9999.90000000, 0);
+				if (item_saveloadtype_selected == 1)
+				{
+					uint v_mod_model;
+					GET_CAR_MODEL(v_modding, &v_mod_model);
+
+					if (item_saveload_selected == 1)
+					{
+						G_savedVehicles_1_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 2)
+					{
+						G_savedVehicles_2_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 3)
+					{
+						G_savedVehicles_3_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 4)
+					{
+						G_savedVehicles_4_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 5)
+					{
+						G_savedVehicles_5_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 6)
+					{
+						G_savedVehicles_6_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 7)
+					{
+						G_savedVehicles_7_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 8)
+					{
+						G_savedVehicles_8_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 9)
+					{
+						G_savedVehicles_9_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 10)
+					{
+						G_savedVehicles_10_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 11)
+					{
+						G_savedVehicles_11_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 12)
+					{
+						G_savedVehicles_12_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 13)
+					{
+						G_savedVehicles_13_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 14)
+					{
+						G_savedVehicles_14_model_name = v_mod_model;
+					}
+					else if (item_saveload_selected == 15)
+					{
+						G_savedVehicles_15_model_name = v_mod_model;
+					}
+
+					menu_items_set = false;
+				}
+				else if (item_saveloadtype_selected == 2 && item_saveload_selected != 0 && IS_THIS_MODEL_A_VEHICLE(spawn_cars[item_saveload_selected]))
+				{
+					SET_CAR_GENERATORS_ACTIVE_IN_AREA(-9999.90000000, -9999.90000000, -9999.90000000, 9999.90000000, 9999.90000000, 9999.90000000, 0);
+					SET_CHAR_VISIBLE(GetPlayerPed(), false);
+					SpawnCar(item_saveload_selected);
+					SET_CHAR_VISIBLE(GetPlayerPed(), true);
+				}
+
+			}
+			else if (inVehMenu && item_vehspawn_selected != 0)
+			{
+				SET_CAR_GENERATORS_ACTIVE_IN_AREA(-9999.90000000, -9999.90000000, -9999.90000000, 9999.90000000, 9999.90000000, 9999.90000000, 0);
 				SET_CHAR_VISIBLE(GetPlayerPed(), false);
-
-				LocateVehicle(spawn_x, spawn_y, spawn_z);
-
-				if (DOES_VEHICLE_EXIST(v_modding))
-				{
-					DELETE_CAR(&v_modding);
-				}
-
-				if (DOES_VEHICLE_EXIST(v_spawn))
-				{
-					DELETE_CAR(&v_spawn);
-				}
-				REQUEST_MODEL(spawn_cars[item_vehspawn_selected]);
-				while (!HAS_MODEL_LOADED(spawn_cars[item_vehspawn_selected])) WAIT(0);
-				//SUPPRESS_CAR_MODEL(spawn_cars[item_vehspawn_selected]);
-
-				CREATE_CAR(spawn_cars[item_vehspawn_selected], 0, 0, 0, &v_spawn, false);
-				//WAIT(100);
-				MARK_MODEL_AS_NO_LONGER_NEEDED(spawn_cars[item_vehspawn_selected]);
-
-				float last_spawn_x = spawn_x, last_spawn_y = spawn_y;
-
-				if ((IS_BIG_VEHICLE(v_spawn) || spawn_cars[item_vehspawn_selected] == MODEL_RIPLEY)
-					&& spawn_cars[item_vehspawn_selected] != MODEL_MERIT 
-					&& spawn_cars[item_vehspawn_selected] != MODEL_PRES 
-					&& spawn_cars[item_vehspawn_selected] != MODEL_WASHINGTON
-					&& spawn_cars[item_vehspawn_selected] != MODEL_MINIVAN
-					&& spawn_cars[item_vehspawn_selected] != MODEL_MOONBEAM
-					&& spawn_cars[item_vehspawn_selected] != MODEL_PERENNIAL
-					&& spawn_cars[item_vehspawn_selected] != MODEL_PERENNIAL2
-					&& spawn_cars[item_vehspawn_selected] != MODEL_POLICE4
-				)
-				{
-					// Warehouse
-					exit_x = garage_big_exit_x; exit_y = garage_big_exit_y; exit_z = garage_big_exit_z; exit_h = garage_big_exit_h;
-					quit_x = garage_big_quit_x; quit_y = garage_big_quit_y; quit_z = garage_big_quit_z; quit_h = garage_big_quit_h;
-					spawn_x = garage_big_spawn_x; spawn_y = garage_big_spawn_y; spawn_z = garage_big_spawn_z; spawn_h = garage_big_spawn_h;
-				}
-				else if (IS_THIS_MODEL_A_BOAT(spawn_cars[item_vehspawn_selected]))
-				{
-					// Jetty
-					exit_x = garage_boat_exit_x; exit_y = garage_boat_exit_y; exit_z = garage_boat_exit_z; exit_h = garage_boat_exit_h;
-					quit_x = garage_boat_quit_x; quit_y = garage_boat_quit_y; quit_z = garage_boat_quit_z; quit_h = garage_boat_quit_h;
-					spawn_x = garage_boat_spawn_x; spawn_y = garage_boat_spawn_y; spawn_z = garage_boat_spawn_z; spawn_h = garage_boat_spawn_h;
-				}
-				else if(IS_THIS_MODEL_A_HELI(spawn_cars[item_vehspawn_selected]))
-				{
-					// Helipad
-					exit_x = garage_heli_exit_x; exit_y = garage_heli_exit_y; exit_z = garage_heli_exit_z; exit_h = garage_heli_exit_h;
-					quit_x = garage_heli_quit_x; quit_y = garage_heli_quit_y; quit_z = garage_heli_quit_z; quit_h = garage_heli_quit_h;
-					spawn_x = garage_heli_spawn_x; spawn_y = garage_heli_spawn_y; spawn_z = garage_heli_spawn_z; spawn_h = garage_heli_spawn_h;
-				}
-				else
-				{
-					// Garage
-					exit_x = garage_main_exit_x; exit_y = garage_main_exit_y; exit_z = garage_main_exit_z; exit_h = garage_main_exit_h;
-					quit_x = garage_main_quit_x; quit_y = garage_main_quit_y; quit_z = garage_main_quit_z; quit_h = garage_main_quit_h;
-					spawn_x = garage_main_spawn_x; spawn_y = garage_main_spawn_y; spawn_z = garage_main_spawn_z; spawn_h = garage_main_spawn_h;
-				}
-
-				if (last_spawn_x != spawn_x && last_spawn_y != spawn_y)
-				{
-					float distfromlast;
-					GET_DISTANCE_BETWEEN_COORDS_2D(last_spawn_x, last_spawn_y, spawn_x, spawn_y, &distfromlast);
-
-					if (distfromlast > 50.0000)
-					{
-						while (IS_SCREEN_FADING())
-						{
-							WAIT(0);
-						}
-						DO_SCREEN_FADE_OUT(10);
-						while (IS_SCREEN_FADING())
-						{
-							WAIT(0);
-						}
-						LOAD_SCENE(spawn_x, spawn_y, spawn_z);
-					}
-					CLEAR_AREA(spawn_x, spawn_y, spawn_z, 3.0000, true);
-					veh_cam_set = false;
-					JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, true);
-					if (distfromlast > 50.0000)
-					{
-						while (IS_SCREEN_FADING())
-						{
-							WAIT(0);
-						}
-						DO_SCREEN_FADE_IN(10);
-						while (IS_SCREEN_FADING())
-						{
-							WAIT(0);
-						}
-					}
-				}
-				else
-				{
-					JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, false);
-				}
+				SpawnCar(item_vehspawn_selected);
 				SET_CHAR_VISIBLE(GetPlayerPed(), true);
 			}
 			else if (inVehUpgrade && item_up_selected != 0)
@@ -1557,6 +1695,7 @@ void EnterMenu(int item_selected)
 						draw_menu_set = false;
 						G_drewrect[23] = true;
 						G_inVNeonCol[23] = true;
+						G_item_highlighted[23] = G_drawVNeon[99].colour_n;
 					}
 					else if (item_modify_selected == 3)
 					{
@@ -1941,6 +2080,11 @@ void DoMenu(void)
 				inVehCol = false;
 				JumpOutVehicle(exit_x, exit_y, exit_z);
 			}
+			else if (inVehSaveLoad)
+			{
+				menu_level = 2;
+				inVehSaveLoad = false;
+			}
 		}
 		else if (menu_level == 5)
 		{
@@ -2024,6 +2168,21 @@ void DoMenu(void)
 					}
 				}
 			}
+			else if (inVehSaveLoad)
+			{
+				menu_level = 3;
+				item_selected = 6;
+				item_saveloadtype_selected = 0;
+				item_saveload_selected = 0;
+				veh_change_set = false;
+
+				if (inVehLoad)
+				{
+					SET_ALL_CAR_GENERATORS_BACK_TO_ACTIVE();
+					JumpOutVehicle(exit_x, exit_y, exit_z);
+					inVehLoad = false;
+				}
+			}
 			else if (inVehCol)
 			{
 				menu_level = 3;
@@ -2088,6 +2247,11 @@ void DoMenu(void)
 				item_up_selected = G_item_highlighted[23];
 				veh_change_set = false;
 			}
+			else if (inVehSaveLoad && item_saveloadtype_selected != 0)
+			{
+				item_saveload_selected = G_item_highlighted[23];
+				veh_change_set = false;
+			}
 			else
 			{
 				item_selected = G_item_highlighted[23];
@@ -2125,6 +2289,21 @@ void DoMenu(void)
 					}
 
 					menu_level = 5;
+				}
+				else if (inVehSaveLoad)
+				{
+					LocateVehicle(spawn_x, spawn_y, spawn_z);
+
+					if (DOES_VEHICLE_EXIST(v_modding))
+					{
+						item_saveloadtype_selected = G_item_highlighted[23];
+						G_item_highlighted[23] = 1;
+						menu_level = 5;
+					}
+					else
+					{
+						PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 2500, 1);
+					}
 				}
 			}
 			else if (menu_level == 6)
