@@ -45,6 +45,7 @@ void Init(void)
 	G_item_highlighted[23] = 0;
 
 	G_drawVNeon[99].toggle = 0;
+	G_drawVNeon[99].togglefb = 0;
 	G_drawVNeon[99].colour_r = 71;
 	G_drawVNeon[99].colour_g = 120;
 	G_drawVNeon[99].colour_b = 60;
@@ -61,6 +62,26 @@ void Init(void)
 	G_drawVNeon[99].mrange = 3;
 	G_drawVNeon[99].mintensity = 85;
 
+	int I;
+	for (I = 0; I < 16; I++)
+	{
+		G_savedVehicles[I].model_n = 0;
+		G_savedVehicles[I].normal_colour1 = 0;
+		G_savedVehicles[I].normal_colour2 = 0;
+		G_savedVehicles[I].extra_colour1 = 0;
+		G_savedVehicles[I].extra_colour2 = 0;
+		G_savedVehicles[I].upgrade1 = 0;
+		G_savedVehicles[I].upgrade2 = 0;
+		G_savedVehicles[I].upgrade3 = 0;
+		G_savedVehicles[I].upgrade4 = 0;
+		G_savedVehicles[I].upgrade5 = 0;
+		G_savedVehicles[I].upgrade6 = 0;
+		G_savedVehicles[I].upgrade7 = 0;
+		G_savedVehicles[I].upgrade8 = 0;
+		G_savedVehicles[I].upgrade9 = 0;
+	}
+
+/*
 	G_savedVehicles_1_model_name = 0;
 	G_savedVehicles_2_model_name = 0;
 	G_savedVehicles_3_model_name = 0;
@@ -76,6 +97,7 @@ void Init(void)
 	G_savedVehicles_13_model_name = 0;
 	G_savedVehicles_14_model_name = 0;
 	G_savedVehicles_15_model_name = 0;
+*/
 
 	// Brucie Garage
 	garagesBlipCoords_x[1] = 869.0119;

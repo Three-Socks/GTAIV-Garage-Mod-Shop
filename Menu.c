@@ -1015,139 +1015,17 @@ void EnterMenu(int item_selected)
 
 			if (!menu_items_set)
 			{
-				if (G_savedVehicles_1_model_name == 0)
+				int I;
+				for (I = 1; I < 16; I++)
 				{
-					spawn_cars[1] = 0;
-				}
-				else
-				{
-					spawn_cars[1] = G_savedVehicles_1_model_name;
-				}
-
-				if (G_savedVehicles_2_model_name == 0)
-				{
-					spawn_cars[2] = 0;
-				}
-				else
-				{
-					spawn_cars[2] = G_savedVehicles_2_model_name;
-				}
-
-				if (G_savedVehicles_3_model_name == 0)
-				{
-					spawn_cars[3] = 0;
-				}
-				else
-				{
-					spawn_cars[3] = G_savedVehicles_3_model_name;
-				}
-
-				if (G_savedVehicles_4_model_name == 0)
-				{
-					spawn_cars[4] = 0;
-				}
-				else
-				{
-					spawn_cars[4] = G_savedVehicles_4_model_name;
-				}
-
-				if (G_savedVehicles_5_model_name == 0)
-				{
-					spawn_cars[5] = 0;
-				}
-				else
-				{
-					spawn_cars[5] = G_savedVehicles_5_model_name;
-				}
-
-				if (G_savedVehicles_6_model_name == 0)
-				{
-					spawn_cars[6] = 0;
-				}
-				else
-				{
-					spawn_cars[6] = G_savedVehicles_6_model_name;
-				}
-
-				if (G_savedVehicles_7_model_name == 0)
-				{
-					spawn_cars[7] = 0;
-				}
-				else
-				{
-					spawn_cars[7] = G_savedVehicles_7_model_name;
-				}
-
-				if (G_savedVehicles_8_model_name == 0)
-				{
-					spawn_cars[8] = 0;
-				}
-				else
-				{
-					spawn_cars[8] = G_savedVehicles_8_model_name;
-				}
-
-				if (G_savedVehicles_9_model_name == 0)
-				{
-					spawn_cars[9] = 0;
-				}
-				else
-				{
-					spawn_cars[9] = G_savedVehicles_9_model_name;
-				}
-
-				if (G_savedVehicles_10_model_name == 0)
-				{
-					spawn_cars[10] = 0;
-				}
-				else
-				{
-					spawn_cars[10] = G_savedVehicles_10_model_name;
-				}
-
-				if (G_savedVehicles_11_model_name == 0)
-				{
-					spawn_cars[11] = 0;
-				}
-				else
-				{
-					spawn_cars[11] = G_savedVehicles_11_model_name;
-				}
-
-				if (G_savedVehicles_12_model_name == 0)
-				{
-					spawn_cars[12] = 0;
-				}
-				else
-				{
-					spawn_cars[12] = G_savedVehicles_12_model_name;
-				}
-
-				if (G_savedVehicles_13_model_name == 0)
-				{
-					spawn_cars[13] = 0;
-				}
-				else
-				{
-					spawn_cars[13] = G_savedVehicles_13_model_name;
-				}
-
-				if (G_savedVehicles_14_model_name == 0)
-				{
-					spawn_cars[14] = 0;
-				}
-				else
-				{
-					spawn_cars[14] = G_savedVehicles_14_model_name;
-				}
-
-				if (G_savedVehicles_15_model_name == 0)
-				{
-					spawn_cars[15] = 0;
-				}
-				else
-				{
-					spawn_cars[15] = G_savedVehicles_15_model_name;
+					if (G_savedVehicles[I].model_n == 0)
+					{
+						spawn_cars[I] = 0;
+					}
+					else
+					{
+						spawn_cars[I] = G_savedVehicles[I].model_n;
+					}
 				}
 
 				menu_len = 15;
@@ -1160,7 +1038,7 @@ void EnterMenu(int item_selected)
 			}
 		}
 
-		if (!veh_change_set && (DOES_VEHICLE_EXIST(v_modding) || inVehMenu))
+		if (!veh_change_set && (DOES_VEHICLE_EXIST(v_modding) || inVehMenu || inVehSaveLoad))
 		{
 			if (inVehSaveLoad && item_saveload_selected != 0)
 			{
@@ -1169,66 +1047,52 @@ void EnterMenu(int item_selected)
 					uint v_mod_model;
 					GET_CAR_MODEL(v_modding, &v_mod_model);
 
-					if (item_saveload_selected == 1)
+					ColourIndex colour_normal1, colour_normal2, colour_extra1, colour_extra2;
+					GET_CAR_COLOURS(v_modding, &colour_normal1, &colour_normal2);
+					GET_EXTRA_CAR_COLOURS(v_modding, &colour_extra1, &colour_extra2);
+
+					uint v_upgrade[10];
+					int I;
+					for (I = 1; I < 10; I++)
 					{
-						G_savedVehicles_1_model_name = v_mod_model;
+						if (IS_VEHICLE_EXTRA_TURNED_ON(v_modding, I))
+						{
+							v_upgrade[I] = 1;
+						}
+						else
+						{
+							v_upgrade[I] = 0;
+						}
 					}
-					else if (item_saveload_selected == 2)
-					{
-						G_savedVehicles_2_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 3)
-					{
-						G_savedVehicles_3_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 4)
-					{
-						G_savedVehicles_4_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 5)
-					{
-						G_savedVehicles_5_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 6)
-					{
-						G_savedVehicles_6_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 7)
-					{
-						G_savedVehicles_7_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 8)
-					{
-						G_savedVehicles_8_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 9)
-					{
-						G_savedVehicles_9_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 10)
-					{
-						G_savedVehicles_10_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 11)
-					{
-						G_savedVehicles_11_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 12)
-					{
-						G_savedVehicles_12_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 13)
-					{
-						G_savedVehicles_13_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 14)
-					{
-						G_savedVehicles_14_model_name = v_mod_model;
-					}
-					else if (item_saveload_selected == 15)
-					{
-						G_savedVehicles_15_model_name = v_mod_model;
-					}
+
+					G_savedVehicles[item_saveload_selected].model_n = v_mod_model;
+					G_savedVehicles[item_saveload_selected].normal_colour1 = colour_normal1;
+					G_savedVehicles[item_saveload_selected].normal_colour2 = colour_normal2;
+					G_savedVehicles[item_saveload_selected].extra_colour1 = colour_extra1;
+					G_savedVehicles[item_saveload_selected].extra_colour2 = colour_extra2;
+					G_savedVehicles[item_saveload_selected].upgrade1 = v_upgrade[1];
+					G_savedVehicles[item_saveload_selected].upgrade2 = v_upgrade[2];
+					G_savedVehicles[item_saveload_selected].upgrade3 = v_upgrade[3];
+					G_savedVehicles[item_saveload_selected].upgrade4 = v_upgrade[4];
+					G_savedVehicles[item_saveload_selected].upgrade5 = v_upgrade[5];
+					G_savedVehicles[item_saveload_selected].upgrade6 = v_upgrade[6];
+					G_savedVehicles[item_saveload_selected].upgrade7 = v_upgrade[7];
+					G_savedVehicles[item_saveload_selected].upgrade8 = v_upgrade[8];
+					G_savedVehicles[item_saveload_selected].upgrade9 = v_upgrade[9];
+					G_savedVehicles[item_saveload_selected].neon_toggle = G_drawVNeon[99].toggle;
+					G_savedVehicles[item_saveload_selected].neon_togglefb = G_drawVNeon[99].togglefb;
+					G_savedVehicles[item_saveload_selected].neon_colour_r = G_drawVNeon[99].colour_r;
+					G_savedVehicles[item_saveload_selected].neon_colour_g = G_drawVNeon[99].colour_g;
+					G_savedVehicles[item_saveload_selected].neon_colour_b = G_drawVNeon[99].colour_b;
+					G_savedVehicles[item_saveload_selected].neon_colour_n = G_drawVNeon[99].colour_n;
+					G_savedVehicles[item_saveload_selected].neon_fyoff = G_drawVNeon[99].fyoff;
+					G_savedVehicles[item_saveload_selected].neon_byoff = G_drawVNeon[99].byoff;
+					G_savedVehicles[item_saveload_selected].neon_myoff = G_drawVNeon[99].myoff;
+					G_savedVehicles[item_saveload_selected].neon_height = G_drawVNeon[99].height;
+					G_savedVehicles[item_saveload_selected].neon_fbrange = G_drawVNeon[99].fbrange;
+					G_savedVehicles[item_saveload_selected].neon_fbintensity = G_drawVNeon[99].fbintensity;
+					G_savedVehicles[item_saveload_selected].neon_mrange = G_drawVNeon[99].mrange;
+					G_savedVehicles[item_saveload_selected].neon_mintensity = G_drawVNeon[99].mintensity;
 
 					menu_items_set = false;
 				}
@@ -1237,6 +1101,108 @@ void EnterMenu(int item_selected)
 					SET_CAR_GENERATORS_ACTIVE_IN_AREA(-9999.90000000, -9999.90000000, -9999.90000000, 9999.90000000, 9999.90000000, 9999.90000000, 0);
 					SET_CHAR_VISIBLE(GetPlayerPed(), false);
 					SpawnCar(item_saveload_selected);
+
+					CHANGE_CAR_COLOUR(v_modding, G_savedVehicles[item_saveload_selected].normal_colour1, G_savedVehicles[item_saveload_selected].normal_colour2);
+					SET_EXTRA_CAR_COLOURS(v_modding, G_savedVehicles[item_saveload_selected].extra_colour1, G_savedVehicles[item_saveload_selected].extra_colour2);
+
+					if (G_savedVehicles[item_saveload_selected].upgrade1 == 1)
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 1, false);
+					}
+					else
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 1, true);
+					}
+
+					if (G_savedVehicles[item_saveload_selected].upgrade2 == 1)
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 2, false);
+					}
+					else
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 2, true);
+					}
+
+					if (G_savedVehicles[item_saveload_selected].upgrade3 == 1)
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 3, false);
+					}
+					else
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 3, true);
+					}
+
+					if (G_savedVehicles[item_saveload_selected].upgrade4 == 1)
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 4, false);
+					}
+					else
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 4, true);
+					}
+
+					if (G_savedVehicles[item_saveload_selected].upgrade5 == 1)
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 5, false);
+					}
+					else
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 5, true);
+					}
+
+					if (G_savedVehicles[item_saveload_selected].upgrade6 == 1)
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 6, false);
+					}
+					else
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 6, true);
+					}
+
+					if (G_savedVehicles[item_saveload_selected].upgrade7 == 1)
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 7, false);
+					}
+					else
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 7, true);
+					}
+
+					if (G_savedVehicles[item_saveload_selected].upgrade8 == 1)
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 8, false);
+					}
+					else
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 8, true);
+					}
+
+					if (G_savedVehicles[item_saveload_selected].upgrade9 == 1)
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 9, false);
+					}
+					else
+					{
+						TURN_OFF_VEHICLE_EXTRA(v_modding, 9, true);
+					}
+
+					G_drawVNeon[99].toggle = G_savedVehicles[item_saveload_selected].neon_toggle;
+					G_drawVNeon[99].togglefb = G_savedVehicles[item_saveload_selected].neon_togglefb;
+					G_drawVNeon[99].colour_r = G_savedVehicles[item_saveload_selected].neon_colour_r;
+					G_drawVNeon[99].colour_g = G_savedVehicles[item_saveload_selected].neon_colour_g;
+					G_drawVNeon[99].colour_b = G_savedVehicles[item_saveload_selected].neon_colour_b;
+					G_drawVNeon[99].colour_n = G_savedVehicles[item_saveload_selected].neon_colour_n;
+					G_drawVNeon[99].fyoff = G_savedVehicles[item_saveload_selected].neon_fyoff;
+					G_drawVNeon[99].byoff = G_savedVehicles[item_saveload_selected].neon_byoff;
+					G_drawVNeon[99].myoff = G_savedVehicles[item_saveload_selected].neon_myoff;
+					G_drawVNeon[99].height = G_savedVehicles[item_saveload_selected].neon_height;
+					G_drawVNeon[99].fbrange = G_savedVehicles[item_saveload_selected].neon_fbrange;
+					G_drawVNeon[99].fbintensity = G_savedVehicles[item_saveload_selected].neon_fbintensity;
+					G_drawVNeon[99].mrange = G_savedVehicles[item_saveload_selected].neon_mrange;
+					G_drawVNeon[99].mintensity = G_savedVehicles[item_saveload_selected].neon_mintensity;
+
+					G_v_domod[1] = v_modding;
+
 					SET_CHAR_VISIBLE(GetPlayerPed(), true);
 				}
 
@@ -1246,6 +1212,7 @@ void EnterMenu(int item_selected)
 				SET_CAR_GENERATORS_ACTIVE_IN_AREA(-9999.90000000, -9999.90000000, -9999.90000000, 9999.90000000, 9999.90000000, 9999.90000000, 0);
 				SET_CHAR_VISIBLE(GetPlayerPed(), false);
 				SpawnCar(item_vehspawn_selected);
+				G_v_domod[1] = v_modding;
 				SET_CHAR_VISIBLE(GetPlayerPed(), true);
 			}
 			else if (inVehUpgrade && item_up_selected != 0)
@@ -2292,17 +2259,20 @@ void DoMenu(void)
 				}
 				else if (inVehSaveLoad)
 				{
-					LocateVehicle(spawn_x, spawn_y, spawn_z);
+					item_saveloadtype_selected = G_item_highlighted[23];
+					G_item_highlighted[23] = 1;
+					menu_level = 5;
 
-					if (DOES_VEHICLE_EXIST(v_modding))
+					if (item_saveloadtype_selected == 1)
 					{
-						item_saveloadtype_selected = G_item_highlighted[23];
-						G_item_highlighted[23] = 1;
-						menu_level = 5;
-					}
-					else
-					{
-						PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 2500, 1);
+						LocateVehicle(spawn_x, spawn_y, spawn_z);
+
+						if (!DOES_VEHICLE_EXIST(v_modding))
+						{
+							item_saveloadtype_selected = 0;
+							menu_level = 4;
+							PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 2500, 1);
+						}
 					}
 				}
 			}
