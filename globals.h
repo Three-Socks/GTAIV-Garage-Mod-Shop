@@ -4,6 +4,7 @@ bool G_activateMenu[24];
 bool G_doneExitCheck[24];
 bool G_drewrect[24];
 bool G_inVNeonCol[24];
+bool G_savedVehiclesLoaded[100];
 drawVNeonS G_drawVNeon[100];
 saveVehicleS G_savedVehicles[100];
 /*uint G_savedVehicles_1_model_name;
@@ -21,7 +22,7 @@ uint G_savedVehicles_12_model_name;
 uint G_savedVehicles_13_model_name;
 uint G_savedVehicles_14_model_name;
 uint G_savedVehicles_15_model_name;*/
-Vehicle G_v_domod[2];
+Vehicle G_v_domod[100];
 uint G_garageId[24];
 uint G_justexitmenu[24];
 uint G_item_highlighted[24];
