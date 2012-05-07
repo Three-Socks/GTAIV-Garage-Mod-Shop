@@ -41,7 +41,7 @@ void DrawMenu(int array_len)
 	
 	if (menu_item[item_high].type == 3 || menu_item[item_high].type == 4)
 	{
-		if (isAnoPressedLong() || IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT))
+		if (isNumSelPressed(1))
 		{
 			if (menu_item[item_high].type == 3)
 			{
@@ -67,7 +67,7 @@ void DrawMenu(int array_len)
 			}
 		}
 
-		if (isAnoPressedLong() || IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT))
+		if (isNumSelPressed(2))
 		{
 			if (menu_item[item_high].type == 3)
 			{
@@ -286,9 +286,9 @@ void DrawMenu(int array_len)
 					if (menu_item[I].dfval <= -0.0)
 					{
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
-						draw_text("STRING", 0.2000, Ipos_y - 0.0010, "<");
+						draw_text("STRING", 0.2030, Ipos_y - 0.0010, "<");
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
-						draw_float("NUMBR", 0.2150, Ipos_y, menu_item[I].dfval, 1);
+						draw_float("NUMBR", 0.2130, Ipos_y, menu_item[I].dfval, 1);
 						set_up_draw(0, menu_width, menu_height, r, g, b, a);
 						draw_text("STRING", 0.2450, Ipos_y - 0.0010, ">");
 					}
@@ -306,18 +306,18 @@ void DrawMenu(int array_len)
 				{
 					float left_pos_x, main_pos_x;
 
-					left_pos_x = 0.2130;
+					left_pos_x = 0.2100;
 					main_pos_x = 0.2230;
 
 					if (menu_item[I].numval >= 1000)
 					{
-						left_pos_x = 0.2000;
-						main_pos_x = 0.2100;
+						left_pos_x = 0.1970;
+						main_pos_x = 0.2070;
 					}
 					else	if (menu_item[I].numval >= 100)
 					{
 						left_pos_x = 0.2000;
-						main_pos_x = 0.2170;
+						main_pos_x = 0.2150;
 					}
 					else if (menu_item[I].numval < 10)
 					{
@@ -769,20 +769,24 @@ void EnterMenu(int item_selected)
 					// HANDLING
 					//void SET_CAR_FORWARD_SPEED(Vehicle vehicle, float speed);
 					menu_item[1].name = "Speed";
-					menu_item[1].type = 3;
-					menu_item[1].num_len = 10;
+					menu_item[1].type = 4;
+					menu_item[1].num_len = 100;
 					//void SET_VEHICLE_STEER_BIAS(Vehicle veh, float val);
 					menu_item[2].name = "Steer Bias";
 					menu_item[2].type = 3;
 					menu_item[2].num_len = 10;
-					//void SET_CAR_ALWAYS_CREATE_SKIDS(Car car, boolean set);
-					menu_item[3].name = "Always Skid";
-					menu_item[3].type = 2;
-					//void SET_CAR_TRACTION(Car car, float traction);
-					menu_item[4].name = "Traction";
-					menu_item[4].type = 3;
-					menu_item[4].num_len = 10;
-					menu_len = 4;
+
+					menu_len = 2;
+
+					if (GET_CURRENT_EPISODE() == 2)
+					{
+						//void SET_CAR_TRACTION(Car car, float traction);
+						menu_item[3].name = "Traction";
+						menu_item[3].type = 3;
+						menu_item[3].num_len = 10;
+						menu_len = 3;
+					}
+
 					inVModifyHandling = true;
 					menu_items_set = true;
 				}
@@ -812,6 +816,11 @@ void EnterMenu(int item_selected)
 					//void SWITCH_CAR_SIREN(Car car, boolean siren);
 					menu_item[5].name = "Siren";
 					menu_item[5].type = 2;
+					bool v_siren = IS_CAR_SIREN_ON(v_modding);
+					if (v_siren)
+					{
+						menu_item[5].enabled = 2;
+					}
 					
 					//void void SET_SIREN_WITH_NO_DRIVER(Car car, boolean set);
 					menu_item[6].name = "Always Siren";
@@ -820,7 +829,12 @@ void EnterMenu(int item_selected)
 					//void SET_TAXI_LIGHTS(Car car, boolean set);
 					menu_item[7].name = "Taxi Light";
 					menu_item[7].type = 2;
-					
+					bool v_taxi_light = ARE_TAXI_LIGHTS_ON(v_modding);
+					if (v_taxi_light)
+					{
+						menu_item[7].enabled = 2;
+					}
+
 					//void SET_CAR_LIGHT_MULTIPLIER(Car car, float multiplier);
 					menu_item[8].name = "Light Multiplier";
 					menu_item[8].type = 3;
@@ -841,10 +855,16 @@ void EnterMenu(int item_selected)
 					menu_item[1].name = "Health";
 					menu_item[1].type = 4;
 					menu_item[1].num_len = 1000;
+					uint v_health;
+					GET_CAR_HEALTH(v_modding, &v_health);
+					menu_item[1].numval = v_health;
 					//void SET_ENGINE_HEALTH(Vehicle vehicle, float health);
 					menu_item[2].name = "Engine Health";
 					menu_item[2].type = 4;
 					menu_item[2].num_len = 1000;
+					float v_engine_health = GET_ENGINE_HEALTH(v_modding);
+					uint v_numengine_health = FLOOR(v_engine_health);
+					menu_item[2].numval = v_numengine_health;
 					//void SET_CAR_PROOFS(Vehicle vehicle, boolean bulletProof, boolean fireProof, boolean explosionProof, boolean collisionProof, boolean meleeProof);
 					menu_item[3].name = "Bullet Proof";
 					menu_item[3].type = 2;
@@ -864,30 +884,38 @@ void EnterMenu(int item_selected)
 					//void SET_CAR_STRONG(Vehicle vehicle, boolean strong);
 					menu_item[8].name = "Strong";
 					menu_item[8].type = 2;
-					
+
 					//void SET_VEH_HAS_STRONG_AXLES(Vehicle veh, boolean set);
 					menu_item[9].name = "Strong Axles";
 					menu_item[9].type = 2;
-					
+
 					//void SET_CAR_COLLISION(Car car, boolean set);
 					menu_item[10].name = "Collision";
 					menu_item[10].type = 2;
-					
+
 					//void SET_CAR_CAN_BE_DAMAGED(Vehicle vehicle, boolean value);
 					menu_item[11].name = "Damage";
 					menu_item[11].type = 2;
-					
+					menu_item[11].enabled = 2;
+
 					//void SET_CAR_CAN_BE_VISIBLY_DAMAGED(Vehicle vehicle, boolean value);
 					menu_item[12].name = "Visible Damage";
 					menu_item[12].type = 2;
-					
-					//void SET_VEHICLE_DEFORMATION_MULT(Vehicle veh, float multiplier);
-					//menu_item[13].name = "Deformation Multiplier";
+					menu_item[12].enabled = 2;
+
 					//void SET_CAR_WATERTIGHT(Car car, boolean set);
 					menu_item[13].name = "Watertight";
 					menu_item[13].type = 2;
-					
+
 					menu_len = 13;
+
+					if (GET_CURRENT_EPISODE() == 2)
+					{
+						//void SET_VEHICLE_DEFORMATION_MULT(Vehicle veh, float multiplier);
+						menu_item[14].name = "Deformation Multiplier";
+						menu_len = 14;
+					}
+
 					inVModifyHealth = true;
 					menu_items_set = true;
 				}
@@ -903,10 +931,13 @@ void EnterMenu(int item_selected)
 					menu_item[1].name = "Dirt Level";
 					menu_item[1].type = 3;
 					menu_item[1].num_len = 15.9;
+					float v_intensity;
+					GET_VEHICLE_DIRT_LEVEL(v_modding, &v_intensity);
+					menu_item[1].dfval = v_intensity;
 					//void SET_VEHICLE_CAN_BE_TARGETTED(Vehicle veh, boolean set);
 					menu_item[2].name = "Can be Targetted";
 					menu_item[2].type = 2;
-					
+
 					//void SET_VEHICLE_ALPHA(Vehicle veh, int alpha);
 					menu_item[3].name = "Transparency";
 					menu_item[3].type = 4;
@@ -918,11 +949,12 @@ void EnterMenu(int item_selected)
 					//void SET_VEH_ALARM(Vehicle veh, boolean set);
 					menu_item[5].name = "Alarm";
 					menu_item[5].type = 2;
-					
+
 					//void SET_CAR_VISIBLE(Vehicle vehicle, boolean value);
 					menu_item[6].name = "Visible";
 					menu_item[6].type = 2;
-					
+					menu_item[6].enabled = 2;
+
 					//void SET_CAR_AS_MISSION_CAR(Car car);
 					menu_item[7].name = "Mission";
 					menu_len = 7;
@@ -1007,11 +1039,10 @@ void EnterMenu(int item_selected)
 		}
 		else if (inVehSaveLoad && item_saveloadtype_selected != 0)
 		{
-		
-			/*if (IS_BUTTON_JUST_PRESSED(0, BUTTON_T))
-			{
-				spawn_cars[item_high] = 0;
-			}*/
+
+			INIT_FRONTEND_HELPER_TEXT();
+			DRAW_FRONTEND_HELPER_TEXT("EMAIL_DELETE", "INPUT_F_Y", 0);
+			DRAW_FRONTEND_HELPER_TEXT("CONFIRM", "INPUT_F_ACCEPT", 0);
 
 			if (!menu_items_set)
 			{
@@ -1030,6 +1061,39 @@ void EnterMenu(int item_selected)
 
 				menu_len = 15;
 				menu_items_set = true;
+			}
+			
+			if (IS_BUTTON_JUST_PRESSED(0, BUTTON_T) && spawn_cars[item_high] != 0)
+			{
+				spawn_cars[item_high] = 0;
+				G_savedVehicles[item_high].model_n = 0;
+				G_savedVehicles[item_high].normal_colour1 = 0;
+				G_savedVehicles[item_high].normal_colour2 = 0;
+				G_savedVehicles[item_high].extra_colour1 = 0;
+				G_savedVehicles[item_high].extra_colour2 = 0;
+				G_savedVehicles[item_high].upgrade1 = 0;
+				G_savedVehicles[item_high].upgrade2 = 0;
+				G_savedVehicles[item_high].upgrade3 = 0;
+				G_savedVehicles[item_high].upgrade4 = 0;
+				G_savedVehicles[item_high].upgrade5 = 0;
+				G_savedVehicles[item_high].upgrade6 = 0;
+				G_savedVehicles[item_high].upgrade7 = 0;
+				G_savedVehicles[item_high].upgrade8 = 0;
+				G_savedVehicles[item_high].upgrade9 = 0;
+				G_savedVehicles[item_high].neon_toggle = 0;
+				G_savedVehicles[item_high].neon_togglefb = 0;
+				G_savedVehicles[item_high].neon_colour_r = 0;
+				G_savedVehicles[item_high].neon_colour_g = 0;
+				G_savedVehicles[item_high].neon_colour_b = 0;
+				G_savedVehicles[item_high].neon_colour_n = 0;
+				G_savedVehicles[item_high].neon_fyoff = 0;
+				G_savedVehicles[item_high].neon_byoff = 0;
+				G_savedVehicles[item_high].neon_myoff = 0;
+				G_savedVehicles[item_high].neon_height = 0;
+				G_savedVehicles[item_high].neon_fbrange = 0;
+				G_savedVehicles[item_high].neon_fbintensity = 0;
+				G_savedVehicles[item_high].neon_mrange = 0;
+				G_savedVehicles[item_high].neon_mintensity = 0;
 			}
 
 			if (item_saveloadtype_selected == 2)
@@ -1098,7 +1162,7 @@ void EnterMenu(int item_selected)
 				}
 				else if (item_saveloadtype_selected == 2 && item_saveload_selected != 0 && IS_THIS_MODEL_A_VEHICLE(spawn_cars[item_saveload_selected]))
 				{
-					SET_CAR_GENERATORS_ACTIVE_IN_AREA(-9999.90000000, -9999.90000000, -9999.90000000, 9999.90000000, 9999.90000000, 9999.90000000, 0);
+					//SET_CAR_GENERATORS_ACTIVE_IN_AREA(-9999.90000000, -9999.90000000, -9999.90000000, 9999.90000000, 9999.90000000, 9999.90000000, 0);
 					SET_CHAR_VISIBLE(GetPlayerPed(), false);
 					SpawnCar(item_saveload_selected);
 
@@ -1201,7 +1265,7 @@ void EnterMenu(int item_selected)
 					G_drawVNeon[99].mrange = G_savedVehicles[item_saveload_selected].neon_mrange;
 					G_drawVNeon[99].mintensity = G_savedVehicles[item_saveload_selected].neon_mintensity;
 
-					G_v_domod[1] = v_modding;
+					G_v_domod[99] = v_modding;
 
 					SET_CHAR_VISIBLE(GetPlayerPed(), true);
 				}
@@ -1209,10 +1273,13 @@ void EnterMenu(int item_selected)
 			}
 			else if (inVehMenu && item_vehspawn_selected != 0)
 			{
-				SET_CAR_GENERATORS_ACTIVE_IN_AREA(-9999.90000000, -9999.90000000, -9999.90000000, 9999.90000000, 9999.90000000, 9999.90000000, 0);
+				if (G_garageId[23] != 0)
+				{
+					SET_CAR_GENERATORS_ACTIVE_IN_AREA(-9999.90000000, -9999.90000000, -9999.90000000, 9999.90000000, 9999.90000000, 9999.90000000, 0);
+				}
 				SET_CHAR_VISIBLE(GetPlayerPed(), false);
 				SpawnCar(item_vehspawn_selected);
-				G_v_domod[1] = v_modding;
+				G_v_domod[99] = v_modding;
 				SET_CHAR_VISIBLE(GetPlayerPed(), true);
 			}
 			else if (inVehUpgrade && item_up_selected != 0)
@@ -1288,10 +1355,9 @@ void EnterMenu(int item_selected)
 				}
 				else if (inVModifyHandling)
 				{
-
 					if (item_modify_selected == 1)
 					{
-						SET_CAR_FORWARD_SPEED(v_modding, floatnum_selected);
+						SET_CAR_FORWARD_SPEED(v_modding, num_selected);
 					}
 					else if (item_modify_selected == 2)
 					{
@@ -1299,22 +1365,8 @@ void EnterMenu(int item_selected)
 					}
 					else if (item_modify_selected == 3)
 					{
-						if (menu_item[item_modify_selected].enabled == 2)
-						{
-							SET_CAR_ALWAYS_CREATE_SKIDS(v_modding, false);
-							menu_item[item_modify_selected].enabled = 0;
-						}
-						else
-						{
-							SET_CAR_ALWAYS_CREATE_SKIDS(v_modding, true);
-							menu_item[item_modify_selected].enabled = 2;
-						}
-					}
-					else if (item_modify_selected == 4)
-					{
 						SET_CAR_TRACTION(v_modding, floatnum_selected);
 					}
-
 				}
 				else if (inVModifyLights)
 				{
@@ -1648,14 +1700,14 @@ void EnterMenu(int item_selected)
 						{
 							menu_item[item_modify_selected].enabled = 0;
 							G_drawVNeon[99].toggle = 0;
-							MARK_CAR_AS_NO_LONGER_NEEDED(&G_v_domod[1]);
+							MARK_CAR_AS_NO_LONGER_NEEDED(&G_v_domod[99]);
 						}
 						else
 						{
 							menu_item[item_modify_selected].enabled = 2;
 							G_drawVNeon[99].toggle = 2;
 						}
-						G_v_domod[1] = v_modding;
+						G_v_domod[99] = v_modding;
 					}
 					else if (item_modify_selected == 2)
 					{
@@ -1926,6 +1978,8 @@ void DoMenu(void)
 	set_up_draw(2, width, height, r, g, b, a);
 	draw_number("NUMBR", pos_x, 0.13000000, padleft_y);
 	*/
+	
+	/*
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.08800000, menu_level);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -1949,11 +2003,15 @@ void DoMenu(void)
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 		draw_text("STRING", 0.58700000, 0.32800000, "inModVeh");
 	}*/
+	
+	/*
 	if (veh_change_set)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 		draw_text("STRING", 0.58700000, 0.36800000, "veh_change_set");
 	}
+	*/
+	
 	/*
 	if (inVehSpawn)
 	{
@@ -1965,6 +2023,8 @@ void DoMenu(void)
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 		draw_text("STRING", 0.58700000, 0.44800000, "inVehMenu");
 	}*/
+	
+	/*
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.48800000, G_drawVNeon[99].toggle);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -1975,7 +2035,7 @@ void DoMenu(void)
 	draw_float("NUMBR", 0.58700000, 0.60800000, G_drawVNeon[99].height, 4);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.64800000, G_drawVNeon[99].colour_r);
-
+	*/
 	//DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
 
 	if (!menu_cam_set)
@@ -2073,7 +2133,10 @@ void DoMenu(void)
 				item_vehspawn_selected = 0;
 				inVehMenu = false;
 				veh_change_set = false;
-				SET_ALL_CAR_GENERATORS_BACK_TO_ACTIVE();
+				if (G_garageId[23] != 0)
+				{
+					SET_ALL_CAR_GENERATORS_BACK_TO_ACTIVE();
+				}
 				JumpOutVehicle(exit_x, exit_y, exit_z);
 			}
 			else if (inVehUpgrade)
@@ -2145,7 +2208,7 @@ void DoMenu(void)
 
 				if (inVehLoad)
 				{
-					SET_ALL_CAR_GENERATORS_BACK_TO_ACTIVE();
+					//SET_ALL_CAR_GENERATORS_BACK_TO_ACTIVE();
 					JumpOutVehicle(exit_x, exit_y, exit_z);
 					inVehLoad = false;
 				}

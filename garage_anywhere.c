@@ -12,7 +12,7 @@ void main(void)
 	while(true)
 	{
 		WAIT(0);
-		if (IS_BUTTON_PRESSED(0, 6) && IS_BUTTON_PRESSED(0, 9))
+		if (IS_BUTTON_PRESSED(0, 6) && IS_BUTTON_PRESSED(0, 8))
 		{
 			if (!G_activateMenu[23])
 			{

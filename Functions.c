@@ -1,17 +1,29 @@
-bool isAnoPressedLong(void)
+bool isNumSelPressed(uint mode)
 {
-	uint padleft_x, padleft_y, padright_x, padright_y;
-	GET_POSITION_OF_ANALOGUE_STICKS(0, &padleft_x, &padleft_y, &padright_x, &padright_y);
+	int stickleft_x;
 
-	// < 65436
-	if (padleft_x > 10)
+	int nowhere, nowhere2, nowhere3;
+	GET_POSITION_OF_ANALOGUE_STICKS(0, &stickleft_x, &nowhere, &nowhere2, &nowhere3);
+
+	if (mode == 1 && IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT))
 	{
 		return true;
 	}
-	else
+	else if (mode == 2 && IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT))
 	{
-		return false;
+		return true;
 	}
+	
+	if (mode == 1 && stickleft_x < -30)
+	{
+		return true;
+	}
+	else if (mode == 2 && stickleft_x > 30)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void StoreModify(bool notwindow, bool notbreak, bool notopen, uint itemwindow, uint itembreak, uint itemopen)
@@ -237,7 +249,7 @@ void JumpOutVehicle(float warp_x, float warp_y, float warp_z)
 	{
 		FREEZE_CAR_POSITION(v_modding, 0);
 		LOCK_CAR_DOORS(v_modding, 1);
-		if (warp_x != spawn_x && warp_y != spawn_y && warp_z != spawn_z)
+		if (warp_x != spawn_x && warp_y != spawn_y)
 		{
 			WARP_CHAR_FROM_CAR_TO_COORD(GetPlayerPed(), warp_x, warp_y, warp_z);
 			SET_CHAR_COORDINATES_NO_OFFSET(GetPlayerPed(), warp_x, warp_y, warp_z);
@@ -306,38 +318,40 @@ void SpawnCar(uint vehspawn_selected)
 		spawn_x = garage_main_spawn_x; spawn_y = garage_main_spawn_y; spawn_z = garage_main_spawn_z; spawn_h = garage_main_spawn_h;
 	}
 
-	if (last_spawn_x != spawn_x && last_spawn_y != spawn_y)
-	{
-		float distfromlast;
-		GET_DISTANCE_BETWEEN_COORDS_2D(last_spawn_x, last_spawn_y, spawn_x, spawn_y, &distfromlast);
+	float distfromlast;
+	GET_DISTANCE_BETWEEN_COORDS_2D(last_spawn_x, last_spawn_y, spawn_x, spawn_y, &distfromlast);
 
-		if (distfromlast > 50.0000)
+	if (last_spawn_x != spawn_x && last_spawn_y != spawn_y && distfromlast >= 50.0000)
+	{
+		while (IS_SCREEN_FADING())
 		{
-			while (IS_SCREEN_FADING())
-			{
-				WAIT(0);
-			}
-			DO_SCREEN_FADE_OUT(10);
-			while (IS_SCREEN_FADING())
-			{
-				WAIT(0);
-			}
-			LOAD_SCENE(spawn_x, spawn_y, spawn_z);
+			WAIT(0);
 		}
-		CLEAR_AREA(spawn_x, spawn_y, spawn_z, 3.0000, true);
+		DO_SCREEN_FADE_OUT(10);
+		while (IS_SCREEN_FADING())
+		{
+			WAIT(0);
+		}
+
+		LOAD_SCENE(spawn_x, spawn_y, spawn_z);
+
+		if (G_garageId[23] != 0)
+		{
+			//CLEAR_AREA(spawn_x, spawn_y, spawn_z, 3.0000, true);
+			CLEAR_ROOM_FOR_CAR(v_spawn);
+		}
+
 		veh_cam_set = false;
 		JumpToVehicle(spawn_x, spawn_y, spawn_z, spawn_h, true);
-		if (distfromlast > 50.0000)
+
+		while (IS_SCREEN_FADING())
 		{
-			while (IS_SCREEN_FADING())
-			{
-				WAIT(0);
-			}
-			DO_SCREEN_FADE_IN(10);
-			while (IS_SCREEN_FADING())
-			{
-				WAIT(0);
-			}
+			WAIT(0);
+		}
+		DO_SCREEN_FADE_IN(10);
+		while (IS_SCREEN_FADING())
+		{
+			WAIT(0);
 		}
 	}
 	else

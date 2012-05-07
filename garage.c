@@ -43,6 +43,7 @@ void Init(void)
 	G_inVNeonCol[23] = false;
 	G_garageId[23] = 0;
 	G_item_highlighted[23] = 0;
+	G_v_domod[99] = 0;
 
 	G_drawVNeon[99].toggle = 0;
 	G_drawVNeon[99].togglefb = 0;
@@ -51,53 +52,53 @@ void Init(void)
 	G_drawVNeon[99].colour_b = 60;
 	G_drawVNeon[99].colour_n = 60;
 	//G_drawVNeon[99].fxoff = -20.0;
-	G_drawVNeon[99].fyoff = 1.5;
+	G_drawVNeon[99].fyoff = 1.3;
 	//G_drawVNeon[99].bxoff = -20.0;
-	G_drawVNeon[99].byoff = -1.5;
+	G_drawVNeon[99].byoff = -1.3;
 	//G_drawVNeon[99].mxoff = -0.1;
-	G_drawVNeon[99].myoff = -0.0;
-	G_drawVNeon[99].height = -0.0;
-	G_drawVNeon[99].fbrange = 2;
+	G_drawVNeon[99].myoff = 0.0;
+	G_drawVNeon[99].height = 0.0;
+	G_drawVNeon[99].fbrange = 2.7;
 	G_drawVNeon[99].fbintensity = 85;
-	G_drawVNeon[99].mrange = 3;
+	G_drawVNeon[99].mrange = 2.5;
 	G_drawVNeon[99].mintensity = 85;
 
-	int I;
-	for (I = 0; I < 16; I++)
+	if (!G_savedVehiclesLoaded[99])
 	{
-		G_savedVehicles[I].model_n = 0;
-		G_savedVehicles[I].normal_colour1 = 0;
-		G_savedVehicles[I].normal_colour2 = 0;
-		G_savedVehicles[I].extra_colour1 = 0;
-		G_savedVehicles[I].extra_colour2 = 0;
-		G_savedVehicles[I].upgrade1 = 0;
-		G_savedVehicles[I].upgrade2 = 0;
-		G_savedVehicles[I].upgrade3 = 0;
-		G_savedVehicles[I].upgrade4 = 0;
-		G_savedVehicles[I].upgrade5 = 0;
-		G_savedVehicles[I].upgrade6 = 0;
-		G_savedVehicles[I].upgrade7 = 0;
-		G_savedVehicles[I].upgrade8 = 0;
-		G_savedVehicles[I].upgrade9 = 0;
+		int I;
+		for (I = 1; I < 16; I++)
+		{
+			G_savedVehicles[I].model_n = 0;
+			G_savedVehicles[I].normal_colour1 = 0;
+			G_savedVehicles[I].normal_colour2 = 0;
+			G_savedVehicles[I].extra_colour1 = 0;
+			G_savedVehicles[I].extra_colour2 = 0;
+			G_savedVehicles[I].upgrade1 = 0;
+			G_savedVehicles[I].upgrade2 = 0;
+			G_savedVehicles[I].upgrade3 = 0;
+			G_savedVehicles[I].upgrade4 = 0;
+			G_savedVehicles[I].upgrade5 = 0;
+			G_savedVehicles[I].upgrade6 = 0;
+			G_savedVehicles[I].upgrade7 = 0;
+			G_savedVehicles[I].upgrade8 = 0;
+			G_savedVehicles[I].upgrade9 = 0;
+			G_savedVehicles[I].neon_toggle = 0;
+			G_savedVehicles[I].neon_togglefb = 0;
+			G_savedVehicles[I].neon_colour_r = 0;
+			G_savedVehicles[I].neon_colour_g = 0;
+			G_savedVehicles[I].neon_colour_b = 0;
+			G_savedVehicles[I].neon_colour_n = 0;
+			G_savedVehicles[I].neon_fyoff = 0;
+			G_savedVehicles[I].neon_byoff = 0;
+			G_savedVehicles[I].neon_myoff = 0;
+			G_savedVehicles[I].neon_height = 0;
+			G_savedVehicles[I].neon_fbrange = 0;
+			G_savedVehicles[I].neon_fbintensity = 0;
+			G_savedVehicles[I].neon_mrange = 0;
+			G_savedVehicles[I].neon_mintensity = 0;
+		}
+		G_savedVehiclesLoaded[99] = true;
 	}
-
-/*
-	G_savedVehicles_1_model_name = 0;
-	G_savedVehicles_2_model_name = 0;
-	G_savedVehicles_3_model_name = 0;
-	G_savedVehicles_4_model_name = 0;
-	G_savedVehicles_5_model_name = 0;
-	G_savedVehicles_6_model_name = 0;
-	G_savedVehicles_7_model_name = 0;
-	G_savedVehicles_8_model_name = 0;
-	G_savedVehicles_9_model_name = 0;
-	G_savedVehicles_10_model_name = 0;
-	G_savedVehicles_11_model_name = 0;
-	G_savedVehicles_12_model_name = 0;
-	G_savedVehicles_13_model_name = 0;
-	G_savedVehicles_14_model_name = 0;
-	G_savedVehicles_15_model_name = 0;
-*/
 
 	// Brucie Garage
 	garagesBlipCoords_x[1] = 869.0119;
@@ -137,7 +138,7 @@ void Init(void)
 	int i;
 	for (i = 1; i < 8; i++)
 	{
-		CLEAR_AREA(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 3.0000, true);
+		//CLEAR_AREA(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 3.0000, true);
 	
 		Blip blipgarage;
 		ADD_BLIP_FOR_COORD(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], &blipgarage);
@@ -211,18 +212,28 @@ y = sin(heading) * distance + start_pos_y
 
 	if (G_drawVNeon[99].toggle == 2)
 	{
-		if (DOES_VEHICLE_EXIST(G_v_domod[1]) && IS_VEH_DRIVEABLE(G_v_domod[1]))
+		if (DOES_VEHICLE_EXIST(G_v_domod[99]) && IS_VEH_DRIVEABLE(G_v_domod[99]))
 		{
 			float v_attach_x, v_attach_y, v_attach_z, v_attach_h;
-			GET_CAR_HEADING(G_v_domod[1], &v_attach_h);
-			GET_CAR_COORDINATES(G_v_domod[1], &v_attach_x, &v_attach_y, &v_attach_z);
-			DRAW_LIGHT_WITH_RANGE(v_attach_x + -0.1, v_attach_y + G_drawVNeon[99].myoff, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].mrange, G_drawVNeon[99].mintensity);
+			GET_CAR_HEADING(G_v_domod[99], &v_attach_h);
+			GET_CAR_COORDINATES(G_v_domod[99], &v_attach_x, &v_attach_y, &v_attach_z);
+
+			float v_moff_x, v_moff_y, v_moff_z;
+			GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(G_v_domod[99], -20.0, G_drawVNeon[99].myoff, G_drawVNeon[99].height, &v_moff_x, &v_moff_y, &v_moff_z);
+
+			float mdist;
+			GET_DISTANCE_BETWEEN_COORDS_2D(v_attach_x + -20.0, v_attach_y + G_drawVNeon[99].myoff, v_attach_x, v_attach_y, &mdist);
+			float mx = COS(v_attach_h) * mdist + v_moff_x;
+			float my = SIN(v_attach_h) * mdist + v_moff_y;
+
+			DRAW_LIGHT_WITH_RANGE(mx, my, v_attach_z + G_drawVNeon[99].height, G_drawVNeon[99].colour_r, G_drawVNeon[99].colour_g, G_drawVNeon[99].colour_b, G_drawVNeon[99].mrange, G_drawVNeon[99].mintensity);
+
 			if (G_drawVNeon[99].togglefb == 2)
 			{
 				float v_foff_x, v_foff_y, v_foff_z;
-				GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(G_v_domod[1], -20.0, G_drawVNeon[99].fyoff, G_drawVNeon[99].height, &v_foff_x, &v_foff_y, &v_foff_z);
+				GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(G_v_domod[99], -20.0, G_drawVNeon[99].fyoff, G_drawVNeon[99].height, &v_foff_x, &v_foff_y, &v_foff_z);
 				float v_boff_x, v_boff_y, v_boff_z;
-				GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(G_v_domod[1], -20.0, G_drawVNeon[99].byoff, G_drawVNeon[99].height, &v_boff_x, &v_boff_y, &v_boff_z);
+				GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(G_v_domod[99], -20.0, G_drawVNeon[99].byoff, G_drawVNeon[99].height, &v_boff_x, &v_boff_y, &v_boff_z);
 				float fdist;
 				GET_DISTANCE_BETWEEN_COORDS_2D(v_attach_x + -20.0, v_attach_y + G_drawVNeon[99].fyoff, v_attach_x, v_attach_y, &fdist);
 				float bdist;
@@ -238,7 +249,7 @@ y = sin(heading) * distance + start_pos_y
 		else
 		{
 			G_drawVNeon[99].toggle = 0;
-			MARK_CAR_AS_NO_LONGER_NEEDED(&G_v_domod[1]);
+			MARK_CAR_AS_NO_LONGER_NEEDED(&G_v_domod[99]);
 		}
 	}
 }
@@ -265,16 +276,7 @@ void DoActivators(void)
 		}
 	}
 	
-	/*if (IS_BUTTON_PRESSED(0, 6) && IS_BUTTON_PRESSED(0, 8))
-	{
-		if (!G_activateMenu[23])
-		{
-			G_activateMenu[23] = true;
-			G_garageId[23] = 8;
-		}
-	}*/
-
-	/*Vector3 upGarageCoords, downGarageCoords, currentGarageCoords, currentCharCoords;
+	Vector3 upGarageCoords, downGarageCoords, currentGarageCoords, currentCharCoords;
 	upGarageCoords.x = 864.32000000;
 	upGarageCoords.y = -121.64500000;
 	upGarageCoords.z = 12.00000000;
@@ -340,7 +342,7 @@ void DoActivators(void)
 		}
 	}
 
-	// Brucie Heli pad down
+	/*// Brucie Heli pad down
 	float helidown_x = 791.26930000, helidown_y = 126.93620000, helidown_z = 6.04020000;
 	DRAW_COLOURED_CYLINDER(776.21300000, 153.28020000, 27.57500000 - 2, 0.80000000, 0.20000000, 0, 132, 202, 255);
 	if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), 776.21300000, 153.28020000, 27.57500000, 0.80000000, 0.80000000, 2.00000000, 0 ))
@@ -381,7 +383,7 @@ void main(void)
 		{
 			if (!G_drewrect[23])
 			{
-				DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 230);
+				DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 167);
 			}
 			HIDE_HUD_AND_RADAR_THIS_FRAME();
 			if (!G_scriptloaded[23])

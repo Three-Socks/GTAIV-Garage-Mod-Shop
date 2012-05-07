@@ -611,7 +611,7 @@ void DrawPalette(void)
 			G_item_highlighted[23] = 1;
 	}
 
-	DRAW_RECT(0.1500, 0.3680, 0.2300, 0.6640, 0, 0, 0, 230);
+	DRAW_RECT(0.1500, 0.3680, 0.2300, 0.6640, 0, 0, 0, 167);
 
 	for (I = 1; I <= end_col; I++)
 	{
