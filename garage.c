@@ -34,15 +34,15 @@ float garagesBlipCoords_x[8], garagesBlipCoords_y[8], garagesBlipCoords_z[8];
 
 void Init(void)
 {
-	G_scriptloaded[23] = false;
-	G_scriptloadedpalette[23] = false;
-	G_activateMenu[23] = false;
-	G_justexitmenu[23] = 0;
-	G_doneExitCheck[23] = false;
-	G_drewrect[23] = false;
-	G_inVNeonCol[23] = false;
-	G_garageId[23] = 0;
-	G_item_highlighted[23] = 0;
+	G_scriptloaded[99] = false;
+	G_scriptloadedpalette[99] = false;
+	G_activateMenu[99] = false;
+	G_justexitmenu[99] = 0;
+	G_doneExitCheck[99] = false;
+	G_drewrect[99] = false;
+	G_inVNeonCol[99] = false;
+	G_garageId[99] = 0;
+	G_item_highlighted[99] = 0;
 	G_v_domod[99] = 0;
 
 	G_drawVNeon[99].toggle = 0;
@@ -260,18 +260,18 @@ void DoActivators(void)
 	int i;
 	for (i = 1; i < 8; i++)
 	{
-		if (G_justexitmenu[23] == i && !LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 5.00000000, 5.00000000, 6.00000000, 0))
+		if (G_justexitmenu[99] == i && !LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 5.00000000, 5.00000000, 6.00000000, 0))
 		{
-			G_justexitmenu[23] = 0;
+			G_justexitmenu[99] = 0;
 		}
 
-		if (G_justexitmenu[23] == 0 && !G_activateMenu[23])
+		if (G_justexitmenu[99] == 0 && !G_activateMenu[99])
 		{
 			DRAW_COLOURED_CYLINDER(garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 2.50000000, 2.50000000, 0, 132, 202, 255);
 			if (LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), garagesBlipCoords_x[i], garagesBlipCoords_y[i], garagesBlipCoords_z[i], 2.50000000, 2.50000000, 4.00000000, 0))
 			{
-					G_activateMenu[23] = true;
-					G_garageId[23] = i;
+					G_activateMenu[99] = true;
+					G_garageId[99] = i;
 			}
 		}
 	}
@@ -379,18 +379,18 @@ void main(void)
 	while(true)
 	{
 		WAIT(0);
-		if (G_activateMenu[23])
+		if (G_activateMenu[99])
 		{
-			if (!G_drewrect[23])
+			if (!G_drewrect[99])
 			{
 				DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 167);
 			}
 			HIDE_HUD_AND_RADAR_THIS_FRAME();
-			if (!G_scriptloaded[23])
+			if (!G_scriptloaded[99])
 			{
 				if ((GET_NUMBER_OF_INSTANCES_OF_STREAMED_SCRIPT("garage_menu")) >= 1)
 				{
-					G_scriptloaded[23] = true;
+					G_scriptloaded[99] = true;
 				}
 				else
 				{
@@ -402,7 +402,7 @@ void main(void)
 					}
 					START_NEW_SCRIPT("garage_menu", 1024);
 					MARK_SCRIPT_AS_NO_LONGER_NEEDED("garage_menu");
-					G_scriptloaded[23] = true;
+					G_scriptloaded[99] = true;
 				}
 			}
 		}
