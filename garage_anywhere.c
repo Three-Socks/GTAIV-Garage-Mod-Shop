@@ -14,10 +14,10 @@ void main(void)
 		WAIT(0);
 		if (IS_BUTTON_PRESSED(0, 6) && IS_BUTTON_PRESSED(0, 8))
 		{
-			if (!G_activateMenu[23])
+			if (!G_activateMenu[99])
 			{
-				G_activateMenu[23] = true;
-				G_garageId[23] = 0;
+				G_activateMenu[99] = true;
+				G_garageId[99] = 0;
 			}
 		}
 	}
