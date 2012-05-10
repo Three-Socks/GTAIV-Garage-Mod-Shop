@@ -192,7 +192,7 @@ void FixWashCar(float warp_x, float warp_y, float warp_z, float warp_h)
 	}
 	else
 	{
-		G_item_highlighted[99] = 1;
+		G_item_highlighted[23] = 1;
 		item_selected = 0;
 		menu_level = 2;
 		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 2500, 1);
@@ -235,7 +235,7 @@ bool JumpToVehicle(float warp_x, float warp_y, float warp_z, float warp_h, bool 
 	}
 	else
 	{
-		G_item_highlighted[99] = 1;
+		G_item_highlighted[23] = 1;
 		item_selected = 0;
 		menu_level = 2;
 		PRINT_STRING_WITH_LITERAL_STRING_NOW("STRING", "Unable to locate a vehicle.", 2500, 1);
@@ -335,7 +335,7 @@ void SpawnCar(uint vehspawn_selected)
 
 		LOAD_SCENE(spawn_x, spawn_y, spawn_z);
 
-		if (G_garageId[99] != 0)
+		if (G_garageId[23] != 0)
 		{
 			//CLEAR_AREA(spawn_x, spawn_y, spawn_z, 3.0000, true);
 			CLEAR_ROOM_FOR_CAR(v_spawn);
