@@ -81,7 +81,7 @@ void Init(void)
 	garage_heli_quit_z = z;
 	garage_heli_quit_h = h;
 
-	if (G_garageId[99] == 1)
+	if (G_garageId[23] == 1)
 	{
 		// Brucie Garage
 		// Brucie MAIN
@@ -148,7 +148,7 @@ void Init(void)
 		garage_heli_quit_z = garage_heli_exit_z;
 		garage_heli_quit_h = garage_heli_exit_h;
 	}
-	else if (G_garageId[99] == 2)
+	else if (G_garageId[23] == 2)
 	{
 		// Meadows park (1st island)
 		// Meadows MAIN
@@ -215,7 +215,7 @@ void Init(void)
 		garage_heli_quit_z = garage_heli_spawn_z;
 		garage_heli_quit_h = garage_heli_spawn_h;
 	}
-	else if (G_garageId[99] == 3)
+	else if (G_garageId[23] == 3)
 	{
 		// Boulevard bohan (2nd island)
 		// bohan MAIN
@@ -282,7 +282,7 @@ void Init(void)
 		garage_heli_quit_z = garage_heli_spawn_z;
 		garage_heli_quit_h = garage_heli_spawn_h;
 	}
-	else if (G_garageId[99] == 4)
+	else if (G_garageId[23] == 4)
 	{
 		// Northwood scrapyard (3rd island)
 		// scrapyard MAIN
@@ -349,7 +349,7 @@ void Init(void)
 		garage_heli_quit_z = garage_main_spawn_z;
 		garage_heli_quit_h = garage_main_spawn_h;
 	}
-	else if (G_garageId[99] == 5)
+	else if (G_garageId[23] == 5)
 	{
 		// Meat garage (3rd island)
 		// Meat MAIN
@@ -416,7 +416,7 @@ void Init(void)
 		garage_heli_quit_z = garage_heli_spawn_z;
 		garage_heli_quit_h = garage_heli_spawn_h;		
 	}
-	else if (G_garageId[99] == 6)
+	else if (G_garageId[23] == 6)
 	{
 		// alderney showroom (4th island)
 		// showroom MAIN
@@ -483,7 +483,7 @@ void Init(void)
 		garage_heli_quit_z = garage_heli_spawn_z;
 		garage_heli_quit_h = garage_heli_spawn_h;
 	}
-	else if (G_garageId[99] == 7)
+	else if (G_garageId[23] == 7)
 	{
 		// tudor garage (4th island)
 		// tudor MAIN
@@ -555,7 +555,7 @@ void Init(void)
 	quit_x = garage_main_quit_x; quit_y = garage_main_quit_y; quit_z = garage_main_quit_z; quit_h = garage_main_quit_h;
 	spawn_x = garage_main_spawn_x; spawn_y = garage_main_spawn_y; spawn_z = garage_main_spawn_z; spawn_h = garage_main_spawn_h;
 
-	G_item_highlighted[99] = 1;
+	G_item_highlighted[23] = 1;
 }
 
 void main(void)
@@ -565,7 +565,7 @@ void main(void)
 	{
 		WAIT(0);
 		DoMenu();
-		if (!G_doneExitCheck[99] && (IS_PLAYER_DEAD(GetPlayerIndex()) || IS_PLAYER_BEING_ARRESTED()) 
+		if (!G_doneExitCheck[23] && (IS_PLAYER_DEAD(GetPlayerIndex()) || IS_PLAYER_BEING_ARRESTED()) 
 		|| 
 		(
 		!LOCATE_CHAR_ANY_MEANS_3D(GetPlayerPed(), exit_x, exit_y, exit_z, 50.00000000, 50.00000000, 50.00000000, 0) && 
@@ -574,13 +574,13 @@ void main(void)
 		)
 		)
 		{
-			G_drewrect[99] = false;
-			G_scriptloadedpalette[99] = false;
+			G_drewrect[23] = false;
+			G_scriptloadedpalette[23] = false;
 			TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("garage_menu_palette");
 
-			G_activateMenu[99] = false;
-			G_scriptloaded[99] = false;
-			G_doneExitCheck[99] = true;
+			G_activateMenu[23] = false;
+			G_scriptloaded[23] = false;
+			G_doneExitCheck[23] = true;
 			SET_PLAYER_CONTROL(GetPlayerIndex(), true);
 			SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS(0);
 			TERMINATE_THIS_SCRIPT();
