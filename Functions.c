@@ -276,6 +276,11 @@ void SpawnCar(uint vehspawn_selected)
 	while (!HAS_MODEL_LOADED(spawn_cars[vehspawn_selected])) WAIT(0);
 
 	CREATE_CAR(spawn_cars[vehspawn_selected], 0, 0, 0, &v_spawn, false);
+	
+	int networkID;
+	GET_NETWORK_ID_FROM_VEHICLE(v_spawn, &networkID);
+	SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkID, true);
+
 	MARK_MODEL_AS_NO_LONGER_NEEDED(spawn_cars[vehspawn_selected]);
 
 	float last_spawn_x = spawn_x, last_spawn_y = spawn_y;
