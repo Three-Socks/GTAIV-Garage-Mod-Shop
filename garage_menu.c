@@ -14,6 +14,7 @@
 
 void Init(void)
 {
+	THIS_SCRIPT_IS_SAFE_FOR_NETWORK_GAME();
 	CLEAR_PRINTS();
 	CLEAR_HELP();
 

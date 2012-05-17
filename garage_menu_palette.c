@@ -16,6 +16,7 @@ uint car_colours_r[138], car_colours_g[138], car_colours_b[138];
 
 void Init(void)
 {
+	THIS_SCRIPT_IS_SAFE_FOR_NETWORK_GAME();
 
 	car_colours_r[1] = 10;
 	car_colours_g[1] = 10;

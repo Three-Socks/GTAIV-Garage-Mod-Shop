@@ -9,6 +9,7 @@
 
 void main(void)
 {
+	THIS_SCRIPT_IS_SAFE_FOR_NETWORK_GAME();
 	while(true)
 	{
 		WAIT(0);

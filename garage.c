@@ -34,6 +34,8 @@ float garagesBlipCoords_x[8], garagesBlipCoords_y[8], garagesBlipCoords_z[8];
 
 void Init(void)
 {
+	THIS_SCRIPT_IS_SAFE_FOR_NETWORK_GAME();
+
 	G_scriptloaded[23] = false;
 	G_scriptloadedpalette[23] = false;
 	G_activateMenu[23] = false;
