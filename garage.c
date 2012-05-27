@@ -9,10 +9,15 @@
 
 /*
 
+PS3 GTAIV
 PushS 9088
 GlobalVar
 RefGet
 
+PC GTAIV
+PushS 9167
+GlobalVar
+RefGet
 
 TLAD
 
@@ -64,6 +69,9 @@ void Init(void)
 	G_drawVNeon[99].fbintensity = 85;
 	G_drawVNeon[99].mrange = 2.5;
 	G_drawVNeon[99].mintensity = 85;
+	G_drawVNeon[99].dospeed = 1.0;
+	G_drawVNeon[99].dobrake = 1.0;
+	G_drawVNeon[99].dosteer = 1.0;
 
 	if (!G_savedVehiclesLoaded[99])
 	{
@@ -98,6 +106,9 @@ void Init(void)
 			G_savedVehicles[I].neon_fbintensity = 0;
 			G_savedVehicles[I].neon_mrange = 0;
 			G_savedVehicles[I].neon_mintensity = 0;
+			G_savedVehicles[I].dospeed = 0;
+			G_savedVehicles[I].dobrake = 0;
+			G_savedVehicles[I].dosteer = 0;
 		}
 		G_savedVehiclesLoaded[99] = true;
 	}
@@ -211,6 +222,78 @@ x = cos(heading) * distance + start_pos_x
 y = sin(heading) * distance + start_pos_y
 
 */
+
+	if (G_drawVNeon[99].dospeed != 1.0 && IS_PLAYER_PLAYING(GetPlayerIndex()))
+	{
+		if (DOES_VEHICLE_EXIST(G_v_domod[99]) && IS_CHAR_IN_CAR(GetPlayerPed(), G_v_domod[99]))
+		{
+			if (IS_CONTROL_PRESSED(2, 40))
+			{
+				if ((IS_CHAR_IN_ANY_HELI(GetPlayerPed()) || IS_CHAR_IN_ANY_BOAT(GetPlayerPed())) || (IS_VEHICLE_ON_ALL_WHEELS(G_v_domod[99]) && !IS_CAR_IN_WATER(G_v_domod[99]) && !IS_CAR_IN_AIR_PROPER(G_v_domod[99])))
+				{
+					APPLY_FORCE_TO_CAR(G_v_domod[99], 0, 0.0000, G_drawVNeon[99].dospeed, 0.0000, 0.0000, 0.0000, 0.0000, 0, 1, 1, 1);
+				}
+			}
+		}
+		else
+		{
+			G_drawVNeon[99].dospeed = 1.0;
+			MARK_CAR_AS_NO_LONGER_NEEDED(&G_v_domod[99]);
+		}
+	}
+	
+	if (G_drawVNeon[99].dobrake != 1.0 && IS_PLAYER_PLAYING(GetPlayerIndex()))
+	{
+		if (DOES_VEHICLE_EXIST(G_v_domod[99]) && IS_CHAR_IN_CAR(GetPlayerPed(), G_v_domod[99]))
+		{
+			if (IS_CONTROL_PRESSED(0, 41) || IS_CONTROL_PRESSED(0, 45) || IS_CONTROL_PRESSED(0, 44))
+			{
+				float currentspeed;
+				GET_CAR_SPEED(G_v_domod[99], &currentspeed);
+
+				if (currentspeed > 12.5000 && ((IS_CHAR_IN_ANY_HELI(GetPlayerPed())) || (IS_VEHICLE_ON_ALL_WHEELS(G_v_domod[99]) && !IS_CAR_IN_WATER(G_v_domod[99]) && !IS_CAR_IN_AIR_PROPER(G_v_domod[99]))))
+				{
+					APPLY_FORCE_TO_CAR(G_v_domod[99], 0, 0.0000, 0.0 - G_drawVNeon[99].dobrake, 0.0000, 0.0000, 0.0000, 0.0000, 0, 1, 1, 1);
+				}
+			}
+		}
+		else
+		{
+			G_drawVNeon[99].dobrake = 1.0;
+			MARK_CAR_AS_NO_LONGER_NEEDED(&G_v_domod[99]);
+		}
+	}
+
+	if (G_drawVNeon[99].dosteer != 1.0 && IS_PLAYER_PLAYING(GetPlayerIndex()))
+	{
+		if (DOES_VEHICLE_EXIST(G_v_domod[99]) && IS_CHAR_IN_CAR(GetPlayerPed(), G_v_domod[99]))
+		{
+			float currentspeed;
+			GET_CAR_SPEED(G_v_domod[99], &currentspeed);
+
+			if (currentspeed > 5.5000 && ((IS_CHAR_IN_ANY_HELI(GetPlayerPed()) || IS_CHAR_IN_ANY_BOAT(GetPlayerPed())) || (IS_VEHICLE_ON_ALL_WHEELS(G_v_domod[99]) && !IS_CAR_IN_WATER(G_v_domod[99]) && !IS_CAR_IN_AIR_PROPER(G_v_domod[99]))))
+			{
+				int stickleft_x;
+
+				int nowhere, nowhere2, nowhere3;
+				GET_POSITION_OF_ANALOGUE_STICKS(0, &stickleft_x, &nowhere, &nowhere2, &nowhere3);
+
+				if (stickleft_x < -30 || IS_GAME_KEYBOARD_KEY_PRESSED(30))
+				{
+					APPLY_FORCE_TO_CAR(G_v_domod[99], 0, 0.0 - G_drawVNeon[99].dosteer, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0, 1, 1, 1);
+				}
+				else if (stickleft_x > 30 || IS_GAME_KEYBOARD_KEY_PRESSED(32))
+				{
+					APPLY_FORCE_TO_CAR(G_v_domod[99], 0, G_drawVNeon[99].dosteer, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0, 1, 1, 1);
+				}
+			}
+		}
+		else
+		{
+			G_drawVNeon[99].dosteer = 1.0;
+			MARK_CAR_AS_NO_LONGER_NEEDED(&G_v_domod[99]);
+		}
+	}
 
 	if (G_drawVNeon[99].toggle == 2)
 	{
@@ -388,6 +471,7 @@ void main(void)
 				DRAW_RECT(0.15000000, 0.35000000, 0.23000000, 0.63000000, 0, 0, 0, 167);
 			}
 			HIDE_HUD_AND_RADAR_THIS_FRAME();
+			HIDE_HELP_TEXT_THIS_FRAME();
 			if (!G_scriptloaded[23])
 			{
 				if ((GET_NUMBER_OF_INSTANCES_OF_STREAMED_SCRIPT("garage_menu")) >= 1)

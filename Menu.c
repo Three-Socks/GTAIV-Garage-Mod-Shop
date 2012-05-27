@@ -3,7 +3,7 @@ void DrawMenu(int array_len)
 	uint d_r = 255, d_g = 255, d_b = 255, h_r = 253, h_g = 160, h_b = 35;
 	float start_pos_x = 0.0553, toggle_pos_x = 0.1600, menu_spacing = 0.0400, menu_width = 0.3000, menu_height = 0.3000;
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_DOWN))
+	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_DOWN) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(208))
 	{
 		/*if ((inNumberSelector || inFloatSelector) && (num_highlighted > 1 || floatnum_highlighted > 1))
 		{
@@ -21,7 +21,7 @@ void DrawMenu(int array_len)
 		}
 	}
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_UP))
+	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_UP) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(200))
 	{
 		/*if ((inNumberSelector || inFloatSelector) && (num_highlighted > 1 || floatnum_highlighted > 1))
 		{
@@ -771,20 +771,36 @@ void EnterMenu(int item_selected)
 					menu_item[1].name = "Speed";
 					menu_item[1].type = 4;
 					menu_item[1].num_len = 100;
-					//void SET_VEHICLE_STEER_BIAS(Vehicle veh, float val);
-					menu_item[2].name = "Steer Bias";
-					menu_item[2].type = 3;
-					menu_item[2].num_len = 10;
+					menu_item[1].allow_neg = false;
+					menu_item[1].numval = G_drawVNeon[99].dospeed;
 
-					menu_len = 2;
+					menu_item[2].name = "Brakes";
+					menu_item[2].type = 4;
+					menu_item[2].num_len = 100;
+					menu_item[2].allow_neg = false;
+					menu_item[2].numval = G_drawVNeon[99].dobrake;
+
+					menu_item[3].name = "Steering";
+					menu_item[3].type = 4;
+					menu_item[3].num_len = 100;
+					menu_item[3].allow_neg = false;
+					menu_item[3].numval = G_drawVNeon[99].dosteer;
+
+					//void SET_VEHICLE_STEER_BIAS(Vehicle veh, float val);
+					menu_item[4].name = "Steer Bias";
+					menu_item[4].type = 4;
+					menu_item[4].allow_neg = false;
+					menu_item[4].num_len = 10;
+
+					menu_len = 4;
 
 					if (GET_CURRENT_EPISODE() == 2)
 					{
 						//void SET_CAR_TRACTION(Car car, float traction);
-						menu_item[3].name = "Traction";
-						menu_item[3].type = 3;
-						menu_item[3].num_len = 10;
-						menu_len = 3;
+						menu_item[5].name = "Traction";
+						menu_item[5].type = 3;
+						menu_item[5].num_len = 100;
+						menu_len = 5;
 					}
 
 					inVModifyHandling = true;
@@ -910,7 +926,9 @@ void EnterMenu(int item_selected)
 					if (GET_CURRENT_EPISODE() == 2)
 					{
 						//void SET_VEHICLE_DEFORMATION_MULT(Vehicle veh, float multiplier);
-						menu_item[14].name = "Deformation Multiplier";
+						menu_item[14].name = "Deform Multi";
+						menu_item[14].type = 4;
+
 						menu_len = 14;
 					}
 
@@ -1056,7 +1074,7 @@ void EnterMenu(int item_selected)
 				menu_items_set = true;
 			}
 			
-			if (IS_BUTTON_JUST_PRESSED(0, BUTTON_T) && spawn_cars[item_high] != 0)
+			if (IS_BUTTON_JUST_PRESSED(0, BUTTON_T) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(33) && spawn_cars[item_high] != 0)
 			{
 				spawn_cars[item_high] = 0;
 				G_savedVehicles[item_high].model_n = 0;
@@ -1087,6 +1105,9 @@ void EnterMenu(int item_selected)
 				G_savedVehicles[item_high].neon_fbintensity = 0;
 				G_savedVehicles[item_high].neon_mrange = 0;
 				G_savedVehicles[item_high].neon_mintensity = 0;
+				G_savedVehicles[item_high].dospeed = 0;
+				G_savedVehicles[item_high].dobrake = 0;
+				G_savedVehicles[item_high].dosteer = 0;
 			}
 
 			if (item_saveloadtype_selected == 2)
@@ -1150,6 +1171,9 @@ void EnterMenu(int item_selected)
 					G_savedVehicles[item_saveload_selected].neon_fbintensity = G_drawVNeon[99].fbintensity;
 					G_savedVehicles[item_saveload_selected].neon_mrange = G_drawVNeon[99].mrange;
 					G_savedVehicles[item_saveload_selected].neon_mintensity = G_drawVNeon[99].mintensity;
+					G_savedVehicles[item_saveload_selected].dospeed = G_drawVNeon[99].dospeed;
+					G_savedVehicles[item_saveload_selected].dobrake = G_drawVNeon[99].dobrake;
+					G_savedVehicles[item_saveload_selected].dosteer = G_drawVNeon[99].dosteer;
 
 					menu_items_set = false;
 				}
@@ -1257,6 +1281,9 @@ void EnterMenu(int item_selected)
 					G_drawVNeon[99].fbintensity = G_savedVehicles[item_saveload_selected].neon_fbintensity;
 					G_drawVNeon[99].mrange = G_savedVehicles[item_saveload_selected].neon_mrange;
 					G_drawVNeon[99].mintensity = G_savedVehicles[item_saveload_selected].neon_mintensity;
+					G_drawVNeon[99].dospeed = G_savedVehicles[item_saveload_selected].dospeed;
+					G_drawVNeon[99].dobrake = G_savedVehicles[item_saveload_selected].dobrake;
+					G_drawVNeon[99].dosteer = G_savedVehicles[item_saveload_selected].dosteer;
 
 					G_v_domod[99] = v_modding;
 
@@ -1347,13 +1374,24 @@ void EnterMenu(int item_selected)
 				{
 					if (item_modify_selected == 1)
 					{
-						SET_CAR_FORWARD_SPEED(v_modding, num_selected);
+						G_drawVNeon[99].dospeed = num_selected;
+						G_v_domod[99] = v_modding;
 					}
 					else if (item_modify_selected == 2)
 					{
-						SET_VEHICLE_STEER_BIAS(v_modding, floatnum_selected);
+						G_drawVNeon[99].dobrake = num_selected;
+						G_v_domod[99] = v_modding;
 					}
 					else if (item_modify_selected == 3)
+					{
+						G_drawVNeon[99].dosteer = num_selected;
+						G_v_domod[99] = v_modding;
+					}
+					else if (item_modify_selected == 4)
+					{
+						SET_VEHICLE_STEER_BIAS(v_modding, floatnum_selected);
+					}
+					else if (item_modify_selected == 5)
 					{
 						SET_CAR_TRACTION(v_modding, floatnum_selected);
 					}
@@ -1621,7 +1659,10 @@ void EnterMenu(int item_selected)
 							menu_item[item_modify_selected].enabled = 2;
 						}
 					}
-			
+					else if (item_modify_selected == 14)
+					{
+						SET_VEHICLE_DEFORMATION_MULT(v_modding, num_selected);
+					}	
 				}
 				else if (inVModifyMisc)
 				{
@@ -1965,7 +2006,7 @@ void DoMenu(void)
 	draw_number("NUMBR", pos_x, 0.13000000, padleft_y);
 	*/
 	
-	/*
+
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.08800000, menu_level);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -1973,7 +2014,7 @@ void DoMenu(void)
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.16800000, item_selected);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
-	draw_number("NUMBR", 0.58700000, 0.20800000, item_modify_selected);
+	draw_number("NUMBR", 0.58700000, 0.20800000, G_drawVNeon[99].dospeed);
 	/*if (inNumberSelector)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -2043,7 +2084,7 @@ void DoMenu(void)
 
 	EnterMenu(item_selected);
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_O))
+	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_O) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(14))
 	{
 		if (draw_menu_set)
 		{
@@ -2227,7 +2268,7 @@ void DoMenu(void)
 
 	if (draw_menu_set)
 	{
-		if (IS_BUTTON_JUST_PRESSED(0, BUTTON_X))
+		if (IS_BUTTON_JUST_PRESSED(0, BUTTON_X) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(28))
 		{
 			if (inVehMenu && item_vehcat_selected != 0)
 			{
@@ -2372,7 +2413,7 @@ void DoMenu(void)
 			}
 		}
 		
-		if (IS_BUTTON_JUST_PRESSED(0, BUTTON_X))
+		if (IS_BUTTON_JUST_PRESSED(0, BUTTON_X) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(28))
 		{
 			if (inVehCol)
 			{
