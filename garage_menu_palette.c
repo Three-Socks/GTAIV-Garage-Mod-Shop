@@ -578,7 +578,7 @@ void DrawPalette(void)
 	float Ipos_y = 0.0635;
 	uint r, g, b, a;
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT) && G_item_highlighted[23] != 1)
+	if ((IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(203)) && G_item_highlighted[23] != 1)
 	{
 		G_item_highlighted[23] = G_item_highlighted[23] - 1;
 	}
@@ -591,12 +591,12 @@ void DrawPalette(void)
 		last_down = 131;
 	}
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT) && G_item_highlighted[23] != end_col)
+	if ((IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(205)) && G_item_highlighted[23] != end_col)
 	{
 		G_item_highlighted[23] = G_item_highlighted[23] + 1;
 	}
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_UP))
+	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_UP) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(200))
 	{
 		if (G_item_highlighted[23] <= 7)
 			G_item_highlighted[23] = end_col;
@@ -604,7 +604,7 @@ void DrawPalette(void)
 			G_item_highlighted[23] = G_item_highlighted[23] - 7;
 	}
 
-	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_DOWN))
+	if (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_DOWN) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(208))
 	{
 		if (G_item_highlighted[23] < last_down)
 			G_item_highlighted[23] = G_item_highlighted[23] + 7;
@@ -649,7 +649,7 @@ void main(void)
 	{
 		WAIT(0);
 		DrawPalette();
-		if (G_inVNeonCol[23] && IS_BUTTON_JUST_PRESSED(0, BUTTON_X))
+		if (G_inVNeonCol[23] && IS_BUTTON_JUST_PRESSED(0, BUTTON_X) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(28))
 		{
 			G_drawVNeon[99].colour_r = car_colours_r[G_item_highlighted[23]];
 			G_drawVNeon[99].colour_g = car_colours_g[G_item_highlighted[23]];

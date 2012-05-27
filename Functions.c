@@ -5,11 +5,11 @@ bool isNumSelPressed(uint mode)
 	int nowhere, nowhere2, nowhere3;
 	GET_POSITION_OF_ANALOGUE_STICKS(0, &stickleft_x, &nowhere, &nowhere2, &nowhere3);
 
-	if (mode == 1 && IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT))
+	if (mode == 1 && (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_LEFT) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(203)))
 	{
 		return true;
 	}
-	else if (mode == 2 && IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT))
+	else if (mode == 2 && (IS_BUTTON_JUST_PRESSED(0, BUTTON_DPAD_RIGHT) || IS_GAME_KEYBOARD_KEY_JUST_PRESSED(205)))
 	{
 		return true;
 	}
@@ -276,10 +276,13 @@ void SpawnCar(uint vehspawn_selected)
 	while (!HAS_MODEL_LOADED(spawn_cars[vehspawn_selected])) WAIT(0);
 
 	CREATE_CAR(spawn_cars[vehspawn_selected], 0, 0, 0, &v_spawn, false);
-	
-	int networkID;
-	GET_NETWORK_ID_FROM_VEHICLE(v_spawn, &networkID);
-	SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkID, true);
+
+	if (IS_PLAYER_ONLINE())
+	{
+		int networkID;
+		GET_NETWORK_ID_FROM_VEHICLE(v_spawn, &networkID);
+		SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(networkID, true);
+	}
 
 	MARK_MODEL_AS_NO_LONGER_NEEDED(spawn_cars[vehspawn_selected]);
 

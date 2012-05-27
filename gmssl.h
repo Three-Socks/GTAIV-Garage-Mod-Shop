@@ -17,6 +17,9 @@ typedef struct _drawVNeonS
 	uint mintensity;
 	float mrange;
 	float height;
+	uint dospeed;
+	uint dobrake;
+	uint dosteer;
 } drawVNeonS;
 
 typedef struct _saveVehicleS
@@ -49,4 +52,7 @@ typedef struct _saveVehicleS
 	uint neon_mintensity;
 	float neon_mrange;
 	float neon_height;
+	uint dospeed;
+	uint dobrake;
+	uint dosteer;
 } saveVehicleS;

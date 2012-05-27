@@ -13,7 +13,7 @@ void main(void)
 	while(true)
 	{
 		WAIT(0);
-		if (IS_BUTTON_PRESSED(0, 6) && IS_BUTTON_PRESSED(0, 8))
+		if ((IS_BUTTON_PRESSED(0, 6) && IS_BUTTON_PRESSED(0, 8)) || (IS_GAME_KEYBOARD_KEY_PRESSED(18) && IS_GAME_KEYBOARD_KEY_PRESSED(200)))
 		{
 			if (!G_activateMenu[23])
 			{
