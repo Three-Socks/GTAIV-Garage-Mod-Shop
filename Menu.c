@@ -2006,7 +2006,7 @@ void DoMenu(void)
 	draw_number("NUMBR", pos_x, 0.13000000, padleft_y);
 	*/
 	
-
+	/*
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.08800000, menu_level);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
@@ -2015,6 +2015,7 @@ void DoMenu(void)
 	draw_number("NUMBR", 0.58700000, 0.16800000, item_selected);
 	set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);
 	draw_number("NUMBR", 0.58700000, 0.20800000, G_drawVNeon[99].dospeed);
+	*/
 	/*if (inNumberSelector)
 	{
 		set_up_draw(0, 0.30000000, 0.30000000, 255, 255, 255, 255);

@@ -225,9 +225,9 @@ y = sin(heading) * distance + start_pos_y
 
 	if (G_drawVNeon[99].dospeed != 1.0 && IS_PLAYER_PLAYING(GetPlayerIndex()))
 	{
-		if (DOES_VEHICLE_EXIST(G_v_domod[99]) && IS_CHAR_IN_CAR(GetPlayerPed(), G_v_domod[99]))
+		if (DOES_VEHICLE_EXIST(G_v_domod[99]) && IS_VEH_DRIVEABLE(G_v_domod[99]))
 		{
-			if (IS_CONTROL_PRESSED(2, 40))
+			if (IS_CONTROL_PRESSED(2, 40) && !IS_CONTROL_PRESSED(0, 41) && !IS_CONTROL_PRESSED(0, 45) !IS_CONTROL_PRESSED(0, 44) && IS_CHAR_IN_CAR(GetPlayerPed(), G_v_domod[99]))
 			{
 				if ((IS_CHAR_IN_ANY_HELI(GetPlayerPed()) || IS_CHAR_IN_ANY_BOAT(GetPlayerPed())) || (IS_VEHICLE_ON_ALL_WHEELS(G_v_domod[99]) && !IS_CAR_IN_WATER(G_v_domod[99]) && !IS_CAR_IN_AIR_PROPER(G_v_domod[99])))
 				{
@@ -241,12 +241,12 @@ y = sin(heading) * distance + start_pos_y
 			MARK_CAR_AS_NO_LONGER_NEEDED(&G_v_domod[99]);
 		}
 	}
-	
+
 	if (G_drawVNeon[99].dobrake != 1.0 && IS_PLAYER_PLAYING(GetPlayerIndex()))
 	{
-		if (DOES_VEHICLE_EXIST(G_v_domod[99]) && IS_CHAR_IN_CAR(GetPlayerPed(), G_v_domod[99]))
+		if (DOES_VEHICLE_EXIST(G_v_domod[99]) && IS_VEH_DRIVEABLE(G_v_domod[99]))
 		{
-			if (IS_CONTROL_PRESSED(0, 41) || IS_CONTROL_PRESSED(0, 45) || IS_CONTROL_PRESSED(0, 44))
+			if ((IS_CONTROL_PRESSED(0, 41) || IS_CONTROL_PRESSED(0, 45) || IS_CONTROL_PRESSED(0, 44)) && (IS_CHAR_IN_CAR(GetPlayerPed(), G_v_domod[99])))
 			{
 				float currentspeed;
 				GET_CAR_SPEED(G_v_domod[99], &currentspeed);
@@ -266,12 +266,12 @@ y = sin(heading) * distance + start_pos_y
 
 	if (G_drawVNeon[99].dosteer != 1.0 && IS_PLAYER_PLAYING(GetPlayerIndex()))
 	{
-		if (DOES_VEHICLE_EXIST(G_v_domod[99]) && IS_CHAR_IN_CAR(GetPlayerPed(), G_v_domod[99]))
+		if (DOES_VEHICLE_EXIST(G_v_domod[99]) && IS_VEH_DRIVEABLE(G_v_domod[99]))
 		{
 			float currentspeed;
 			GET_CAR_SPEED(G_v_domod[99], &currentspeed);
 
-			if (currentspeed > 5.5000 && ((IS_CHAR_IN_ANY_HELI(GetPlayerPed()) || IS_CHAR_IN_ANY_BOAT(GetPlayerPed())) || (IS_VEHICLE_ON_ALL_WHEELS(G_v_domod[99]) && !IS_CAR_IN_WATER(G_v_domod[99]) && !IS_CAR_IN_AIR_PROPER(G_v_domod[99]))))
+			if (currentspeed > 5.5000 && IS_CHAR_IN_CAR(GetPlayerPed(), G_v_domod[99]) && ((IS_CHAR_IN_ANY_HELI(GetPlayerPed()) || IS_CHAR_IN_ANY_BOAT(GetPlayerPed())) || (IS_VEHICLE_ON_ALL_WHEELS(G_v_domod[99]) && !IS_CAR_IN_WATER(G_v_domod[99]) && !IS_CAR_IN_AIR_PROPER(G_v_domod[99]))))
 			{
 				int stickleft_x;
 

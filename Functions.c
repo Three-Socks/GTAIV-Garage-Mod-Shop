@@ -157,7 +157,7 @@ void LocateVehicle(float warp_x, float warp_y, float warp_z)
 	{
 		GET_CAR_CHAR_IS_USING(GetPlayerPed(), &v_modding);
 	}
-	else
+	else if (G_garageId[23] == 1)
 	{
 		v_modding = GET_CLOSEST_CAR(warp_x, warp_y, warp_z, 6.00000000, 0, 70);
 		if (!DOES_VEHICLE_EXIST(v_modding))
