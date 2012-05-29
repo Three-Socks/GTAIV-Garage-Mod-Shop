@@ -794,15 +794,6 @@ void EnterMenu(int item_selected)
 
 					menu_len = 4;
 
-					if (GET_CURRENT_EPISODE() == 2)
-					{
-						//void SET_CAR_TRACTION(Car car, float traction);
-						menu_item[5].name = "Traction";
-						menu_item[5].type = 3;
-						menu_item[5].num_len = 100;
-						menu_len = 5;
-					}
-
 					inVModifyHandling = true;
 					menu_items_set = true;
 				}
@@ -922,15 +913,6 @@ void EnterMenu(int item_selected)
 					menu_item[13].type = 2;
 
 					menu_len = 13;
-
-					if (GET_CURRENT_EPISODE() == 2)
-					{
-						//void SET_VEHICLE_DEFORMATION_MULT(Vehicle veh, float multiplier);
-						menu_item[14].name = "Deform Multi";
-						menu_item[14].type = 4;
-
-						menu_len = 14;
-					}
 
 					inVModifyHealth = true;
 					menu_items_set = true;
@@ -1391,10 +1373,6 @@ void EnterMenu(int item_selected)
 					{
 						SET_VEHICLE_STEER_BIAS(v_modding, floatnum_selected);
 					}
-					else if (item_modify_selected == 5)
-					{
-						SET_CAR_TRACTION(v_modding, floatnum_selected);
-					}
 				}
 				else if (inVModifyLights)
 				{
@@ -1659,10 +1637,6 @@ void EnterMenu(int item_selected)
 							menu_item[item_modify_selected].enabled = 2;
 						}
 					}
-					else if (item_modify_selected == 14)
-					{
-						SET_VEHICLE_DEFORMATION_MULT(v_modding, num_selected);
-					}	
 				}
 				else if (inVModifyMisc)
 				{
