@@ -227,7 +227,7 @@ y = sin(heading) * distance + start_pos_y
 	{
 		if (DOES_VEHICLE_EXIST(G_v_domod[99]) && IS_VEH_DRIVEABLE(G_v_domod[99]))
 		{
-			if (IS_CONTROL_PRESSED(2, 40) && !IS_CONTROL_PRESSED(0, 41) && !IS_CONTROL_PRESSED(0, 45) !IS_CONTROL_PRESSED(0, 44) && IS_CHAR_IN_CAR(GetPlayerPed(), G_v_domod[99]))
+			if (IS_CONTROL_PRESSED(2, 40) && !IS_CONTROL_PRESSED(0, 41) && !IS_CONTROL_PRESSED(0, 45) && !IS_CONTROL_PRESSED(0, 44) && IS_CHAR_IN_CAR(GetPlayerPed(), G_v_domod[99]))
 			{
 				if ((IS_CHAR_IN_ANY_HELI(GetPlayerPed()) || IS_CHAR_IN_ANY_BOAT(GetPlayerPed())) || (IS_VEHICLE_ON_ALL_WHEELS(G_v_domod[99]) && !IS_CAR_IN_WATER(G_v_domod[99]) && !IS_CAR_IN_AIR_PROPER(G_v_domod[99])))
 				{
